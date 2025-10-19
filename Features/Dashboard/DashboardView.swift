@@ -9,12 +9,11 @@ struct DashboardView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     
-                    // Header with personality info
-                    if let personalityType = personalityManager.personalityType {
-                        PersonalityHeaderCard(personalityType: personalityType)
-                    }
+                    // Main Character Card - Hero Component
+                    CharacterCard(title: nil, size: 0) // Auto-sized
+                        .padding(.horizontal)
                     
-                    // Focus Stats Card
+                    // Focus Stats Card - Below character
                     FocusStatsCard()
                     
                     // Quick Actions
@@ -27,7 +26,8 @@ struct DashboardView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Dashboard")
+            .navigationTitle("")
+            .navigationBarHidden(true)
             .background(personalityManager.currentTheme.background.ignoresSafeArea())
         }
     }
