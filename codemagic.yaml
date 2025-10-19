@@ -22,6 +22,15 @@ workflows:
           fi
       - name: Build unsigned IPA
         script: |
+          # Create build directory
+          mkdir -p build/ios/ipa
+          
+          # List current directory contents for debugging
+          echo "Current directory: $PWD"
+          ls -la
+          echo "Nudge directory contents:"
+          ls -la Nudge/
+          
           # Create export options for unsigned build first
           cat > /tmp/export_options.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
