@@ -11,6 +11,8 @@ struct ContentView: View {
         DashboardView()
             .background(exactMint.ignoresSafeArea())
             .preferredColorScheme(appSettings.colorScheme)
+            // Clamp dynamic type to avoid global UI upscaling that makes the page look zoomed
+            .environment(\.dynamicTypeSize, .medium)
     }
 }
 

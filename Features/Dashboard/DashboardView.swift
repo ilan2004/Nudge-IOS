@@ -34,8 +34,9 @@ struct DashboardView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             }
                 .navigationTitle("")
-                .navigationBarHidden(true)
+            .navigationBarHidden(true)
                 .background(Color.clear) // Make navigation transparent
+                .dynamicTypeSize(.medium) // Clamp inside too to keep cards consistent
             }
             .background(Color.clear) // Make navigation view transparent
         }
