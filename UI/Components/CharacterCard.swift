@@ -28,15 +28,6 @@ struct CharacterCard: View {
         self.size = size > 0 ? size : 384 // Default size
     }
     
-    private var cardSize: CGFloat {
-        if size > 0 {
-            return size
-        }
-        // Auto-size based on screen width (min 200, max 360) to avoid oversized layout
-        let screenWidth = UIScreen.main.bounds.width
-        return max(200, min(360, floor(screenWidth * 0.50)))
-    }
-    
     private var heading: String {
         if !displayName.isEmpty {
             return displayName
@@ -45,81 +36,90 @@ struct CharacterCard: View {
     }
     
     var body: some View {
-        VStack(spacing: 16) {
-            // Header with name and edit button
-            HStack {
-                Text(heading)
-                    .font(.custom("Tanker-Regular", size: 40))
-                    .foregroundColor(personalityManager.currentTheme.text)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
-                
-                Button("Edit") {
-                    // TODO: Show name edit modal
-                }
-                .font(.caption)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(6)
-                .foregroundColor(.secondary)
-            }
+        GeometryReader { proxy in
+            // Size based on available width inside the dashboard, not full screen
+            let available = proxy.size.width
+            let preferred = size > 0 ? size : floor(available * 0.70)
+            let cardSize = max(200, min(360, preferred))
             
-            // Main character display
-            ZStack {
-                // Focus Ring behind character (not masked)
-                FocusRing(
-                    size: cardSize + 32,
-                    stroke: max(8, min(16, cardSize * 0.03)),
-                    value: focusProgress,
-                    mode: focusMode
-                )
-                .zIndex(0)
-                
-                // Character container
-                ZStack {
-                    if let personalityType = personalityManager.personalityType {
-                        // Character image/video display
-                        CharacterMediaView(
-                            personalityType: personalityType,
-                            gender: personalityManager.gender,
-                            size: cardSize,
-                            showVideoAnimation: $showVideoAnimation,
-                            currentVideoURL: $currentVideoURL,
-                            videoNonce: $videoNonce
-                        )
-                    } else {
-                        // Placeholder when no personality type
-                        CharacterPlaceholder(size: cardSize)
-                    }
-                }
-                .frame(width: cardSize, height: cardSize)
-                .clipShape(Circle())
-                .zIndex(1)
-            }
-            
-            // Personality Badge and Dialogue
-            if let personalityType = personalityManager.personalityType {
-                VStack(spacing: 12) {
-                    PersonalityBadge(
-                        personalityType: personalityType,
-                        gender: personalityManager.gender
-                    )
+            VStack(spacing: 16) {
+                // Header with name and edit button
+                HStack {
+                    Text(heading)
+                        .font(.custom("Tanker-Regular", size: 40))
+                        .foregroundColor(personalityManager.currentTheme.text)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
                     
-                    // Character Dialogue
-                    VStack(spacing: 8) {
-                        if !greeting.isEmpty {
-                            DialogueBubble(text: greeting, style: .greeting)
+                    Button("Edit") {
+                        // TODO: Show name edit modal
+                    }
+                    .font(.caption)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(6)
+                    .foregroundColor(.secondary)
+                }
+                
+                // Main character display
+                ZStack {
+                    // Focus Ring behind character (not masked)
+                    FocusRing(
+                        size: cardSize + 16,
+                        stroke: max(6, min(14, cardSize * 0.028)),
+                        value: focusProgress,
+                        mode: focusMode
+                    )
+                    .zIndex(0)
+                    
+                    // Character container
+                    ZStack {
+                        if let personalityType = personalityManager.personalityType {
+                            // Character image/video display
+                            CharacterMediaView(
+                                personalityType: personalityType,
+                                gender: personalityManager.gender,
+                                size: cardSize,
+                                showVideoAnimation: $showVideoAnimation,
+                                currentVideoURL: $currentVideoURL,
+                                videoNonce: $videoNonce
+                            )
+                        } else {
+                            // Placeholder when no personality type
+                            CharacterPlaceholder(size: cardSize)
                         }
+                    }
+                    .frame(width: cardSize, height: cardSize)
+                    .clipShape(Circle())
+                    .zIndex(1)
+                }
+                
+                // Personality Badge and Dialogue
+                if let personalityType = personalityManager.personalityType {
+                    VStack(spacing: 12) {
+                        PersonalityBadge(
+                            personalityType: personalityType,
+                            gender: personalityManager.gender
+                        )
                         
-                        if !motivation.isEmpty {
-                            DialogueBubble(text: motivation, style: .motivation)
+                        // Character Dialogue
+                        VStack(spacing: 8) {
+                            if !greeting.isEmpty {
+                                DialogueBubble(text: greeting, style: .greeting)
+                            }
+                            
+                            if !motivation.isEmpty {
+                                DialogueBubble(text: motivation, style: .motivation)
+                            }
                         }
                     }
                 }
+                
             }
-            
+            .frame(maxWidth: .infinity)
         }
+        .frame(maxWidth: .infinity, minHeight: 0)
         .onAppear {
             loadUserData()
             setupFocusTracking()
