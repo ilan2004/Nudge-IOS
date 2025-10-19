@@ -25,7 +25,6 @@ public struct NavPillStyle: ButtonStyle {
                 Capsule()
                     .stroke(borderColor, lineWidth: 2)
             )
-            .shadow(color: shadowColor, radius: 0, x: 0, y: 3)
             .opacity(configuration.isPressed ? 0.85 : 1.0)
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
     }
