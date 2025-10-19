@@ -8,12 +8,12 @@ workflows:
     environment:
       ios_signing:
         distribution_type: development
-        bundle_identifier: com.yourcompany.nudge # Replace with your actual bundle ID
+        bundle_identifier: com.ilan2004.nudge # Replace with your actual bundle ID
       vars:
         XCODE_WORKSPACE: "Nudge.xcworkspace" # Update if using .xcworkspace
         XCODE_PROJECT: "Nudge.xcodeproj"     # Update with actual project name
         XCODE_SCHEME: "Nudge"                # Update with your scheme name
-        BUNDLE_ID: "com.yourcompany.nudge"   # Replace with your bundle ID
+        BUNDLE_ID: "com.ilan2004.nudge"      # Replace with your bundle ID
       xcode: latest
       cocoapods: default
     scripts:
