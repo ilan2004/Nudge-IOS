@@ -35,91 +35,92 @@ struct CharacterCard: View {
         return title ?? "Player"
     }
     
+    // Compute a stable card size based on screen width (not GeometryReader) so it behaves inside ScrollView/VStack
+    private var cardSize: CGFloat {
+        if size > 0 { return size }
+        let screenWidth = UIScreen.main.bounds.width
+        // Use a conservative fraction and clamp to keep within viewport on all devices
+        let base = floor((min(screenWidth, 600) - 32) * 0.60)
+        return max(200, min(340, base))
+    }
+    
     var body: some View {
-        GeometryReader { proxy in
-            // Size based on available width inside the dashboard, not full screen
-            let available = proxy.size.width
-            let preferred = size > 0 ? size : floor(available * 0.70)
-            let cardSize = max(200, min(360, preferred))
-            
-            VStack(spacing: 16) {
-                // Header with name and edit button
-                HStack {
-                    Text(heading)
-                        .font(.custom("Tanker-Regular", size: 40))
-                        .foregroundColor(personalityManager.currentTheme.text)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.6)
-                    
-                    Button("Edit") {
-                        // TODO: Show name edit modal
-                    }
-                    .font(.caption)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(6)
-                    .foregroundColor(.secondary)
-                }
+        VStack(spacing: 16) {
+            // Header with name and edit button
+            HStack {
+                Text(heading)
+                    .font(.custom("Tanker-Regular", size: 40))
+                    .foregroundColor(personalityManager.currentTheme.text)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
                 
-                // Main character display
-                ZStack {
-                    // Focus Ring behind character (not masked)
-                    FocusRing(
-                        size: cardSize + 16,
-                        stroke: max(6, min(14, cardSize * 0.028)),
-                        value: focusProgress,
-                        mode: focusMode
-                    )
-                    .zIndex(0)
-                    
-                    // Character container
-                    ZStack {
-                        if let personalityType = personalityManager.personalityType {
-                            // Character image/video display
-                            CharacterMediaView(
-                                personalityType: personalityType,
-                                gender: personalityManager.gender,
-                                size: cardSize,
-                                showVideoAnimation: $showVideoAnimation,
-                                currentVideoURL: $currentVideoURL,
-                                videoNonce: $videoNonce
-                            )
-                        } else {
-                            // Placeholder when no personality type
-                            CharacterPlaceholder(size: cardSize)
-                        }
-                    }
-                    .frame(width: cardSize, height: cardSize)
-                    .clipShape(Circle())
-                    .zIndex(1)
+                Button("Edit") {
+                    // TODO: Show name edit modal
                 }
-                
-                // Personality Badge and Dialogue
-                if let personalityType = personalityManager.personalityType {
-                    VStack(spacing: 12) {
-                        PersonalityBadge(
-                            personalityType: personalityType,
-                            gender: personalityManager.gender
-                        )
-                        
-                        // Character Dialogue
-                        VStack(spacing: 8) {
-                            if !greeting.isEmpty {
-                                DialogueBubble(text: greeting, style: .greeting)
-                            }
-                            
-                            if !motivation.isEmpty {
-                                DialogueBubble(text: motivation, style: .motivation)
-                            }
-                        }
-                    }
-                }
-                
+                .font(.caption)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(6)
+                .foregroundColor(.secondary)
             }
-            .frame(maxWidth: .infinity)
+            
+            // Main character display (reserve explicit height so following cards don't overlap)
+            ZStack {
+                // Focus Ring behind character (not masked)
+                FocusRing(
+                    size: cardSize + 12,
+                    stroke: max(6, min(12, cardSize * 0.026)),
+                    value: focusProgress,
+                    mode: focusMode
+                )
+                .zIndex(0)
+                
+                // Character container
+                ZStack {
+                    if let personalityType = personalityManager.personalityType {
+                        // Character image/video display
+                        CharacterMediaView(
+                            personalityType: personalityType,
+                            gender: personalityManager.gender,
+                            size: cardSize,
+                            showVideoAnimation: $showVideoAnimation,
+                            currentVideoURL: $currentVideoURL,
+                            videoNonce: $videoNonce
+                        )
+                    } else {
+                        // Placeholder when no personality type
+                        CharacterPlaceholder(size: cardSize)
+                    }
+                }
+                .frame(width: cardSize, height: cardSize)
+                .clipShape(Circle())
+                .zIndex(1)
+            }
+            .frame(height: cardSize + 24)
+            
+            // Personality Badge and Dialogue
+            if let personalityType = personalityManager.personalityType {
+                VStack(spacing: 12) {
+                    PersonalityBadge(
+                        personalityType: personalityType,
+                        gender: personalityManager.gender
+                    )
+                    
+                    // Character Dialogue
+                    VStack(spacing: 8) {
+                        if !greeting.isEmpty {
+                            DialogueBubble(text: greeting, style: .greeting)
+                        }
+                        
+                        if !motivation.isEmpty {
+                            DialogueBubble(text: motivation, style: .motivation)
+                        }
+                    }
+                }
+            }
+            
         }
-        .frame(maxWidth: .infinity, minHeight: 0)
         .onAppear {
             loadUserData()
             setupFocusTracking()
