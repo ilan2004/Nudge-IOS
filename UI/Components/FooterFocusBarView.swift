@@ -5,23 +5,55 @@ struct FooterFocusBarView: View {
     @State private var showSettings = false
 
     var body: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 8) {
-                statusChip
-                countdown
-                presets
-                customMinutes
-                primaryAction
-                stopButton
-                breakButton
-                settingsButton
+        GeometryReader { geometry in
+            VStack(spacing: 8) {
+                if geometry.size.width > 600 {
+                    // Wide layout: single row
+                    HStack(spacing: 6) {
+                        statusChip
+                        countdown
+                        presets
+                        Spacer(minLength: 4)
+                        customMinutes
+                        primaryAction
+                        stopButton
+                        breakButton
+                        settingsButton
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .retroConsoleSurface()
+                } else {
+                    // Narrow layout: two rows
+                    VStack(spacing: 6) {
+                        // Top row: status and main controls
+                        HStack(spacing: 6) {
+                            statusChip
+                            countdown
+                            Spacer(minLength: 4)
+                            primaryAction
+                            stopButton
+                            settingsButton
+                        }
+                        
+                        // Bottom row: presets and additional controls
+                        HStack(spacing: 6) {
+                            presets
+                            Spacer(minLength: 4)
+                            customMinutes
+                            breakButton
+                        }
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 8)
+                    .retroConsoleSurface()
+                }
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(Capsule().fill(Color(.systemBackground)).shadow(radius: 4))
+            .frame(maxWidth: geometry.size.width - 32) // Respect container bounds
         }
+        .frame(height: 80) // Fixed height to prevent layout shifts
+        .padding(.horizontal, 16)
         .padding(.bottom, 12)
-        .frame(maxWidth: .infinity)
         .sheet(isPresented: $showSettings) {
             FocusSettingsView()
         }
@@ -43,9 +75,8 @@ struct FooterFocusBarView: View {
     private var presets: some View {
         HStack(spacing: 6) {
             ForEach([25, 45, 60], id: \.self) { m in
-                Button("\(m)m") { vm.setPreset(m) }
-                    .buttonStyle(.bordered)
-                    .tint(vm.selectedPreset == m ? .cyan : .gray)
+                Button("\\(m)m") { vm.setPreset(m) }
+                    .buttonStyle(NavPillStyle(variant: vm.selectedPreset == m ? .cyan : .outline, compact: true))
             }
         }
     }
@@ -53,8 +84,11 @@ struct FooterFocusBarView: View {
     private var customMinutes: some View {
         HStack(spacing: 4) {
             Stepper(value: $vm.customMinutes, in: 1...240, step: 1) {
-                Text("Custom: \(vm.customMinutes)m")
-            }.frame(width: 180)
+                Text("\(vm.customMinutes)m")
+                    .font(.caption2)
+                    .lineLimit(1)
+            }
+            .frame(minWidth: 80, maxWidth: 120) // Flexible width
         }
     }
 
@@ -66,20 +100,17 @@ struct FooterFocusBarView: View {
             case .focus, .breakTime: vm.pause()
             }
         }
-        .buttonStyle(.borderedProminent)
-        .tint(primaryTint)
+        .buttonStyle(NavPillStyle(variant: primaryVariant))
     }
 
     private var stopButton: some View {
         Button("Stop") { vm.stop() }
-            .buttonStyle(.bordered)
-            .tint(.orange)
+            .buttonStyle(NavPillStyle(variant: .accent))
     }
 
     private var breakButton: some View {
         Button("Break 5m") { vm.startBreak(minutes: 5) }
-            .buttonStyle(.bordered)
-            .tint(.cyan)
+            .buttonStyle(NavPillStyle(variant: .cyan))
     }
 
     private var settingsButton: some View {
@@ -88,7 +119,7 @@ struct FooterFocusBarView: View {
         } label: {
             Image(systemName: "slider.horizontal.3")
         }
-        .buttonStyle(.bordered)
+        .buttonStyle(NavPillStyle(variant: .outline, compact: true))
     }
 
     private var primaryLabel: String {
@@ -99,10 +130,10 @@ struct FooterFocusBarView: View {
         }
     }
 
-    private var primaryTint: Color {
+    private var primaryVariant: PillVariant {
         switch vm.mode {
-        case .idle, .paused: return .green
-        case .focus, .breakTime: return .yellow
+        case .idle, .paused: return .primary // Start/Resume -> green primary
+        case .focus, .breakTime: return .amber // Pause -> amber
         }
     }
 
