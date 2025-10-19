@@ -35,12 +35,12 @@
 		8D1107200486CEB800E47090 = {
 			isa = PBXGroup;
 			children = (
-				8D1107210486CEB800E47090 /* Nudge */,
+				8D1107210486CEB800E47090 /* App */,
 				8D11072C0486CEB800E47090 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		8D1107210486CEB800E47090 /* Nudge */ = {
+		8D1107210486CEB800E47090 /* App */ = {
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* NudgeApp.swift */,
@@ -48,7 +48,7 @@
 				8D1107360486CEB800E47090 /* Assets.xcassets */,
 				8D1107390486CEB800E47090 /* Preview Content */,
 			);
-			path = Nudge;
+			path = App;
 			sourceTree = "<group>";
 		};
 		8D11072C0486CEB800E47090 /* Products */ = {
