@@ -1,42 +1,65 @@
 import SwiftUI
 
-// DEBUG VERSION - Simple test to see what's working
 struct ContentView: View {
     @StateObject private var personalityManager = PersonalityManager()
     @StateObject private var focusManager = FocusManager()
     @StateObject private var appSettings = AppSettings()
     
     var body: some View {
-        VStack(spacing: 20) {
-            
-            // Test 1: Basic text
-            Text("DEBUG: Nudge iOS")
-                .font(.title)
+        ScrollView {
+            VStack(spacing: 30) {
+                
+                // App Title
+                Text("Nudge")
+                    .font(.custom("Tanker-Regular", size: 48))
+                    .foregroundColor(.primary)
+                    .padding(.top, 20)
+                
+                // Main Character Card with Focus Ring and Personality Badge
+                CharacterCard(title: "Alex", size: 300)
+                    .environmentObject(personalityManager)
+                    .environmentObject(focusManager)
+                
+                // Debug Info (can be removed later)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Debug Info:")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    Text("Personality: \(personalityManager.personalityType?.rawValue ?? "NONE")")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    Text("Has Completed Test: \(personalityManager.hasCompletedTest ? "YES" : "NO")")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        
+                    Text("Gender: \(personalityManager.gender.rawValue)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
                 .padding()
-            
-            // Test 2: Personality Manager Status
-            VStack {
-                Text("Personality: \(personalityManager.personalityType?.rawValue ?? "NONE")")
-                Text("Has Completed Test: \(personalityManager.hasCompletedTest ? "YES" : "NO")")
-                Text("Gender: \(personalityManager.gender.rawValue)")
+                .background(Color.gray.opacity(0.05))
+                .cornerRadius(8)
+                
+                Spacer(minLength: 50)
             }
             .padding()
-            .background(Color.gray.opacity(0.1))
-            .cornerRadius(8)
-            
-            // Test 3: Simple CharacterCard
-            CharacterCard(title: "Debug User", size: 200)
-                .environmentObject(personalityManager)
-                .environmentObject(focusManager)
-            
-            Spacer()
         }
-        .padding()
         .onAppear {
-            print("DEBUG: ContentView appeared")
-            print("DEBUG: Personality type: \(personalityManager.personalityType?.rawValue ?? "nil")")
-            print("DEBUG: Has completed test: \(personalityManager.hasCompletedTest)")
+            setupTestData()
         }
+    }
+    
+    private func setupTestData() {
+        // Set ENFJ personality type for testing
+        personalityManager.setPersonalityType(.enfj)
+        personalityManager.setGender(.male) // You can change to .female to test different images
+        personalityManager.markTestCompleted()
+        
+        print("DEBUG: Set personality to ENFJ")
+        print("DEBUG: Personality type: \(personalityManager.personalityType?.rawValue ?? "nil")")
+        print("DEBUG: Has completed test: \(personalityManager.hasCompletedTest)")
     }
 }
 

@@ -157,6 +157,24 @@ class PersonalityManager: ObservableObject {
         guard let type = personalityType else { return nil }
         return PersonalityTheme.mediaName(for: type, gender: gender, isVideo: true)
     }
+    
+    // MARK: - Manual Setters (for testing)
+    func setPersonalityType(_ type: PersonalityType) {
+        personalityType = type
+        userDefaults.set(type.rawValue, forKey: personalityTypeKey)
+        updateTheme()
+    }
+    
+    func setGender(_ newGender: Gender) {
+        gender = newGender
+        userDefaults.set(newGender.rawValue, forKey: genderKey)
+        updateTheme()
+    }
+    
+    func markTestCompleted() {
+        hasCompletedTest = true
+        userDefaults.set(true, forKey: testCompletedKey)
+    }
 }
 
 // MARK: - Test Answer Model
