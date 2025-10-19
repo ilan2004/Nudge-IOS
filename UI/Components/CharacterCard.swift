@@ -240,7 +240,6 @@ struct CharacterMediaView: View {
                 .scaledToFill()
                 .frame(width: size, height: size)
                 .clipped()
-            }
             .opacity(showVideoAnimation ? 0 : 1)
             .animation(.easeInOut(duration: 0.5), value: showVideoAnimation)
             
