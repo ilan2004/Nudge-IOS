@@ -62,6 +62,7 @@ struct PersonalityTestView: View {
 // MARK: - Focus View
 struct FocusView: View {
     @EnvironmentObject var focusManager: FocusManager
+    @EnvironmentObject var personalityManager: PersonalityManager
     
     var body: some View {
         NavigationView {
@@ -69,6 +70,7 @@ struct FocusView: View {
                 Text("Focus Timer")
                     .font(.title)
                     .fontWeight(.bold)
+                    .foregroundColor(personalityManager.currentTheme.text)
                 
                 // Timer Circle
                 ZStack {
@@ -86,6 +88,7 @@ struct FocusView: View {
                         Text(timeString(from: focusManager.remainingTime))
                             .font(.largeTitle)
                             .fontWeight(.bold)
+                            .foregroundColor(personalityManager.currentTheme.text)
                         
                         Text(focusManager.currentSessionType)
                             .font(.headline)
@@ -138,6 +141,7 @@ struct FocusView: View {
             }
             .padding()
             .navigationTitle("Focus")
+            .background(personalityManager.currentTheme.background.ignoresSafeArea())
         }
     }
     
@@ -150,12 +154,15 @@ struct FocusView: View {
 
 // MARK: - Leaderboard View
 struct LeaderboardView: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
                 Text("Leaderboard")
                     .font(.title)
                     .fontWeight(.bold)
+                    .foregroundColor(personalityManager.currentTheme.text)
                 
                 Text("Social features coming soon!")
                     .foregroundColor(.secondary)
@@ -175,6 +182,7 @@ struct LeaderboardView: View {
             }
             .padding()
             .navigationTitle("Leaderboard")
+            .background(personalityManager.currentTheme.background.ignoresSafeArea())
         }
     }
 }
@@ -184,23 +192,25 @@ struct LeaderboardRow: View {
     let name: String
     let score: Int
     let isCurrentUser: Bool
+    @EnvironmentObject var personalityManager: PersonalityManager
     
     var body: some View {
         HStack {
             Text("#\(rank)")
                 .font(.headline)
-                .foregroundColor(isCurrentUser ? PersonalityTheme.defaultColors.primary : .secondary)
+                .foregroundColor(isCurrentUser ? PersonalityTheme.defaultColors.primary : personalityManager.currentTheme.textSecondary)
                 .frame(width: 30)
             
             Text(name)
                 .font(.body)
                 .fontWeight(isCurrentUser ? .semibold : .regular)
+                .foregroundColor(personalityManager.currentTheme.text)
             
             Spacer()
             
             Text("\(score) pts")
                 .font(.body)
-                .foregroundColor(.secondary)
+                .foregroundColor(personalityManager.currentTheme.textSecondary)
         }
         .padding(.vertical, 4)
     }
@@ -208,12 +218,15 @@ struct LeaderboardRow: View {
 
 // MARK: - Contracts View
 struct ContractsView: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
                 Text("Contracts")
                     .font(.title)
                     .fontWeight(.bold)
+                    .foregroundColor(personalityManager.currentTheme.text)
                 
                 Text("Accountability system coming soon!")
                     .foregroundColor(.secondary)
@@ -222,6 +235,7 @@ struct ContractsView: View {
             }
             .padding()
             .navigationTitle("Contracts")
+            .background(personalityManager.currentTheme.background.ignoresSafeArea())
         }
     }
 }
@@ -277,6 +291,7 @@ struct ProfileView: View {
             }
             .padding()
             .navigationTitle("Profile")
+            .background(personalityManager.currentTheme.background.ignoresSafeArea())
         }
     }
 }

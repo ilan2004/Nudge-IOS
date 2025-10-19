@@ -10,6 +10,7 @@ struct ContentView: View {
             // FOR TESTING: Always show main app (personality manager loads ENFJ by default)
             MainTabView(selectedTab: $selectedTab)
         }
+        .background(personalityManager.currentTheme.background.ignoresSafeArea())
         .preferredColorScheme(appSettings.colorScheme)
         .onAppear {
             setupAppAppearance()
@@ -35,6 +36,7 @@ struct ContentView: View {
 struct MainTabView: View {
     @Binding var selectedTab: Int
     @EnvironmentObject var focusManager: FocusManager
+    @EnvironmentObject var personalityManager: PersonalityManager
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -74,6 +76,7 @@ struct MainTabView: View {
                 }
                 .tag(4)
         }
+        .background(personalityManager.currentTheme.background.ignoresSafeArea())
         .accentColor(PersonalityTheme.currentPrimaryColor)
     }
 }

@@ -60,6 +60,7 @@ struct FocusStatsCard: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Today's Focus")
                 .font(.headline)
+                .foregroundColor(personalityManager.currentTheme.text)
             
             HStack(spacing: 20) {
                 StatItem(title: "Sessions", value: "3", icon: "timer")
@@ -104,6 +105,7 @@ struct QuickActionsCard: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Quick Actions")
                 .font(.headline)
+                .foregroundColor(personalityManager.currentTheme.text)
             
             LazyVGrid(columns: [
                 GridItem(.flexible()),
@@ -158,6 +160,7 @@ struct RecentActivityCard: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Recent Activity")
                 .font(.headline)
+                .foregroundColor(personalityManager.currentTheme.text)
             
             VStack(spacing: 12) {
                 ActivityItem(title: "Completed 25min Focus Session", time: "2 hours ago", icon: "checkmark.circle.fill", color: .green)
