@@ -11,6 +11,8 @@
 		8D1107330486CEB800E47090 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107340486CEB800E47090 /* ContentView.swift */; };
 		8D1107350486CEB800E47090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107360486CEB800E47090 /* Assets.xcassets */; };
 		8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107380486CEB800E47090 /* Preview Assets.xcassets */; };
+		7917D39CE5B94FD88438F7DE /* Tanker-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */; };
+		C79AFC0B2F324BF1998E0F9A /* Tanker-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */; };
 		A20000000000000000000001 /* DEBUG_ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000001 /* DEBUG_ContentView.swift */; };
 		A20000000000000000000002 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000002 /* PersistenceController.swift */; };
 		A20000000000000000000003 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* AppSettings.swift */; };
@@ -45,6 +47,8 @@
 		A0000000000000000000000B /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		A0000000000000000000000C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		A0000000000000000000000D /* PlaceholderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViews.swift; sourceTree = "<group>"; };
+		7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.otf"; sourceTree = "<group>"; };
+		C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +69,7 @@
 				A10000000000000000000001 /* Core */,
 				A10000000000000000000003 /* UI */,
 				A10000000000000000000006 /* Features */,
+				A10000000000000000000009 /* Resources */,
 				A00000000000000000000001 /* DEBUG_ContentView.swift */,
 				8D11072C0486CEB800E47090 /* Products */,
 			);
@@ -170,6 +175,23 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		A10000000000000000000009 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A1000000000000000000000A /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A1000000000000000000000A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */,
+				C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -230,6 +252,8 @@
 			files = (
 				8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */,
 				8D1107350486CEB800E47090 /* Assets.xcassets in Resources */,
+				7917D39CE5B94FD88438F7DE /* Tanker-Regular.otf in Resources */,
+				C79AFC0B2F324BF1998E0F9A /* Tanker-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
