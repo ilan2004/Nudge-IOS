@@ -50,9 +50,9 @@ struct DEBUG_ContentView: View {
                     }
             }
             
-            // Footer focus bar overlay (debug) - temporarily disabled until added to Xcode target
-            // VStack { Spacer(); FooterFocusBarView().padding(.horizontal).padding(.bottom, 8) }
-            // .allowsHitTesting(true)
+            // Footer focus bar overlay (debug)
+            VStack { Spacer(); FooterFocusBarView().padding(.horizontal).padding(.bottom, 8) }
+            .allowsHitTesting(true)
         }
         .environment(\.dynamicTypeSize, .medium)
         .environmentObject(personalityManager)

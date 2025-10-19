@@ -26,6 +26,10 @@
 		A2000000000000000000000B /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000B /* DashboardView.swift */; };
 		A2000000000000000000000C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000C /* OnboardingView.swift */; };
 		A2000000000000000000000D /* PlaceholderViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000D /* PlaceholderViews.swift */; };
+		A2000000000000000000000E /* FooterFocusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000E /* FooterFocusBarView.swift */; };
+		A2000000000000000000000F /* FooterFocusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000F /* FooterFocusBarViewModel.swift */; };
+		A20000000000000000000010 /* RestrictionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000010 /* RestrictionsController.swift */; };
+		A20000000000000000000011 /* FocusSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000011 /* FocusSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +51,10 @@
 		A0000000000000000000000B /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		A0000000000000000000000C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		A0000000000000000000000D /* PlaceholderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViews.swift; sourceTree = "<group>"; };
+		A0000000000000000000000E /* FooterFocusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI/Components/FooterFocusBarView.swift; sourceTree = "<group>"; };
+		A0000000000000000000000F /* FooterFocusBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Services/FooterFocusBarViewModel.swift; sourceTree = "<group>"; };
+		A00000000000000000000010 /* RestrictionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Services/RestrictionsController.swift; sourceTree = "<group>"; };
+		A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Focus/FocusSettingsView.swift; sourceTree = "<group>"; };
 		7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.otf"; sourceTree = "<group>"; };
 		C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,12 +103,14 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000002 /* Services */ = {
+A10000000000000000000002 /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				A00000000000000000000003 /* AppSettings.swift */,
 				A00000000000000000000004 /* FocusManager.swift */,
 				A00000000000000000000005 /* PersonalityManager.swift */,
+				A0000000000000000000000F /* FooterFocusBarViewModel.swift */,
+				A00000000000000000000010 /* RestrictionsController.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -114,12 +124,13 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000004 /* Components */ = {
+A10000000000000000000004 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				A00000000000000000000009 /* CharacterCard.swift */,
 				A00000000000000000000008 /* PersonalityBadge.swift */,
 				A0000000000000000000000A /* FocusRing.swift */,
+				A0000000000000000000000E /* FooterFocusBarView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -133,11 +144,12 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000006 /* Features */ = {
+A10000000000000000000006 /* Features */ = {
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000007 /* Dashboard */,
 				A10000000000000000000008 /* Onboarding */,
+				A00000000000000000000011 /* FocusSettingsView.swift */,
 				A0000000000000000000000D /* PlaceholderViews.swift */,
 			);
 			path = Features;
@@ -263,7 +275,7 @@
 		8D1107290486CEB800E47090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
-			files = (
+files = (
 				8D1107330486CEB800E47090 /* ContentView.swift in Sources */,
 				8D1107310486CEB800E47090 /* NudgeApp.swift in Sources */,
 				A20000000000000000000001 /* DEBUG_ContentView.swift in Sources */,
@@ -279,6 +291,10 @@
 				A2000000000000000000000B /* DashboardView.swift in Sources */,
 				A2000000000000000000000C /* OnboardingView.swift in Sources */,
 				A2000000000000000000000D /* PlaceholderViews.swift in Sources */,
+				A2000000000000000000000E /* FooterFocusBarView.swift in Sources */,
+				A2000000000000000000000F /* FooterFocusBarViewModel.swift in Sources */,
+				A20000000000000000000010 /* RestrictionsController.swift in Sources */,
+				A20000000000000000000011 /* FocusSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
