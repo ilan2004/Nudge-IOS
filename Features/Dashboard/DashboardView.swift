@@ -56,6 +56,8 @@ struct PersonalityHeaderCard: View {
 }
 
 struct FocusStatsCard: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Today's Focus")
@@ -101,6 +103,8 @@ struct StatItem: View {
 }
 
 struct QuickActionsCard: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Quick Actions")
@@ -156,6 +160,8 @@ struct QuickActionButton: View {
 }
 
 struct RecentActivityCard: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Recent Activity")
