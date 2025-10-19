@@ -7,22 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1B2C3D45E6F7890 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D45E6F7891 /* NudgeApp.swift */; };
-		A1B2C3D45E6F7892 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D45E6F7893 /* ContentView.swift */; };
-		A1B2C3D45E6F7894 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D45E6F7895 /* Assets.xcassets */; };
-		A1B2C3D45E6F7896 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D45E6F7897 /* Preview Assets.xcassets */; };
+		8D1107310486CEB800E47090 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107320486CEB800E47090 /* NudgeApp.swift */; };
+		8D1107330486CEB800E47090 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107340486CEB800E47090 /* ContentView.swift */; };
+		8D1107350486CEB800E47090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107360486CEB800E47090 /* Assets.xcassets */; };
+		8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107380486CEB800E47090 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A1B2C3D45E6F788E /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1B2C3D45E6F7891 /* NudgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeApp.swift; sourceTree = "<group>"; };
-		A1B2C3D45E6F7893 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A1B2C3D45E6F7895 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A1B2C3D45E6F7897 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		8D1107310486CEB800E47091 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107320486CEB800E47090 /* NudgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeApp.swift; sourceTree = "<group>"; };
+		8D1107340486CEB800E47090 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8D1107360486CEB800E47090 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8D1107380486CEB800E47090 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A1B2C3D45E6F788B /* Frameworks */ = {
+		8D11072F0486CEB800E47090 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -32,37 +32,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A1B2C3D45E6F7885 = {
+		8D1107200486CEB800E47090 = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D45E6F7890 /* Nudge */,
-				A1B2C3D45E6F788F /* Products */,
+				8D1107210486CEB800E47090 /* Nudge */,
+				8D11072C0486CEB800E47090 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A1B2C3D45E6F788F /* Products */ = {
+		8D1107210486CEB800E47090 /* Nudge */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D45E6F788E /* Nudge.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		A1B2C3D45E6F7890 /* Nudge */ = {
-			isa = PBXGroup;
-			children = (
-				A1B2C3D45E6F7891 /* NudgeApp.swift */,
-				A1B2C3D45E6F7893 /* ContentView.swift */,
-				A1B2C3D45E6F7895 /* Assets.xcassets */,
-				A1B2C3D45E6F7898 /* Preview Content */,
+				8D1107320486CEB800E47090 /* NudgeApp.swift */,
+				8D1107340486CEB800E47090 /* ContentView.swift */,
+				8D1107360486CEB800E47090 /* Assets.xcassets */,
+				8D1107390486CEB800E47090 /* Preview Content */,
 			);
 			path = Nudge;
 			sourceTree = "<group>";
 		};
-		A1B2C3D45E6F7898 /* Preview Content */ = {
+		8D11072C0486CEB800E47090 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D45E6F7897 /* Preview Assets.xcassets */,
+				8D1107310486CEB800E47091 /* Nudge.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8D1107390486CEB800E47090 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107380486CEB800E47090 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -70,13 +70,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1B2C3D45E6F788D /* Nudge */ = {
+		8D1107260486CEB800E47090 /* Nudge */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1B2C3D45E6F789B /* Build configuration list for PBXNativeTarget "Nudge" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXNativeTarget "Nudge" */;
 			buildPhases = (
-				A1B2C3D45E6F788A /* Sources */,
-				A1B2C3D45E6F788B /* Frameworks */,
-				A1B2C3D45E6F788C /* Resources */,
+				8D1107290486CEB800E47090 /* Sources */,
+				8D11072F0486CEB800E47090 /* Frameworks */,
+				8D1107300486CEB800E47090 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -84,25 +84,25 @@
 			);
 			name = Nudge;
 			productName = Nudge;
-			productReference = A1B2C3D45E6F788E /* Nudge.app */;
+			productReference = 8D1107310486CEB800E47091 /* Nudge.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		A1B2C3D45E6F7886 /* Project object */ = {
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					A1B2C3D45E6F788D = {
+					8D1107260486CEB800E47090 = {
 						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
-			buildConfigurationList = A1B2C3D45E6F7889 /* Build configuration list for PBXProject "Nudge" */;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXProject "Nudge" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -110,42 +110,42 @@
 				en,
 				Base,
 			);
-			mainGroup = A1B2C3D45E6F7885;
-			productRefGroup = A1B2C3D45E6F788F /* Products */;
+			mainGroup = 8D1107200486CEB800E47090;
+			productRefGroup = 8D11072C0486CEB800E47090 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1B2C3D45E6F788D /* Nudge */,
+				8D1107260486CEB800E47090 /* Nudge */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A1B2C3D45E6F788C /* Resources */ = {
+		8D1107300486CEB800E47090 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B2C3D45E6F7896 /* Preview Assets.xcassets in Resources */,
-				A1B2C3D45E6F7894 /* Assets.xcassets in Resources */,
+				8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */,
+				8D1107350486CEB800E47090 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A1B2C3D45E6F788A /* Sources */ = {
+		8D1107290486CEB800E47090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B2C3D45E6F7892 /* ContentView.swift in Sources */,
-				A1B2C3D45E6F7890 /* NudgeApp.swift in Sources */,
+				8D1107330486CEB800E47090 /* ContentView.swift in Sources */,
+				8D1107310486CEB800E47090 /* NudgeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		A1B2C3D45E6F7899 /* Debug */ = {
+		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -205,7 +205,7 @@
 			};
 			name = Debug;
 		};
-		A1B2C3D45E6F789A /* Release */ = {
+		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -258,14 +258,16 @@
 			};
 			name = Release;
 		};
-		A1B2C3D45E6F789C /* Debug */ = {
+		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Nudge/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -278,22 +280,26 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilan2004.nudge";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilan2004.nudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		A1B2C3D45E6F789D /* Release */ = {
+		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Nudge/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -306,8 +312,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilan2004.nudge";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilan2004.nudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -317,25 +325,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1B2C3D45E6F7889 /* Build configuration list for PBXProject "Nudge" */ = {
+		C01FCF4A08A954540054247B /* Build configuration list for PBXProject "Nudge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A1B2C3D45E6F7899 /* Debug */,
-				A1B2C3D45E6F789A /* Release */,
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1B2C3D45E6F789B /* Build configuration list for PBXNativeTarget "Nudge" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXNativeTarget "Nudge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A1B2C3D45E6F789C /* Debug */,
-				A1B2C3D45E6F789D /* Release */,
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = A1B2C3D45E6F7886 /* Project object */;
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }
