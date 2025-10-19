@@ -30,6 +30,7 @@
 		A2000000000000000000000F /* FooterFocusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000F /* FooterFocusBarViewModel.swift */; };
 		A20000000000000000000010 /* RestrictionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000010 /* RestrictionsController.swift */; };
 		A20000000000000000000011 /* FocusSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000011 /* FocusSettingsView.swift */; };
+		A20000000000000000000012 /* NudgeStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000012 /* NudgeStyles.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@ A00000000000000000000010 /* RestrictionsController.swift */ = {isa = PBXFileRefe
 A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focus/FocusSettingsView.swift; sourceTree = "<group>"; };
 		7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.otf"; sourceTree = "<group>"; };
 		C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.ttf"; sourceTree = "<group>"; };
+		A00000000000000000000012 /* NudgeStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeStyles.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@ A10000000000000000000004 /* Components */ = {
 			children = (
 				A00000000000000000000006 /* Colors.swift */,
 				A00000000000000000000007 /* PersonalityTheme.swift */,
+				A00000000000000000000012 /* NudgeStyles.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@ files = (
 				A2000000000000000000000F /* FooterFocusBarViewModel.swift in Sources */,
 				A20000000000000000000010 /* RestrictionsController.swift in Sources */,
 				A20000000000000000000011 /* FocusSettingsView.swift in Sources */,
+				A20000000000000000000012 /* NudgeStyles.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
