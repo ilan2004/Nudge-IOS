@@ -18,10 +18,6 @@ struct CharacterCard: View {
     @State private var focusProgress: Double = 0.0
     @State private var focusMode: String = "idle"
     
-    // Stats tracking
-    @State private var points: Int = 0
-    @State private var streak: Int = 0
-    @State private var totalFocusTime: TimeInterval = 0
     
     // Dialogue system
     @State private var greeting: String = ""
@@ -123,10 +119,6 @@ struct CharacterCard: View {
                 }
             }
             
-            // Stats Display (optional, can be moved to dashboard)
-            if personalityManager.hasCompletedTest {
-                StatsRow(points: points, streak: streak)
-            }
         }
         .onAppear {
             loadUserData()
@@ -148,23 +140,6 @@ struct CharacterCard: View {
     
     private func loadUserData() {
         displayName = UserDefaults.standard.string(forKey: "ms_display_name") ?? "Alex" // Default name for testing
-        points = UserDefaults.standard.integer(forKey: "Nudge_points")
-        streak = UserDefaults.standard.integer(forKey: "Nudge_streak")
-        totalFocusTime = UserDefaults.standard.double(forKey: "Nudge_total_focus_time")
-        
-        // FOR TESTING: Add some demo stats if none exist
-        if points == 0 {
-            points = 1250
-            UserDefaults.standard.set(1250, forKey: "Nudge_points")
-        }
-        if streak == 0 {
-            streak = 7
-            UserDefaults.standard.set(7, forKey: "Nudge_streak")
-        }
-        if totalFocusTime == 0 {
-            totalFocusTime = 7200.0 // 2 hours
-            UserDefaults.standard.set(7200.0, forKey: "Nudge_total_focus_time")
-        }
     }
     
     private func setupFocusTracking() {
