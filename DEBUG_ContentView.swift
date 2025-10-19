@@ -49,10 +49,12 @@ struct DEBUG_ContentView: View {
                         Text("Profile")
                     }
             }
-            
-            // Footer focus bar overlay (debug)
-            VStack { Spacer(); FooterFocusBarView(viewModel: FooterFocusBarViewModel()).padding(.horizontal).padding(.bottom, 8) }
-            .allowsHitTesting(true)
+            .safeAreaInset(edge: .bottom) {
+                FooterFocusBarView(viewModel: FooterFocusBarViewModel())
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+                    .zIndex(1)
+            }
         }
         .environment(\.dynamicTypeSize, .medium)
         .environmentObject(personalityManager)
