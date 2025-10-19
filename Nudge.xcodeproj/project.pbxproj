@@ -51,10 +51,10 @@
 		A0000000000000000000000B /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		A0000000000000000000000C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		A0000000000000000000000D /* PlaceholderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViews.swift; sourceTree = "<group>"; };
-		A0000000000000000000000E /* FooterFocusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UI/Components/FooterFocusBarView.swift; sourceTree = "<group>"; };
-		A0000000000000000000000F /* FooterFocusBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Services/FooterFocusBarViewModel.swift; sourceTree = "<group>"; };
-		A00000000000000000000010 /* RestrictionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/Services/RestrictionsController.swift; sourceTree = "<group>"; };
-		A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features/Focus/FocusSettingsView.swift; sourceTree = "<group>"; };
+A0000000000000000000000E /* FooterFocusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterFocusBarView.swift; sourceTree = "<group>"; };
+A0000000000000000000000F /* FooterFocusBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterFocusBarViewModel.swift; sourceTree = "<group>"; };
+A00000000000000000000010 /* RestrictionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionsController.swift; sourceTree = "<group>"; };
+A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSettingsView.swift; sourceTree = "<group>"; };
 		7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.otf"; sourceTree = "<group>"; };
 		C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
