@@ -10,24 +10,91 @@ struct DEBUG_ContentView: View {
     private let exactMint = Color(red: 130/255, green: 237/255, blue: 166/255)
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 20) {
-                // Character only
-                CharacterCard(title: "Alex", size: 280)
-                    .environmentObject(personalityManager)
-                    .environmentObject(focusManager)
+        ZStack {
+            exactMint.ignoresSafeArea()
+            
+            TabView {
+                // 1) Nudge (Home)
+                NudgeHomeView()
+                    .tabItem {
+                        Image(systemName: "house.fill")
+                        Text("Nudge")
+                    }
                 
-                Spacer(minLength: 24)
+                // 2) Stakes (reuse ContractsView)
+                ContractsView()
+                    .tabItem {
+                        Image(systemName: "handshake.fill")
+                        Text("Stakes")
+                    }
+                
+                // 3) My Type
+                MyTypeView()
+                    .tabItem {
+                        Image(systemName: "person.text.rectangle")
+                        Text("My Type")
+                    }
+                
+                // 4) Friends / Leaderboard
+                LeaderboardView()
+                    .tabItem {
+                        Image(systemName: "person.3.fill")
+                        Text("Friends")
+                    }
+                
+                // 5) Profile
+                ProfileView()
+                    .tabItem {
+                        Image(systemName: "person.fill")
+                        Text("Profile")
+                    }
             }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 16)
         }
-        .background(exactMint.ignoresSafeArea())
         .environment(\.dynamicTypeSize, .medium)
         .onAppear {
-            print("DEBUG: ContentView appeared")
+            print("DEBUG: Tab layout loaded")
             print("DEBUG: Personality type: \(personalityManager.personalityType?.rawValue ?? "nil")")
-            print("DEBUG: Has completed test: \(personalityManager.hasCompletedTest)")
+        }
+    }
+    
+    // MARK: - Tabs Content (Debug)
+    struct NudgeHomeView: View {
+        @EnvironmentObject var personalityManager: PersonalityManager
+        @EnvironmentObject var focusManager: FocusManager
+        
+        var body: some View {
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 20) {
+                    CharacterCard(title: "Alex", size: 280)
+                    
+                    Spacer(minLength: 24)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 16)
+            }
+        }
+    }
+    
+    struct MyTypeView: View {
+        @EnvironmentObject var personalityManager: PersonalityManager
+        
+        var body: some View {
+            VStack(spacing: 16) {
+                if let type = personalityManager.personalityType {
+                    PersonalityBadge(personalityType: type, gender: personalityManager.gender)
+                        .padding(.top, 12)
+                    Text(type.displayName)
+                        .font(.title2).bold()
+                    Text(type.rawValue)
+                        .font(.headline)
+                } else {
+                    Text("Take the personality test to see your type")
+                        .font(.headline)
+                        .padding()
+                }
+                Spacer()
+            }
+            .padding()
         }
     }
 }
