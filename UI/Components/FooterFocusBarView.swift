@@ -1,203 +1,233 @@
 // UI/Components/FooterFocusBarView.swift
 import SwiftUI
 
-
-// MARK: - FooterFocusBarView
 struct FooterFocusBarView: View {
-    @StateObject private var vm = FooterFocusBarViewModel()
+    @ObservedObject var viewModel: FooterFocusBarViewModel
     @State private var showSettings = false
 
     var body: some View {
-        GeometryReader { geometry in
-            let isCompact = geometry.size.width <= 600
-            
-            VStack(spacing: 6) {
-                if isCompact {
-                    compactLayout
-                } else {
-                    wideLayout
-                }
+        VStack(spacing: 0) {
+            if viewModel.mode == .idle {
+                idleLayout
+            } else {
+                activeLayout
             }
-            .padding(.horizontal, isCompact ? 8 : 12)
-            .padding(.vertical, isCompact ? 8 : 10)
-            .retroConsoleSurface()
-            .frame(maxWidth: geometry.size.width - 32)
         }
-        .frame(height: vm.mode == .idle ? 60 : 80) // Adaptive height
         .padding(.horizontal, 16)
-        .padding(.bottom, 12)
-        .animation(.easeInOut(duration: 0.2), value: vm.mode)
+        .padding(.vertical, 12)
+        .retroConsoleSurface()
+        .padding(.horizontal, 16)
+        .padding(.bottom, 20)
+        .animation(.easeInOut(duration: 0.2), value: viewModel.mode)
         .sheet(isPresented: $showSettings) {
-            FocusSettingsView()
+            // Reference existing FocusSettingsView, don't redeclare
+            // FocusSettingsView()
+            Text("Settings") // Placeholder - use your existing FocusSettingsView
         }
     }
     
-    // MARK: - Wide Layout (Desktop)
-    private var wideLayout: some View {
-        HStack(spacing: 6) {
-            if vm.mode != .idle {
-                statusChip
-                countdown
-            }
-            
-            if vm.mode == .idle {
-                presets
-                Spacer(minLength: 4)
-                customMinutes
-            }
-            
-            Spacer(minLength: 4)
-            
-            dynamicActionButtons
-            
-            settingsButton
-        }
-    }
-    
-    // MARK: - Compact Layout (Mobile)
-    private var compactLayout: some View {
-        VStack(spacing: 6) {
-            // Top row: Status and primary actions
-            HStack(spacing: 6) {
-                if vm.mode != .idle {
-                    statusChip
-                    countdown
+    // MARK: - Idle Layout
+    private var idleLayout: some View {
+        VStack(spacing: 12) {
+            // Top row: Presets
+            HStack(spacing: 8) {
+                ForEach([25, 45, 60], id: \.self) { minutes in
+                    Button("\(minutes)") {
+                        viewModel.setPreset(minutes)
+                    }
+                    .buttonStyle(NavPillStyle(
+                        variant: viewModel.selectedPreset == minutes ? .cyan : .outline,
+                        compact: true
+                    ))
                 }
                 
-                Spacer(minLength: 4)
+                Spacer()
                 
-                dynamicActionButtons
-                
-                settingsButton
+                Button {
+                    showSettings = true
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 14))
+                }
+                .buttonStyle(NavPillStyle(variant: .outline, compact: true))
             }
             
-            // Bottom row: Only show presets when idle
-            if vm.mode == .idle {
-                HStack(spacing: 6) {
-                    presets
-                    Spacer(minLength: 4)
-                    customMinutes
+            // Middle row: Time adjustment
+            HStack(spacing: 12) {
+                Button {
+                    viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
+                } label: {
+                    Image(systemName: "minus")
+                        .font(.system(size: 16, weight: .bold))
+                        .frame(width: 40, height: 40)
+                }
+                .buttonStyle(NavPillStyle(variant: .outline, compact: false))
+                
+                Text("\(formatHoursMinutes(viewModel.customMinutes))")
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .foregroundColor(Color.nudgeGreen900)
+                    .frame(minWidth: 80)
+                
+                Button {
+                    viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.system(size: 16, weight: .bold))
+                        .frame(width: 40, height: 40)
+                }
+                .buttonStyle(NavPillStyle(variant: .outline, compact: false))
+            }
+            
+            // Bottom row: Start button
+            Button {
+                viewModel.start()
+            } label: {
+                HStack {
+                    Image(systemName: "play.fill")
+                    Text("Start Timer")
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 44)
+            }
+            .buttonStyle(NavPillStyle(variant: .primary))
+        }
+    }
+    
+    // MARK: - Active Layout
+    private var activeLayout: some View {
+        VStack(spacing: 12) {
+            // Top row: Status and countdown
+            HStack(spacing: 12) {
+                // Status chip
+                Text(statusLabel)
+                    .font(.caption.bold())
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(
+                        Capsule()
+                            .fill(statusChipColor.opacity(0.3))
+                    )
+                    .foregroundColor(Color.nudgeGreen900)
+                
+                Spacer()
+                
+                // Countdown timer
+                Text(formatMMSS(viewModel.remainingMs))
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .foregroundColor(Color.nudgeGreen900)
+                
+                Spacer()
+                
+                Button {
+                    showSettings = true
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 14))
+                }
+                .buttonStyle(NavPillStyle(variant: .outline, compact: true))
+            }
+            
+            // Bottom row: Action buttons
+            HStack(spacing: 8) {
+                switch viewModel.mode {
+                case .focus:
+                    Button {
+                        viewModel.pause()
+                    } label: {
+                        HStack {
+                            Image(systemName: "pause.fill")
+                            Text("Pause")
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(NavPillStyle(variant: .amber))
+                    
+                    Button {
+                        viewModel.startBreak(minutes: 5)
+                    } label: {
+                        HStack {
+                            Image(systemName: "cup.and.saucer.fill")
+                            Text("Break")
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(NavPillStyle(variant: .cyan))
+                    
+                case .paused:
+                    Button {
+                        viewModel.resume()
+                    } label: {
+                        HStack {
+                            Image(systemName: "play.fill")
+                            Text("Resume")
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(NavPillStyle(variant: .primary))
+                    
+                    Button {
+                        viewModel.stop()
+                    } label: {
+                        HStack {
+                            Image(systemName: "stop.fill")
+                            Text("Stop")
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(NavPillStyle(variant: .accent))
+                    
+                case .breakTime:
+                    Button {
+                        viewModel.stop()
+                    } label: {
+                        HStack {
+                            Image(systemName: "xmark.circle.fill")
+                            Text("End Break")
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(NavPillStyle(variant: .cyan))
+                    
+                case .idle:
+                    EmptyView()
                 }
             }
         }
     }
     
-    // MARK: - Dynamic Action Buttons (State-based)
-    @ViewBuilder
-    private var dynamicActionButtons: some View {
-        switch vm.mode {
-        case .idle:
-            // Idle: Just Start button
-            Button("Start") { vm.start() }
-                .buttonStyle(NavPillStyle(variant: .primary))
-            
-        case .focus:
-            // Focus: Pause + Break
-            Button("Pause") { vm.pause() }
-                .buttonStyle(NavPillStyle(variant: .amber))
-            
-            Button("Break") { vm.startBreak(minutes: 5) }
-                .buttonStyle(NavPillStyle(variant: .cyan, compact: true))
-            
-        case .paused:
-            // Paused: Resume + Stop
-            Button("Resume") { vm.resume() }
-                .buttonStyle(NavPillStyle(variant: .primary))
-            
-            Button("Stop") { vm.stop() }
-                .buttonStyle(NavPillStyle(variant: .accent, compact: true))
-            
-        case .breakTime:
-            // Break: End Break button
-            Button("End Break") { vm.stop() }
-                .buttonStyle(NavPillStyle(variant: .cyan))
-        }
-    }
-
-    // MARK: - UI Components
-    private var statusChip: some View {
-        Text(statusLabel)
-            .font(.caption).bold()
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(Capsule().fill(statusChipColor.opacity(0.3)))
-            .foregroundColor(Color.nudgeGreen900)
-    }
-
-    private var countdown: some View {
-        Text(formatMMSS(vm.remainingMs))
-            .font(.system(.footnote, design: .monospaced).bold())
-            .foregroundColor(Color.nudgeGreen900)
-    }
-
-    private var presets: some View {
-        HStack(spacing: 4) {
-            ForEach([25, 45, 60], id: \.self) { m in
-                Button("\(m)") { vm.setPreset(m) }
-                    .buttonStyle(NavPillStyle(variant: vm.selectedPreset == m ? .cyan : .outline, compact: true))
-            }
-        }
-    }
-
-    private var customMinutes: some View {
-        HStack(spacing: 4) {
-            Button(action: { vm.customMinutes = max(1, vm.customMinutes - 1) }) {
-                Image(systemName: "minus.circle.fill")
-                    .font(.caption)
-            }
-            .foregroundColor(Color.nudgeGreen900)
-            
-            Text("\(vm.customMinutes)m")
-                .font(.caption2.bold())
-                .lineLimit(1)
-                .frame(minWidth: 28)
-            
-            Button(action: { vm.customMinutes = min(240, vm.customMinutes + 1) }) {
-                Image(systemName: "plus.circle.fill")
-                    .font(.caption)
-            }
-            .foregroundColor(Color.nudgeGreen900)
-        }
-        .padding(.horizontal, 6)
-        .padding(.vertical, 4)
-        .background(
-            Capsule()
-                .fill(Color(.systemBackground))
-                .overlay(
-                    Capsule().stroke(Color.nudgeGreen900, lineWidth: 2)
-                )
-        )
-    }
-
-    private var settingsButton: some View {
-        Button {
-            showSettings = true
-        } label: {
-            Image(systemName: "gearshape.fill")
-                .font(.caption)
-        }
-        .buttonStyle(NavPillStyle(variant: .outline, compact: true))
-    }
-
-    // MARK: - Computed Properties
+    // MARK: - Helper Methods
     private var statusLabel: String {
-        switch vm.mode {
+        switch viewModel.mode {
         case .idle: return "Idle"
-        case .focus: return "Focus"
+        case .focus: return "Focusing"
         case .paused: return "Paused"
-        case .breakTime: return "Break"
+        case .breakTime: return "Break Time"
         }
     }
     
     private var statusChipColor: Color {
-        switch vm.mode {
+        switch viewModel.mode {
         case .idle: return .gray
         case .focus: return Color(red: 0.24, green: 0.84, blue: 0.91)
         case .paused: return Color(red: 0.96, green: 0.69, blue: 0.13)
         case .breakTime: return Color(red: 0.24, green: 0.84, blue: 0.91)
         }
     }
-
+    
+    private func formatHoursMinutes(_ minutes: Int) -> String {
+        if minutes >= 60 {
+            let hours = minutes / 60
+            let mins = minutes % 60
+            if mins == 0 {
+                return "\(hours)h"
+            } else {
+                return "\(hours)h \(mins)m"
+            }
+        } else {
+            return "\(minutes)m"
+        }
+    }
+    
     private func formatMMSS(_ ms: Int) -> String {
         guard ms > 0 else { return "00:00" }
         let total = ms / 1000
@@ -207,12 +237,14 @@ struct FooterFocusBarView: View {
     }
 }
 
-
 // MARK: - Preview
 #Preview {
-    VStack {
+    // Use actual ViewModel from Core/Services
+    let vm = FooterFocusBarViewModel()
+    
+    return VStack {
         Spacer()
-        FooterFocusBarView()
+        FooterFocusBarView(viewModel: vm)
     }
     .background(Color(red: 0.96, green: 0.96, blue: 0.94))
 }

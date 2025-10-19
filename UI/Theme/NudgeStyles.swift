@@ -6,7 +6,7 @@ public enum PillVariant {
     case primary, cyan, amber, accent, outline, neutral 
 }
 
-// MARK: - NavPillStyle (Nudge style system)
+// MARK: - NavPillStyle
 public struct NavPillStyle: ButtonStyle {
     var variant: PillVariant = .neutral
     var compact: Bool = false
@@ -19,13 +19,12 @@ public struct NavPillStyle: ButtonStyle {
             .background(
                 Capsule()
                     .fill(bgColor)
-                    .overlay(
-                        Capsule()
-                            .strokeBorder(borderColor, lineWidth: 4, antialiased: true)
-                            .padding(.bottom, 1)
-                    )
             )
             .foregroundStyle(foregroundColor)
+            .overlay(
+                Capsule()
+                    .stroke(borderColor, lineWidth: 2)
+            )
             .shadow(color: shadowColor, radius: 0, x: 0, y: 3)
             .opacity(configuration.isPressed ? 0.85 : 1.0)
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
@@ -57,7 +56,7 @@ public struct NavPillStyle: ButtonStyle {
     
     private var shadowColor: Color {
         switch variant {
-        case .primary: return Color(red: 0.0, green: 0.20, blue: 0.16) // Darker shadow for primary
+        case .primary: return Color(red: 0.0, green: 0.20, blue: 0.16)
         case .cyan: return Color("NudgeCyan600", bundle: .main, default: Color(red: 0.03, green: 0.57, blue: 0.70))
         case .amber: return Color("NudgeAmber600", bundle: .main, default: Color(red: 0.85, green: 0.46, blue: 0.02))
         case .accent, .outline, .neutral: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
@@ -65,7 +64,7 @@ public struct NavPillStyle: ButtonStyle {
     }
 }
 
-// MARK: - RetroConsoleSurface Modifier
+// MARK: - RetroConsoleSurface
 public struct RetroConsoleSurface: ViewModifier {
     public func body(content: Content) -> some View {
         content
@@ -75,14 +74,10 @@ public struct RetroConsoleSurface: ViewModifier {
             )
             .overlay(
                 Capsule()
-                    .strokeBorder(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), lineWidth: 2)
-                    .padding(.bottom, 4) // Creates white gap effect
-            )
-            .overlay(
-                Capsule().stroke(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), lineWidth: 2)
+                    .stroke(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), lineWidth: 2)
             )
             .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), radius: 0, x: 0, y: 4)
-            .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.2), radius: 12, x: 0, y: 4)
+            .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, bin: 0.30)).opacity(0.2), radius: 12, x: 0, y: 4)
     }
 }
 
@@ -98,7 +93,6 @@ public extension Color {
         Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
     }
     
-    // Helper initializer with fallback
     init(_ name: String, bundle: Bundle, default fallback: Color) {
         if let _ = UIColor(named: name, in: bundle, compatibleWith: nil) {
             self = Color(name, bundle: bundle)
