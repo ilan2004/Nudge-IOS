@@ -1,0 +1,483 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D1107310486CEB800E47090 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107320486CEB800E47090 /* NudgeApp.swift */; };
+		8D1107330486CEB800E47090 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107340486CEB800E47090 /* ContentView.swift */; };
+		8D1107350486CEB800E47090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107360486CEB800E47090 /* Assets.xcassets */; };
+		8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107380486CEB800E47090 /* Preview Assets.xcassets */; };
+		7917D39CE5B94FD88438F7DE /* Tanker-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */; };
+		C79AFC0B2F324BF1998E0F9A /* Tanker-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */; };
+		A20000000000000000000001 /* DEBUG_ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000001 /* DEBUG_ContentView.swift */; };
+		A20000000000000000000002 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000002 /* PersistenceController.swift */; };
+		A20000000000000000000003 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* AppSettings.swift */; };
+		A20000000000000000000004 /* FocusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000004 /* FocusManager.swift */; };
+		A20000000000000000000005 /* PersonalityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000005 /* PersonalityManager.swift */; };
+		A20000000000000000000006 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000006 /* Colors.swift */; };
+		A20000000000000000000007 /* PersonalityTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000007 /* PersonalityTheme.swift */; };
+		A20000000000000000000008 /* PersonalityBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000008 /* PersonalityBadge.swift */; };
+		A20000000000000000000009 /* CharacterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000009 /* CharacterCard.swift */; };
+		A2000000000000000000000A /* FocusRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000A /* FocusRing.swift */; };
+		A2000000000000000000000B /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000B /* DashboardView.swift */; };
+		A2000000000000000000000C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000C /* OnboardingView.swift */; };
+		A2000000000000000000000D /* PlaceholderViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000D /* PlaceholderViews.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8D1107310486CEB800E47091 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107320486CEB800E47090 /* NudgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeApp.swift; sourceTree = "<group>"; };
+		8D1107340486CEB800E47090 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8D1107360486CEB800E47090 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8D1107380486CEB800E47090 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A00000000000000000000001 /* DEBUG_ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DEBUG_ContentView.swift; sourceTree = "<group>"; };
+		A00000000000000000000002 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		A00000000000000000000003 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		A00000000000000000000004 /* FocusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusManager.swift; sourceTree = "<group>"; };
+		A00000000000000000000005 /* PersonalityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityManager.swift; sourceTree = "<group>"; };
+		A00000000000000000000006 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		A00000000000000000000007 /* PersonalityTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityTheme.swift; sourceTree = "<group>"; };
+		A00000000000000000000008 /* PersonalityBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityBadge.swift; sourceTree = "<group>"; };
+		A00000000000000000000009 /* CharacterCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCard.swift; sourceTree = "<group>"; };
+		A0000000000000000000000A /* FocusRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusRing.swift; sourceTree = "<group>"; };
+		A0000000000000000000000B /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		A0000000000000000000000C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		A0000000000000000000000D /* PlaceholderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViews.swift; sourceTree = "<group>"; };
+		7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.otf"; sourceTree = "<group>"; };
+		C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.ttf"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072F0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8D1107200486CEB800E47090 = {
+			isa = PBXGroup;
+			children = (
+				8D1107210486CEB800E47090 /* App */,
+				A10000000000000000000001 /* Core */,
+				A10000000000000000000003 /* UI */,
+				A10000000000000000000006 /* Features */,
+				A10000000000000000000009 /* Resources */,
+				A00000000000000000000001 /* DEBUG_ContentView.swift */,
+				8D11072C0486CEB800E47090 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8D1107210486CEB800E47090 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* NudgeApp.swift */,
+				8D1107340486CEB800E47090 /* ContentView.swift */,
+				8D1107360486CEB800E47090 /* Assets.xcassets */,
+				8D1107390486CEB800E47090 /* Preview Content */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000001 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000002 /* Services */,
+				A00000000000000000000002 /* PersistenceController.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000002 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000003 /* AppSettings.swift */,
+				A00000000000000000000004 /* FocusManager.swift */,
+				A00000000000000000000005 /* PersonalityManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000003 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000004 /* Components */,
+				A10000000000000000000005 /* Theme */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000004 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000009 /* CharacterCard.swift */,
+				A00000000000000000000008 /* PersonalityBadge.swift */,
+				A0000000000000000000000A /* FocusRing.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000005 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000006 /* Colors.swift */,
+				A00000000000000000000007 /* PersonalityTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000006 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000007 /* Dashboard */,
+				A10000000000000000000008 /* Onboarding */,
+				A0000000000000000000000D /* PlaceholderViews.swift */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000007 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A0000000000000000000000B /* DashboardView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000008 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				A0000000000000000000000C /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		8D11072C0486CEB800E47090 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47091 /* Nudge.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8D1107390486CEB800E47090 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107380486CEB800E47090 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A10000000000000000000009 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A1000000000000000000000A /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A1000000000000000000000A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */,
+				C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* Nudge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXNativeTarget "Nudge" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Sources */,
+				8D11072F0486CEB800E47090 /* Frameworks */,
+				8D1107300486CEB800E47090 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Nudge;
+			productName = Nudge;
+			productReference = 8D1107310486CEB800E47091 /* Nudge.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					8D1107260486CEB800E47090 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXProject "Nudge" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8D1107200486CEB800E47090;
+			productRefGroup = 8D11072C0486CEB800E47090 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* Nudge */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107300486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */,
+				8D1107350486CEB800E47090 /* Assets.xcassets in Resources */,
+				7917D39CE5B94FD88438F7DE /* Tanker-Regular.otf in Resources */,
+				C79AFC0B2F324BF1998E0F9A /* Tanker-Regular.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D1107330486CEB800E47090 /* ContentView.swift in Sources */,
+				8D1107310486CEB800E47090 /* NudgeApp.swift in Sources */,
+				A20000000000000000000001 /* DEBUG_ContentView.swift in Sources */,
+				A20000000000000000000002 /* PersistenceController.swift in Sources */,
+				A20000000000000000000003 /* AppSettings.swift in Sources */,
+				A20000000000000000000004 /* FocusManager.swift in Sources */,
+				A20000000000000000000005 /* PersonalityManager.swift in Sources */,
+				A20000000000000000000006 /* Colors.swift in Sources */,
+				A20000000000000000000007 /* PersonalityTheme.swift in Sources */,
+				A20000000000000000000008 /* PersonalityBadge.swift in Sources */,
+				A20000000000000000000009 /* CharacterCard.swift in Sources */,
+				A2000000000000000000000A /* FocusRing.swift in Sources */,
+				A2000000000000000000000B /* DashboardView.swift in Sources */,
+				A2000000000000000000000C /* OnboardingView.swift in Sources */,
+				A2000000000000000000000D /* PlaceholderViews.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilan2004.nudge;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilan2004.nudge;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXProject "Nudge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXNativeTarget "Nudge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

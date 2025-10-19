@@ -1,0 +1,105 @@
+workflows:
+  ios-unsigned-build:
+    name: iOS Unsigned Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      vars:
+        XCODE_PROJECT: "Nudge.xcodeproj"     # Update with actual project name
+        XCODE_SCHEME: "Nudge"                # Update with your scheme name
+        BUNDLE_ID: "com.ilan2004.nudge"      # Replace with your bundle ID
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Disable code signing for unsigned build
+        script: |
+          echo "Preparing for unsigned build - disabling code signing"
+      - name: Get CocoaPods dependencies
+        script: |
+          if [ -f "Podfile" ]; then
+            pod install
+          fi
+      - name: Build unsigned IPA
+        script: |
+          # Create build directory
+          mkdir -p build/ios/ipa
+          
+          # List current directory contents for debugging
+          echo "Current directory: $PWD"
+          ls -la
+          echo "App directory contents:"
+          ls -la App/
+          echo "Core directory contents:"
+          ls -la Core/
+          echo "UI directory contents:"
+          ls -la UI/
+          echo "Resources directory contents:"
+          ls -la Resources/
+          
+          # Create export options for unsigned build first
+          cat > /tmp/export_options.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>ad-hoc</string>
+              <key>stripSwiftSymbols</key>
+              <false/>
+              <key>uploadBitcode</key>
+              <false/>
+              <key>uploadSymbols</key>
+              <false/>
+              <key>compileBitcode</key>
+              <false/>
+          </dict>
+          </plist>
+          EOF
+          
+          # Build unsigned IPA using project file
+          echo "Building with project file: $XCODE_PROJECT"
+          xcodebuild archive \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            -archivePath "$PWD/build/Nudge.xcarchive" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            PROVISIONING_PROFILE="" \
+            -verbose
+          
+          # Instead of export, manually create IPA from archive
+          echo "Archive succeeded! Now creating IPA manually..."
+          
+          # Create IPA directory structure
+          mkdir -p "$PWD/build/ios/ipa/Payload"
+          
+          # Copy .app from archive to Payload directory
+          cp -r "$PWD/build/Nudge.xcarchive/Products/Applications/Nudge.app" "$PWD/build/ios/ipa/Payload/"
+          
+          # Create IPA by zipping the Payload directory
+          cd "$PWD/build/ios/ipa"
+          zip -r Nudge.ipa Payload/
+          
+          echo "✅ IPA created successfully!"
+          ls -la *.ipa
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/Nudge.xcarchive
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      # Uncomment and configure if you want to publish to external services
+      # slack:
+      #   channel: '#ios-builds'
+      #   notify_on_build_start: true
+      #   notify:
+      #     success: true
+      #     failure: true
+      email:
+        recipients:
+          - your-email@example.com # Replace with your email
+        notify:
+          success: true
+          failure: true
