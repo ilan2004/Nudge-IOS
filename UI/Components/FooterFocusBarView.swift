@@ -1,67 +1,6 @@
 // UI/Components/FooterFocusBarView.swift
 import SwiftUI
 
-// MARK: - ViewModel
-class FooterFocusBarViewModel: ObservableObject {
-    enum Mode {
-        case idle, focus, paused, breakTime
-    }
-    
-    @Published var mode: Mode = .idle
-    @Published var remainingMs: Int = 0
-    @Published var customMinutes: Int = 25
-    @Published var selectedPreset: Int? = 25
-    
-    private var timer: Timer?
-    private var targetMs: Int = 0
-    
-    func setPreset(_ minutes: Int) {
-        selectedPreset = minutes
-        customMinutes = minutes
-    }
-    
-    func start() {
-        mode = .focus
-        targetMs = customMinutes * 60 * 1000
-        remainingMs = targetMs
-        startTimer()
-    }
-    
-    func pause() {
-        mode = .paused
-        timer?.invalidate()
-    }
-    
-    func resume() {
-        mode = .focus
-        startTimer()
-    }
-    
-    func stop() {
-        mode = .idle
-        timer?.invalidate()
-        remainingMs = 0
-        selectedPreset = nil
-    }
-    
-    func startBreak(minutes: Int) {
-        mode = .breakTime
-        targetMs = minutes * 60 * 1000
-        remainingMs = targetMs
-        startTimer()
-    }
-    
-    private func startTimer() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            self.remainingMs = max(0, self.remainingMs - 1000)
-            if self.remainingMs <= 0 {
-                self.stop()
-            }
-        }
-    }
-}
 
 // MARK: - FooterFocusBarView
 struct FooterFocusBarView: View {
@@ -248,34 +187,6 @@ struct FooterFocusBarView: View {
     }
 }
 
-// MARK: - Placeholder Settings View
-struct FocusSettingsView: View {
-    @Environment(\.dismiss) var dismiss
-    
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Text("Settings")
-                    .font(.title.bold())
-                    .foregroundColor(.nudgeGreen900)
-                
-                Text("Configure your focus session preferences here.")
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding()
-                
-                Spacer()
-                
-                Button("Close") {
-                    dismiss()
-                }
-                .buttonStyle(NavPillStyle(variant: .primary))
-            }
-            .padding()
-        }
-    }
-}
 
 // MARK: - Preview
 #Preview {
