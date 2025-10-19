@@ -7,11 +7,8 @@ struct ContentView: View {
     
     var body: some View {
         Group {
-            if !personalityManager.hasCompletedTest {
-                OnboardingView()
-            } else {
-                MainTabView(selectedTab: $selectedTab)
-            }
+            // FOR TESTING: Always show main app (personality manager loads ENFJ by default)
+            MainTabView(selectedTab: $selectedTab)
         }
         .preferredColorScheme(appSettings.colorScheme)
         .onAppear {

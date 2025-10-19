@@ -69,92 +69,163 @@ struct PersonalityTheme {
     
     // Default colors matching your web app
     static let defaultColors = PersonalityColors(
-        primary: Color("MintPrimary", bundle: nil),
-        secondary: Color("GreenSecondary", bundle: nil),
-        accent: Color("PinkAccent", bundle: nil),
-        surface: Color("CreamSurface", bundle: nil),
-        background: Color("BackgroundDefault", bundle: nil),
-        text: Color("GreenText", bundle: nil),
-        textSecondary: Color("GrayText", bundle: nil)
+        primary: Color(red: 0.063, green: 0.737, blue: 0.502), // #10BC80 - mint
+        secondary: Color(red: 0.055, green: 0.259, blue: 0.184), // #0E4238 - green
+        accent: Color(red: 1.0, green: 0.411, blue: 0.706), // #FF69B4 - pink
+        surface: Color(red: 0.988, green: 0.973, blue: 0.949), // #FCF8F2 - cream
+        background: Color(red: 0.988, green: 0.973, blue: 0.949), // #FCF8F2 - cream
+        text: Color(red: 0.055, green: 0.259, blue: 0.184), // #0E4238 - green
+        textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6) // gray
     )
     
     static func colors(for personalityType: PersonalityType, gender: Gender = .neutral) -> PersonalityColors {
         
-        // Base MBTI colors from your web app
+        // Base MBTI colors from your web app - using static colors for immediate testing
         let mbtiColors: [PersonalityType: PersonalityColors] = [
             .intj: PersonalityColors(
-                primary: Color("PurplePrimary", bundle: nil),
-                secondary: Color("PurpleSecondary", bundle: nil),
-                accent: Color("PurpleAccent", bundle: nil),
-                surface: Color("CreamSurface", bundle: nil),
-                background: Color("BackgroundDefault", bundle: nil),
-                text: Color("GreenText", bundle: nil),
-                textSecondary: Color("GrayText", bundle: nil)
+                primary: Color(red: 0.627, green: 0.322, blue: 0.714), // purple
+                secondary: Color(red: 0.627, green: 0.322, blue: 0.714),
+                accent: Color(red: 0.627, green: 0.322, blue: 0.714),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
             ),
             .intp: PersonalityColors(
-                primary: Color("CyanPrimary", bundle: nil),
-                secondary: Color("CyanSecondary", bundle: nil),
-                accent: Color("CyanAccent", bundle: nil),
-                surface: Color("CreamSurface", bundle: nil),
-                background: Color("BackgroundDefault", bundle: nil),
-                text: Color("GreenText", bundle: nil),
-                textSecondary: Color("GrayText", bundle: nil)
+                primary: Color(red: 0.678, green: 0.847, blue: 0.902), // cyan
+                secondary: Color(red: 0.678, green: 0.847, blue: 0.902),
+                accent: Color(red: 0.678, green: 0.847, blue: 0.902),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
             ),
             .entj: PersonalityColors(
-                primary: Color("OrangePrimary", bundle: nil),
-                secondary: Color("OrangeSecondary", bundle: nil),
-                accent: Color("OrangeAccent", bundle: nil),
-                surface: Color("CreamSurface", bundle: nil),
-                background: Color("BackgroundDefault", bundle: nil),
-                text: Color("CreamText", bundle: nil),
-                textSecondary: Color("LightGrayText", bundle: nil)
+                primary: Color(red: 1.0, green: 0.596, blue: 0.0), // orange
+                secondary: Color(red: 1.0, green: 0.596, blue: 0.0),
+                accent: Color(red: 1.0, green: 0.596, blue: 0.0),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color.white,
+                textSecondary: Color(red: 0.8, green: 0.8, blue: 0.8)
             ),
             .entp: PersonalityColors(
-                primary: Color("PinkPrimary", bundle: nil),
-                secondary: Color("PinkSecondary", bundle: nil),
-                accent: Color("PinkAccent", bundle: nil),
-                surface: Color("CreamSurface", bundle: nil),
-                background: Color("BackgroundDefault", bundle: nil),
-                text: Color("CreamText", bundle: nil),
-                textSecondary: Color("LightGrayText", bundle: nil)
+                primary: Color(red: 1.0, green: 0.411, blue: 0.706), // pink
+                secondary: Color(red: 1.0, green: 0.411, blue: 0.706),
+                accent: Color(red: 1.0, green: 0.411, blue: 0.706),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color.white,
+                textSecondary: Color(red: 0.8, green: 0.8, blue: 0.8)
             ),
             .infj: PersonalityColors(
-                primary: Color("PurplePrimary", bundle: nil),
-                secondary: Color("PurpleSecondary", bundle: nil),
-                accent: Color("PurpleAccent", bundle: nil),
-                surface: Color("CreamSurface", bundle: nil),
-                background: Color("BackgroundDefault", bundle: nil),
-                text: Color("GreenText", bundle: nil),
-                textSecondary: Color("GrayText", bundle: nil)
+                primary: Color(red: 0.392, green: 0.584, blue: 0.929), // blue
+                secondary: Color(red: 0.392, green: 0.584, blue: 0.929),
+                accent: Color(red: 0.392, green: 0.584, blue: 0.929),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
             ),
             .infp: PersonalityColors(
-                primary: Color("LilacPrimary", bundle: nil),
-                secondary: Color("LilacSecondary", bundle: nil),
-                accent: Color("LilacAccent", bundle: nil),
-                surface: Color("CreamSurface", bundle: nil),
-                background: Color("BackgroundDefault", bundle: nil),
-                text: Color("GreenText", bundle: nil),
-                textSecondary: Color("GrayText", bundle: nil)
+                primary: Color(red: 0.878, green: 0.804, blue: 0.937), // lilac
+                secondary: Color(red: 0.878, green: 0.804, blue: 0.937),
+                accent: Color(red: 0.878, green: 0.804, blue: 0.937),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
             ),
             .enfj: PersonalityColors(
-                primary: Color("TealPrimary", bundle: nil),
-                secondary: Color("TealSecondary", bundle: nil),
-                accent: Color("TealAccent", bundle: nil),
-                surface: Color("CreamSurface", bundle: nil),
-                background: Color("BackgroundDefault", bundle: nil),
-                text: Color("GreenText", bundle: nil),
-                textSecondary: Color("GrayText", bundle: nil)
+                primary: Color(red: 0.439, green: 0.859, blue: 0.804), // teal - ENFJ!
+                secondary: Color(red: 0.439, green: 0.859, blue: 0.804),
+                accent: Color(red: 0.439, green: 0.859, blue: 0.804),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
             ),
             .enfp: PersonalityColors(
-                primary: Color("YellowPrimary", bundle: nil),
-                secondary: Color("YellowSecondary", bundle: nil),
-                accent: Color("YellowAccent", bundle: nil),
-                surface: Color("CreamSurface", bundle: nil),
-                background: Color("BackgroundDefault", bundle: nil),
-                text: Color("GreenText", bundle: nil),
-                textSecondary: Color("GrayText", bundle: nil)
+                primary: Color(red: 1.0, green: 0.898, blue: 0.616), // yellow
+                secondary: Color(red: 1.0, green: 0.898, blue: 0.616),
+                accent: Color(red: 1.0, green: 0.898, blue: 0.616),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
             ),
-            // Continue for other personality types...
+            .istj: PersonalityColors(
+                primary: Color(red: 0.392, green: 0.584, blue: 0.929), // blue
+                secondary: Color(red: 0.392, green: 0.584, blue: 0.929),
+                accent: Color(red: 0.392, green: 0.584, blue: 0.929),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+            ),
+            .isfj: PersonalityColors(
+                primary: Color(red: 0.918, green: 0.667, blue: 0.851), // pink light
+                secondary: Color(red: 0.918, green: 0.667, blue: 0.851),
+                accent: Color(red: 0.918, green: 0.667, blue: 0.851),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+            ),
+            .estj: PersonalityColors(
+                primary: Color(red: 1.0, green: 0.596, blue: 0.0), // orange
+                secondary: Color(red: 1.0, green: 0.596, blue: 0.0),
+                accent: Color(red: 1.0, green: 0.596, blue: 0.0),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color.white,
+                textSecondary: Color(red: 0.8, green: 0.8, blue: 0.8)
+            ),
+            .esfj: PersonalityColors(
+                primary: Color(red: 1.0, green: 0.411, blue: 0.706), // pink
+                secondary: Color(red: 1.0, green: 0.411, blue: 0.706),
+                accent: Color(red: 1.0, green: 0.411, blue: 0.706),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color.white,
+                textSecondary: Color(red: 0.8, green: 0.8, blue: 0.8)
+            ),
+            .istp: PersonalityColors(
+                primary: Color(red: 0.439, green: 0.859, blue: 0.804), // teal
+                secondary: Color(red: 0.439, green: 0.859, blue: 0.804),
+                accent: Color(red: 0.439, green: 0.859, blue: 0.804),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+            ),
+            .isfp: PersonalityColors(
+                primary: Color(red: 0.878, green: 0.804, blue: 0.937), // lilac
+                secondary: Color(red: 0.878, green: 0.804, blue: 0.937),
+                accent: Color(red: 0.878, green: 0.804, blue: 0.937),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+            ),
+            .estp: PersonalityColors(
+                primary: Color(red: 1.0, green: 0.757, blue: 0.027), // amber
+                secondary: Color(red: 1.0, green: 0.757, blue: 0.027),
+                accent: Color(red: 1.0, green: 0.757, blue: 0.027),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color.white,
+                textSecondary: Color(red: 0.8, green: 0.8, blue: 0.8)
+            ),
+            .esfp: PersonalityColors(
+                primary: Color(red: 1.0, green: 0.898, blue: 0.616), // yellow
+                secondary: Color(red: 1.0, green: 0.898, blue: 0.616),
+                accent: Color(red: 1.0, green: 0.898, blue: 0.616),
+                surface: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+            )
         ]
         
         return mbtiColors[personalityType] ?? defaultColors

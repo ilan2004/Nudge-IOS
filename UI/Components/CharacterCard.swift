@@ -147,10 +147,24 @@ struct CharacterCard: View {
     // MARK: - Helper Methods
     
     private func loadUserData() {
-        displayName = UserDefaults.standard.string(forKey: "ms_display_name") ?? ""
+        displayName = UserDefaults.standard.string(forKey: "ms_display_name") ?? "Alex" // Default name for testing
         points = UserDefaults.standard.integer(forKey: "Nudge_points")
         streak = UserDefaults.standard.integer(forKey: "Nudge_streak")
         totalFocusTime = UserDefaults.standard.double(forKey: "Nudge_total_focus_time")
+        
+        // FOR TESTING: Add some demo stats if none exist
+        if points == 0 {
+            points = 1250
+            UserDefaults.standard.set(1250, forKey: "Nudge_points")
+        }
+        if streak == 0 {
+            streak = 7
+            UserDefaults.standard.set(7, forKey: "Nudge_streak")
+        }
+        if totalFocusTime == 0 {
+            totalFocusTime = 7200.0 // 2 hours
+            UserDefaults.standard.set(7200.0, forKey: "Nudge_total_focus_time")
+        }
     }
     
     private func setupFocusTracking() {
@@ -245,14 +259,44 @@ struct CharacterMediaView: View {
     
     var body: some View {
         ZStack {
-            // Base static image
-            Image(imageName)
-                .resizable()
-                .scaledToFill()
-                .frame(width: size, height: size)
-                .clipped()
-                .opacity(showVideoAnimation ? 0 : 1)
-                .animation(.easeInOut(duration: 0.5), value: showVideoAnimation)
+            // Base static image with fallback
+            Group {
+                if Bundle.main.path(forResource: imageName.components(separatedBy: ".").first, ofType: "png") != nil ||
+                   Bundle.main.path(forResource: imageName.components(separatedBy: ".").first, ofType: "jpg") != nil {
+                    Image(imageName)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: size, height: size)
+                        .clipped()
+                } else {
+                    // Fallback: Create ENFJ-style placeholder
+                    ZStack {
+                        Circle()
+                            .fill(LinearGradient(
+                                colors: [
+                                    Color(red: 0.439, green: 0.859, blue: 0.804), // ENFJ teal
+                                    Color(red: 0.339, green: 0.759, blue: 0.704)  // darker teal
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ))
+                        
+                        VStack(spacing: 8) {
+                            Image(systemName: "person.fill")
+                                .font(.system(size: size * 0.3))
+                                .foregroundColor(.white)
+                            
+                            Text("ENFJ")
+                                .font(.custom("Tanker-Regular", size: size * 0.08))
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .frame(width: size, height: size)
+                }
+            }
+            .opacity(showVideoAnimation ? 0 : 1)
+            .animation(.easeInOut(duration: 0.5), value: showVideoAnimation)
             
             // Video overlay for animations
             if showVideoAnimation, let videoURL = currentVideoURL {
@@ -407,15 +451,15 @@ struct DialogueBubble: View {
         Text(text)
             .font(.caption)
             .fontWeight(.medium)
-            .foregroundColor(style == .greeting ? Color("GreenText") : Color.white)
+            .foregroundColor(style == .greeting ? Color(red: 0.055, green: 0.259, blue: 0.184) : Color.white) // green
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(style == .greeting ? Color.white.opacity(0.9) : Color("GreenPrimary").opacity(0.9))
+                    .fill(style == .greeting ? Color.white.opacity(0.9) : Color(red: 0.055, green: 0.259, blue: 0.184).opacity(0.9)) // green
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(style == .greeting ? Color("GreenPrimary").opacity(0.2) : Color.clear, lineWidth: 1)
+                            .stroke(style == .greeting ? Color(red: 0.055, green: 0.259, blue: 0.184).opacity(0.2) : Color.clear, lineWidth: 1) // green
                     )
             )
             .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
@@ -435,7 +479,7 @@ struct StatsRow: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color("ComponentSurface"))
+                .fill(Color(red: 0.95, green: 0.95, blue: 0.95)) // light gray
         )
     }
 }

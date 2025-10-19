@@ -32,13 +32,13 @@ struct FocusRing: View {
     private var color: Color {
         switch mode {
         case "break":
-            return Color("BlueAccent") // var(--color-blue-400)
+            return Color(red: 0.392, green: 0.584, blue: 0.929) // blue
         case "paused":
-            return Color("TealAccent") // var(--color-teal-300)
+            return Color(red: 0.439, green: 0.859, blue: 0.804) // teal
         case "focus":
-            return Color("GreenPrimary") // var(--color-green-900)
+            return Color(red: 0.055, green: 0.259, blue: 0.184) // green
         default:
-            return Color("GreenPrimary").opacity(0.2) // var(--color-green-900-20)
+            return Color(red: 0.055, green: 0.259, blue: 0.184).opacity(0.2) // green with opacity
         }
     }
     
@@ -46,14 +46,14 @@ struct FocusRing: View {
         ZStack {
             // Background circle with nav-pill styling
             Circle()
-                .fill(Color("Surface"))
+                .fill(Color(red: 0.988, green: 0.973, blue: 0.949)) // cream surface
                 .frame(width: size, height: size)
                 .overlay(
                     Circle()
-                        .stroke(Color("GreenPrimary"), lineWidth: 2)
+                        .stroke(Color(red: 0.055, green: 0.259, blue: 0.184), lineWidth: 2) // green
                 )
-                .shadow(color: Color("GreenPrimary"), radius: 0, x: 0, y: 4)
-                .shadow(color: Color("GreenPrimary").opacity(0.2), radius: 12, x: 0, y: 8)
+                .shadow(color: Color(red: 0.055, green: 0.259, blue: 0.184), radius: 0, x: 0, y: 4)
+                .shadow(color: Color(red: 0.055, green: 0.259, blue: 0.184).opacity(0.2), radius: 12, x: 0, y: 8)
             
             // SVG-like progress ring
             ZStack {
@@ -66,7 +66,7 @@ struct FocusRing: View {
                 Circle()
                     .trim(from: 0, to: progress)
                     .stroke(
-                        Color("GreenPrimary"),
+                        Color(red: 0.055, green: 0.259, blue: 0.184), // green
                         style: StrokeStyle(lineWidth: stroke + 2, lineCap: .round)
                     )
                     .frame(width: innerRadius * 2, height: innerRadius * 2)

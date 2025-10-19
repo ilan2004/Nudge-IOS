@@ -23,6 +23,7 @@ class PersonalityManager: ObservableObject {
     }
     
     func loadPersonalityType() {
+        // FOR TESTING: Set ENFJ by default
         // Load saved personality data
         if let typeString = userDefaults.string(forKey: personalityTypeKey),
            let type = PersonalityType(rawValue: typeString) {
@@ -37,6 +38,23 @@ class PersonalityManager: ObservableObject {
             if let scoresData = userDefaults.data(forKey: testScoresKey),
                let scores = try? JSONDecoder().decode([String: Int].self, from: scoresData) {
                 testScores = scores
+            }
+            
+            updateTheme()
+        } else {
+            // FOR TESTING: Default to ENFJ with female gender
+            personalityType = .enfj
+            gender = .female
+            hasCompletedTest = true
+            testScores = ["E": 15, "N": 12, "F": 18, "J": 14]
+            
+            // Save test data
+            userDefaults.set(PersonalityType.enfj.rawValue, forKey: personalityTypeKey)
+            userDefaults.set(Gender.female.rawValue, forKey: genderKey)
+            userDefaults.set(true, forKey: testCompletedKey)
+            
+            if let scoresData = try? JSONEncoder().encode(testScores) {
+                userDefaults.set(scoresData, forKey: testScoresKey)
             }
             
             updateTheme()

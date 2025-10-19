@@ -23,7 +23,7 @@ struct PersonalityBadge: View {
     }
     
     private var textColor: Color {
-        isDarkBackground ? Color.white : Color("GreenText")
+        isDarkBackground ? Color.white : Color(red: 0.055, green: 0.259, blue: 0.184) // green
     }
     
     var body: some View {
@@ -37,10 +37,10 @@ struct PersonalityBadge: View {
                         .frame(height: 44)
                         .overlay(
                             RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color("GreenPrimary"), lineWidth: 2)
+                                .stroke(Color(red: 0.055, green: 0.259, blue: 0.184), lineWidth: 2) // green
                         )
-                        .shadow(color: Color("GreenPrimary"), radius: 0, x: 0, y: 4)
-                        .shadow(color: Color("GreenPrimary").opacity(0.2), radius: 12, x: 0, y: 8)
+                        .shadow(color: Color(red: 0.055, green: 0.259, blue: 0.184), radius: 0, x: 0, y: 4)
+                        .shadow(color: Color(red: 0.055, green: 0.259, blue: 0.184).opacity(0.2), radius: 12, x: 0, y: 8)
                     
                     Text(personalityType.rawValue)
                         .font(.custom("Tanker-Regular", size: 18))
@@ -60,12 +60,12 @@ struct PersonalityBadge: View {
                 // Personality Group badge
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color("ComponentSurface"))
+                        .fill(Color(red: 0.95, green: 0.95, blue: 0.95)) // light gray
                         .frame(height: 32)
                     
                     Text(personalityInfo.group.uppercased())
                         .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(Color("GreenText"))
+                        .foregroundColor(Color(red: 0.055, green: 0.259, blue: 0.184)) // green
                         .kerning(1.1)
                 }
                 .padding(.horizontal, 16)
@@ -82,7 +82,7 @@ struct PersonalityBadge: View {
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(Color("RetroConsoleBG"))
+                    .fill(Color(red: 0.98, green: 0.98, blue: 0.98)) // light gray console bg
                     .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
             )
         }
@@ -101,7 +101,7 @@ struct DNANode: View {
             .frame(width: 6, height: 6)
             .overlay(
                 Circle()
-                    .stroke(Color("GreenPrimary"), lineWidth: 1)
+                    .stroke(Color(red: 0.055, green: 0.259, blue: 0.184), lineWidth: 1) // green
             )
             .scaleEffect(isAnimating ? 1.2 : 1.0)
             .animation(
