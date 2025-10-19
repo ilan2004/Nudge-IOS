@@ -14,20 +14,17 @@ public struct NavPillStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(compact ? .footnote.bold() : .callout.bold())
+            .foregroundColor(foregroundColor)
             .padding(.horizontal, compact ? 10 : 14)
             .padding(.vertical, compact ? 6 : 8)
             .background(
                 Capsule()
                     .fill(bgColor)
             )
-            .foregroundStyle(foregroundColor)
-            .overlay(
-                Capsule()
-                    .stroke(borderColor, lineWidth: 2)
-            )
             .shadow(color: shadowColor, radius: 0, x: 0, y: 3)
             .opacity(configuration.isPressed ? 0.85 : 1.0)
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+    }
     }
     
     private var bgColor: Color {
