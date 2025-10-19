@@ -49,8 +49,15 @@ struct DEBUG_ContentView: View {
                         Text("Profile")
                     }
             }
+            
+            // Footer focus bar overlay (debug)
+            VStack { Spacer(); FooterFocusBarView().padding(.horizontal).padding(.bottom, 8) }
+            .allowsHitTesting(true)
         }
         .environment(\.dynamicTypeSize, .medium)
+        .environmentObject(personalityManager)
+        .environmentObject(focusManager)
+        .environmentObject(appSettings)
         .onAppear {
             print("DEBUG: Tab layout loaded")
             print("DEBUG: Personality type: \(personalityManager.personalityType?.rawValue ?? "nil")")
