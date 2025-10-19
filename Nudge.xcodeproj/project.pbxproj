@@ -7,61 +7,63 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8D1107310486CEB800E47090 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107320486CEB800E47090 /* NudgeApp.swift */; };
-		8D1107330486CEB800E47090 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107340486CEB800E47090 /* ContentView.swift */; };
-		8D1107350486CEB800E47090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107360486CEB800E47090 /* Assets.xcassets */; };
-		8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107380486CEB800E47090 /* Preview Assets.xcassets */; };
+		A1001001 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1001002 /* NudgeApp.swift */; };
+		A1001003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1001004 /* ContentView.swift */; };
+		A1001005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1001006 /* Assets.xcassets */; };
+		A1001007 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1001008 /* Preview Assets.xcassets */; };
+		
 		/* Core Services */
-		8D1107400486CEB800E47090 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107410486CEB800E47090 /* AppSettings.swift */; };
-		8D1107420486CEB800E47090 /* FocusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107430486CEB800E47090 /* FocusManager.swift */; };
-		8D1107440486CEB800E47090 /* PersonalityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107450486CEB800E47090 /* PersonalityManager.swift */; };
+		A1002001 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1002002 /* AppSettings.swift */; };
+		A1002003 /* FocusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1002004 /* FocusManager.swift */; };
+		A1002005 /* PersonalityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1002006 /* PersonalityManager.swift */; };
+		
 		/* Features */
-		8D1107460486CEB800E47090 /* PlaceholderViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107470486CEB800E47090 /* PlaceholderViews.swift */; };
-		8D1107480486CEB800E47090 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107490486CEB800E47090 /* DashboardView.swift */; };
-		8D11074A0486CEB800E47090 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D11074B0486CEB800E47090 /* OnboardingView.swift */; };
+		A1003001 /* PlaceholderViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1003002 /* PlaceholderViews.swift */; };
+		A1003003 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1003004 /* DashboardView.swift */; };
+		A1003005 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1003006 /* OnboardingView.swift */; };
+		
 		/* UI Components */
-		8D11074C0486CEB800E47090 /* CharacterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D11074D0486CEB800E47090 /* CharacterCard.swift */; };
-		8D11074E0486CEB800E47090 /* FocusRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D11074F0486CEB800E47090 /* FocusRing.swift */; };
-		8D1107500486CEB800E47090 /* PersonalityBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107510486CEB800E47090 /* PersonalityBadge.swift */; };
-		8D1107520486CEB800E47090 /* PersonalityTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107530486CEB800E47090 /* PersonalityTheme.swift */; };
-		8D1107540486CEB800E47090 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107550486CEB800E47090 /* Colors.swift */; };
-		/* Fonts */
-		8D1107560486CEB800E47090 /* Tanker-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107570486CEB800E47090 /* Tanker-Regular.otf */; };
-		8D1107580486CEB800E47090 /* Tanker-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107590486CEB800E47090 /* Tanker-Regular.ttf */; };
+		A1004001 /* CharacterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1004002 /* CharacterCard.swift */; };
+		A1004003 /* FocusRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1004004 /* FocusRing.swift */; };
+		A1004005 /* PersonalityBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1004006 /* PersonalityBadge.swift */; };
+		A1004007 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1004008 /* Colors.swift */; };
+		A1004009 /* PersonalityTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1004010 /* PersonalityTheme.swift */; };
+		
 		/* Resources */
-		8D11075A0486CEB800E47090 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 8D11075B0486CEB800E47090 /* Resources */; };
+		A1005001 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = A1005002 /* Resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8D1107310486CEB800E47091 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8D1107320486CEB800E47090 /* NudgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeApp.swift; sourceTree = "<group>"; };
-		8D1107340486CEB800E47090 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		8D1107360486CEB800E47090 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		8D1107380486CEB800E47090 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A1000001 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1001002 /* NudgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeApp.swift; sourceTree = "<group>"; };
+		A1001004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A1001006 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1001008 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A1001010 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		
 		/* Core Services */
-		8D1107410486CEB800E47090 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
-		8D1107430486CEB800E47090 /* FocusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusManager.swift; sourceTree = "<group>"; };
-		8D1107450486CEB800E47090 /* PersonalityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityManager.swift; sourceTree = "<group>"; };
+		A1002002 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		A1002004 /* FocusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusManager.swift; sourceTree = "<group>"; };
+		A1002006 /* PersonalityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityManager.swift; sourceTree = "<group>"; };
+		
 		/* Features */
-		8D1107470486CEB800E47090 /* PlaceholderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViews.swift; sourceTree = "<group>"; };
-		8D1107490486CEB800E47090 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
-		8D11074B0486CEB800E47090 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		A1003002 /* PlaceholderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViews.swift; sourceTree = "<group>"; };
+		A1003004 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		A1003006 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		
 		/* UI Components */
-		8D11074D0486CEB800E47090 /* CharacterCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCard.swift; sourceTree = "<group>"; };
-		8D11074F0486CEB800E47090 /* FocusRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusRing.swift; sourceTree = "<group>"; };
-		8D1107510486CEB800E47090 /* PersonalityBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityBadge.swift; sourceTree = "<group>"; };
-		8D1107530486CEB800E47090 /* PersonalityTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityTheme.swift; sourceTree = "<group>"; };
-		8D1107550486CEB800E47090 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		/* Fonts */
-		8D1107570486CEB800E47090 /* Tanker-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.otf"; sourceTree = "<group>"; };
-		8D1107590486CEB800E47090 /* Tanker-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.ttf"; sourceTree = "<group>"; };
+		A1004002 /* CharacterCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCard.swift; sourceTree = "<group>"; };
+		A1004004 /* FocusRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusRing.swift; sourceTree = "<group>"; };
+		A1004006 /* PersonalityBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityBadge.swift; sourceTree = "<group>"; };
+		A1004008 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		A1004010 /* PersonalityTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityTheme.swift; sourceTree = "<group>"; };
+		
 		/* Resources */
-		8D11075B0486CEB800E47090 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
-		8D11075C0486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1005002 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8D11072F0486CEB800E47090 /* Frameworks */ = {
+		A1000002 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -71,114 +73,114 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8D1107200486CEB800E47090 = {
+		A1000003 = {
 			isa = PBXGroup;
 			children = (
-				8D1107210486CEB800E47090 /* App */,
-				8D11076A0486CEB800E47090 /* Core */,
-				8D11076F0486CEB800E47090 /* Features */,
-				8D1107740486CEB800E47090 /* UI */,
-				8D11075B0486CEB800E47090 /* Resources */,
-				8D11072C0486CEB800E47090 /* Products */,
+				A1001001 /* App */,
+				A1002001 /* Core */,
+				A1003001 /* Features */,
+				A1004001 /* UI */,
+				A1005002 /* Resources */,
+				A1000004 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		8D1107210486CEB800E47090 /* App */ = {
+		A1001001 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107320486CEB800E47090 /* NudgeApp.swift */,
-				8D1107340486CEB800E47090 /* ContentView.swift */,
-				8D1107360486CEB800E47090 /* Assets.xcassets */,
-				8D11075C0486CEB800E47090 /* Info.plist */,
-				8D1107390486CEB800E47090 /* Preview Content */,
+				A1001002 /* NudgeApp.swift */,
+				A1001004 /* ContentView.swift */,
+				A1001006 /* Assets.xcassets */,
+				A1001010 /* Info.plist */,
+				A1001009 /* Preview Content */,
 			);
 			path = App;
 			sourceTree = "<group>";
 		};
-		8D11072C0486CEB800E47090 /* Products */ = {
+		A1000004 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107310486CEB800E47091 /* Nudge.app */,
+				A1000001 /* Nudge.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8D1107390486CEB800E47090 /* Preview Content */ = {
+		A1001009 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107380486CEB800E47090 /* Preview Assets.xcassets */,
+				A1001008 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		8D11076A0486CEB800E47090 /* Core */ = {
+		A1002001 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				8D11076B0486CEB800E47090 /* Services */,
+				A1002007 /* Services */,
 			);
 			path = Core;
 			sourceTree = "<group>";
 		};
-		8D11076B0486CEB800E47090 /* Services */ = {
+		A1002007 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107410486CEB800E47090 /* AppSettings.swift */,
-				8D1107430486CEB800E47090 /* FocusManager.swift */,
-				8D1107450486CEB800E47090 /* PersonalityManager.swift */,
+				A1002002 /* AppSettings.swift */,
+				A1002004 /* FocusManager.swift */,
+				A1002006 /* PersonalityManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		8D11076F0486CEB800E47090 /* Features */ = {
+		A1003001 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107470486CEB800E47090 /* PlaceholderViews.swift */,
-				8D1107700486CEB800E47090 /* Dashboard */,
-				8D1107710486CEB800E47090 /* Onboarding */,
+				A1003002 /* PlaceholderViews.swift */,
+				A1003007 /* Dashboard */,
+				A1003008 /* Onboarding */,
 			);
 			path = Features;
 			sourceTree = "<group>";
 		};
-		8D1107700486CEB800E47090 /* Dashboard */ = {
+		A1003007 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107490486CEB800E47090 /* DashboardView.swift */,
+				A1003004 /* DashboardView.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
 		};
-		8D1107710486CEB800E47090 /* Onboarding */ = {
+		A1003008 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				8D11074B0486CEB800E47090 /* OnboardingView.swift */,
+				A1003006 /* OnboardingView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
-		8D1107740486CEB800E47090 /* UI */ = {
+		A1004001 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107750486CEB800E47090 /* Components */,
-				8D1107780486CEB800E47090 /* Theme */,
+				A1004011 /* Components */,
+				A1004012 /* Theme */,
 			);
 			path = UI;
 			sourceTree = "<group>";
 		};
-		8D1107750486CEB800E47090 /* Components */ = {
+		A1004011 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				8D11074D0486CEB800E47090 /* CharacterCard.swift */,
-				8D11074F0486CEB800E47090 /* FocusRing.swift */,
-				8D1107510486CEB800E47090 /* PersonalityBadge.swift */,
+				A1004002 /* CharacterCard.swift */,
+				A1004004 /* FocusRing.swift */,
+				A1004006 /* PersonalityBadge.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
 		};
-		8D1107780486CEB800E47090 /* Theme */ = {
+		A1004012 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107530486CEB800E47090 /* PersonalityTheme.swift */,
-				8D1107550486CEB800E47090 /* Colors.swift */,
+				A1004008 /* Colors.swift */,
+				A1004010 /* PersonalityTheme.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -186,13 +188,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D1107260486CEB800E47090 /* Nudge */ = {
+		A1000005 /* Nudge */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXNativeTarget "Nudge" */;
+			buildConfigurationList = A1000006 /* Build configuration list for PBXNativeTarget "Nudge" */;
 			buildPhases = (
-				8D1107290486CEB800E47090 /* Sources */,
-				8D11072F0486CEB800E47090 /* Frameworks */,
-				8D1107300486CEB800E47090 /* Resources */,
+				A1000007 /* Sources */,
+				A1000002 /* Frameworks */,
+				A1000008 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -200,25 +202,25 @@
 			);
 			name = Nudge;
 			productName = Nudge;
-			productReference = 8D1107310486CEB800E47091 /* Nudge.app */;
+			productReference = A1000001 /* Nudge.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		29B97313FDCFA39411CA2CEA /* Project object */ = {
+		A1000009 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					8D1107260486CEB800E47090 = {
+					A1000005 = {
 						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
-			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXProject "Nudge" */;
+			buildConfigurationList = A1000010 /* Build configuration list for PBXProject "Nudge" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -226,56 +228,54 @@
 				en,
 				Base,
 			);
-			mainGroup = 8D1107200486CEB800E47090;
-			productRefGroup = 8D11072C0486CEB800E47090 /* Products */;
+			mainGroup = A1000003;
+			productRefGroup = A1000004 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D1107260486CEB800E47090 /* Nudge */,
+				A1000005 /* Nudge */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		8D1107300486CEB800E47090 /* Resources */ = {
+		A1000008 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */,
-				8D1107350486CEB800E47090 /* Assets.xcassets in Resources */,
-				8D1107560486CEB800E47090 /* Tanker-Regular.otf in Resources */,
-				8D1107580486CEB800E47090 /* Tanker-Regular.ttf in Resources */,
-				8D11075A0486CEB800E47090 /* Resources in Resources */,
+				A1001007 /* Preview Assets.xcassets in Resources */,
+				A1001005 /* Assets.xcassets in Resources */,
+				A1005001 /* Resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		8D1107290486CEB800E47090 /* Sources */ = {
+		A1000007 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D1107330486CEB800E47090 /* ContentView.swift in Sources */,
-				8D1107310486CEB800E47090 /* NudgeApp.swift in Sources */,
-				8D1107400486CEB800E47090 /* AppSettings.swift in Sources */,
-				8D1107420486CEB800E47090 /* FocusManager.swift in Sources */,
-				8D1107440486CEB800E47090 /* PersonalityManager.swift in Sources */,
-				8D1107460486CEB800E47090 /* PlaceholderViews.swift in Sources */,
-				8D1107480486CEB800E47090 /* DashboardView.swift in Sources */,
-				8D11074A0486CEB800E47090 /* OnboardingView.swift in Sources */,
-				8D11074C0486CEB800E47090 /* CharacterCard.swift in Sources */,
-				8D11074E0486CEB800E47090 /* FocusRing.swift in Sources */,
-				8D1107500486CEB800E47090 /* PersonalityBadge.swift in Sources */,
-				8D1107520486CEB800E47090 /* PersonalityTheme.swift in Sources */,
-				8D1107540486CEB800E47090 /* Colors.swift in Sources */,
+				A1001003 /* ContentView.swift in Sources */,
+				A1001001 /* NudgeApp.swift in Sources */,
+				A1002001 /* AppSettings.swift in Sources */,
+				A1002003 /* FocusManager.swift in Sources */,
+				A1002005 /* PersonalityManager.swift in Sources */,
+				A1003001 /* PlaceholderViews.swift in Sources */,
+				A1003003 /* DashboardView.swift in Sources */,
+				A1003005 /* OnboardingView.swift in Sources */,
+				A1004001 /* CharacterCard.swift in Sources */,
+				A1004003 /* FocusRing.swift in Sources */,
+				A1004005 /* PersonalityBadge.swift in Sources */,
+				A1004007 /* Colors.swift in Sources */,
+				A1004009 /* PersonalityTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		C01FCF4B08A954540054247B /* Debug */ = {
+		A1000011 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -335,7 +335,7 @@
 			};
 			name = Debug;
 		};
-		C01FCF4C08A954540054247B /* Release */ = {
+		A1000012 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -388,7 +388,7 @@
 			};
 			name = Release;
 		};
-		C01FCF4F08A954540054247B /* Debug */ = {
+		A1000013 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -420,7 +420,7 @@
 			};
 			name = Debug;
 		};
-		C01FCF5008A954540054247B /* Release */ = {
+		A1000014 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -455,25 +455,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C01FCF4A08A954540054247B /* Build configuration list for PBXProject "Nudge" */ = {
+		A1000010 /* Build configuration list for PBXProject "Nudge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C01FCF4B08A954540054247B /* Debug */,
-				C01FCF4C08A954540054247B /* Release */,
+				A1000011 /* Debug */,
+				A1000012 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXNativeTarget "Nudge" */ = {
+		A1000006 /* Build configuration list for PBXNativeTarget "Nudge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C01FCF4F08A954540054247B /* Debug */,
-				C01FCF5008A954540054247B /* Release */,
+				A1000013 /* Debug */,
+				A1000014 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+	rootObject = A1000009 /* Project object */;
 }
