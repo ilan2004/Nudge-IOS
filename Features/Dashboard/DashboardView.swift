@@ -11,8 +11,13 @@ struct DashboardView: View {
                 .ignoresSafeArea()
             
             NavigationView {
-                ScrollView {
-                    VStack(spacing: 20) {
+                // Ensure the content respects screen bounds
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Constrain max width to prevent oversized layouts on any device
+                    EmptyView()
+                        .frame(maxWidth: 600)
+                        .hidden()
                         
                         // Main Character Card - Hero Component
                         CharacterCard(title: nil, size: 0) // Auto-sized
@@ -29,7 +34,7 @@ struct DashboardView: View {
                         
                     Spacer(minLength: 24) // Smaller bottom spacer now that tab bar is removed
                     }
-                    .padding()
+.padding(.horizontal, 16)
                 }
                 .navigationTitle("")
                 .navigationBarHidden(true)

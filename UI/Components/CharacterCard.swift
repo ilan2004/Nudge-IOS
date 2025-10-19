@@ -32,9 +32,9 @@ struct CharacterCard: View {
         if size > 0 {
             return size
         }
-        // Auto-size based on screen width (min 220, max 420) to avoid oversized layout
+        // Auto-size based on screen width (min 200, max 360) to avoid oversized layout
         let screenWidth = UIScreen.main.bounds.width
-        return max(220, min(420, floor(screenWidth * 0.55)))
+        return max(200, min(360, floor(screenWidth * 0.50)))
     }
     
     private var heading: String {
