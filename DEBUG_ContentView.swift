@@ -1,7 +1,7 @@
 import SwiftUI
 
 // DEBUG VERSION - Simple test to see what's working
-struct ContentView: View {
+struct DEBUG_ContentView: View {
     @StateObject private var personalityManager = PersonalityManager()
     @StateObject private var focusManager = FocusManager()
     @StateObject private var appSettings = AppSettings()
@@ -41,5 +41,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    DEBUG_ContentView()
 }
