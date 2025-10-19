@@ -51,7 +51,7 @@ struct DEBUG_ContentView: View {
             }
             
             // Footer focus bar overlay (debug)
-            VStack { Spacer(); FooterFocusBarView().padding(.horizontal).padding(.bottom, 8) }
+            VStack { Spacer(); FooterFocusBarView(viewModel: FooterFocusBarViewModel()).padding(.horizontal).padding(.bottom, 8) }
             .allowsHitTesting(true)
         }
         .environment(\.dynamicTypeSize, .medium)
