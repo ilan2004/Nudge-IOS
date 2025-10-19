@@ -241,9 +241,13 @@ struct PersonalityTheme {
     static func mediaName(for personalityType: PersonalityType, gender: Gender = .neutral, isVideo: Bool = false) -> String {
         let genderSuffix: String
         switch gender {
-        case .male: return personalityType.rawValue + "M"
-        case .female: return personalityType.rawValue + "W"  
-        case .neutral: return personalityType.rawValue + "M" // Default to male version
+        case .male: 
+            genderSuffix = "M"
+        case .female: 
+            genderSuffix = "W"
+        case .neutral: 
+            genderSuffix = "M" // Default to male version
         }
+        return personalityType.rawValue + genderSuffix
     }
 }

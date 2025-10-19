@@ -133,10 +133,10 @@ struct CharacterCard: View {
             setupFocusTracking()
             playIntroAnimation()
         }
-        .onChange(of: focusManager.currentState) { _ in
+        .onChange(of: focusManager.currentState) {
             updateFocusDisplay()
         }
-        .onChange(of: personalityManager.personalityType) { newType in
+        .onChange(of: personalityManager.personalityType) { _, newType in
             if newType != nil {
                 playCharacterAnimation()
                 updateDialogue()
@@ -473,8 +473,8 @@ struct StatsRow: View {
     
     var body: some View {
         HStack(spacing: 20) {
-            StatItem(icon: "star.fill", label: "Points", value: "\(points)", color: .yellow)
-            StatItem(icon: "flame.fill", label: "Streak", value: "\(streak) days", color: .orange)
+            CharacterStatItem(icon: "star.fill", label: "Points", value: "\(points)", color: .yellow)
+            CharacterStatItem(icon: "flame.fill", label: "Streak", value: "\(streak) days", color: .orange)
         }
         .padding()
         .background(
@@ -484,7 +484,7 @@ struct StatsRow: View {
     }
 }
 
-struct StatItem: View {
+struct CharacterStatItem: View {
     let icon: String
     let label: String
     let value: String

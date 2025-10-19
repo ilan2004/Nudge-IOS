@@ -307,19 +307,6 @@ struct SettingsRow: View {
     }
 }
 
-// MARK: - Core Data Persistence Controller (Placeholder)
-class PersistenceController {
-    static let shared = PersistenceController()
-    
-    // Placeholder for Core Data stack
-    lazy var container: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "DataModel")
-        return container
-    }()
-    
-    private init() {}
-}
-
 // Import required for NSPersistentContainer
 import CoreData
 
@@ -335,3 +322,4 @@ struct PersonalityQuestion {
     let id: String
     let text: String
     let scoring: [String: Int] // Dimension weights
+}
