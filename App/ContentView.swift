@@ -10,7 +10,7 @@ struct ContentView: View {
             // FOR TESTING: Always show main app (personality manager loads ENFJ by default)
             MainTabView(selectedTab: $selectedTab)
         }
-        .background(personalityManager.currentTheme.background.ignoresSafeArea())
+        .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea()) // HARDCODED mint background
         .preferredColorScheme(appSettings.colorScheme)
         .onAppear {
             setupAppAppearance()
@@ -18,18 +18,28 @@ struct ContentView: View {
     }
     
     private func setupAppAppearance() {
-        // Configure tab bar appearance
+        // Configure tab bar appearance with mint background
         let tabBarAppearance = UITabBarAppearance()
-        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.configureWithTransparentBackground()
+        
+        // Force mint background for tab bar
+        let mintColor = UIColor(Color(red: 0.063, green: 0.737, blue: 0.502))
+        tabBarAppearance.backgroundColor = mintColor
         
         if let personalityType = personalityManager.personalityType {
             let colors = PersonalityTheme.colors(for: personalityType)
-            tabBarAppearance.backgroundColor = UIColor(colors.surface)
             tabBarAppearance.selectionIndicatorTintColor = UIColor(colors.primary)
         }
         
         UITabBar.appearance().standardAppearance = tabBarAppearance
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        
+        // Also set global window background to mint
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            windowScene.windows.forEach { window in
+                window.backgroundColor = mintColor
+            }
+        }
     }
 }
 
@@ -76,7 +86,7 @@ struct MainTabView: View {
                 }
                 .tag(4)
         }
-        .background(personalityManager.currentTheme.background.ignoresSafeArea())
+        .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea()) // HARDCODED mint background
         .accentColor(PersonalityTheme.currentPrimaryColor)
     }
 }
