@@ -76,11 +76,21 @@ workflows:
               PROVISIONING_PROFILE=""
           fi
           
-          # Export unsigned IPA
-          xcodebuild -exportArchive \
-            -archivePath "$PWD/build/Nudge.xcarchive" \
-            -exportPath "$PWD/build/ios/ipa" \
-            -exportOptionsPlist /tmp/export_options.plist
+          # Instead of export, manually create IPA from archive
+          echo "Archive succeeded! Now creating IPA manually..."
+          
+          # Create IPA directory structure
+          mkdir -p "$PWD/build/ios/ipa/Payload"
+          
+          # Copy .app from archive to Payload directory
+          cp -r "$PWD/build/Nudge.xcarchive/Products/Applications/Nudge.app" "$PWD/build/ios/ipa/Payload/"
+          
+          # Create IPA by zipping the Payload directory
+          cd "$PWD/build/ios/ipa"
+          zip -r Nudge.ipa Payload/
+          
+          echo "✅ IPA created successfully!"
+          ls -la *.ipa
     artifacts:
       - build/ios/ipa/*.ipa
       - build/Nudge.xcarchive
