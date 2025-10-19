@@ -48,10 +48,6 @@ struct FocusRing: View {
             Circle()
                 .fill(Color(red: 0.988, green: 0.973, blue: 0.949)) // cream surface
                 .frame(width: size, height: size)
-                .overlay(
-                    Circle()
-                        .stroke(Color(red: 0.055, green: 0.259, blue: 0.184), lineWidth: 2) // green
-                )
                 .shadow(color: Color(red: 0.055, green: 0.259, blue: 0.184), radius: 0, x: 0, y: 4)
                 .shadow(color: Color(red: 0.055, green: 0.259, blue: 0.184).opacity(0.2), radius: 12, x: 0, y: 8)
             

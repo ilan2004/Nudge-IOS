@@ -35,10 +35,6 @@ struct PersonalityBadge: View {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(colors.primary)
                         .frame(height: 44)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color(red: 0.055, green: 0.259, blue: 0.184), lineWidth: 2) // green
-                        )
                         .shadow(color: Color(red: 0.055, green: 0.259, blue: 0.184), radius: 0, x: 0, y: 4)
                         .shadow(color: Color(red: 0.055, green: 0.259, blue: 0.184).opacity(0.2), radius: 12, x: 0, y: 8)
                     
@@ -99,10 +95,6 @@ struct DNANode: View {
         Circle()
             .fill(color)
             .frame(width: 6, height: 6)
-            .overlay(
-                Circle()
-                    .stroke(Color(red: 0.055, green: 0.259, blue: 0.184), lineWidth: 1) // green
-            )
             .scaleEffect(isAnimating ? 1.2 : 1.0)
             .animation(
                 Animation.easeInOut(duration: 2.0)

@@ -9,20 +9,7 @@ struct DEBUG_ContentView: View {
     var body: some View {
         VStack(spacing: 20) {
             
-            // Test 1: Basic text
-            Text("DEBUG: Nudge iOS")
-                .font(.title)
-                .padding()
             
-            // Test 2: Personality Manager Status
-            VStack {
-                Text("Personality: \(personalityManager.personalityType?.rawValue ?? "NONE")")
-                Text("Has Completed Test: \(personalityManager.hasCompletedTest ? "YES" : "NO")")
-                Text("Gender: \(personalityManager.gender.rawValue)")
-            }
-            .padding()
-            .background(Color.gray.opacity(0.1))
-            .cornerRadius(8)
             
             // Test 3: Simple CharacterCard
             CharacterCard(title: "Debug User", size: 200)
