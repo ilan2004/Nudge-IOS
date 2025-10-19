@@ -12,19 +12,10 @@ struct DEBUG_ContentView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 20) {
-                // Main dashboard debug layout you preferred
+                // Character only
                 CharacterCard(title: "Alex", size: 280)
                     .environmentObject(personalityManager)
                     .environmentObject(focusManager)
-                
-                FocusStatsCard()
-                    .environmentObject(personalityManager)
-                
-                QuickActionsCard()
-                    .environmentObject(personalityManager)
-                
-                RecentActivityCard()
-                    .environmentObject(personalityManager)
                 
                 Spacer(minLength: 24)
             }
