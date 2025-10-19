@@ -5,30 +5,41 @@ struct DashboardView: View {
     @EnvironmentObject var focusManager: FocusManager
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    
-                    // Main Character Card - Hero Component
-                    CharacterCard(title: nil, size: 0) // Auto-sized
-                        .padding(.horizontal)
-                    
-                    // Focus Stats Card - Below character
-                    FocusStatsCard()
-                    
-                    // Quick Actions
-                    QuickActionsCard()
-                    
-                    // Recent Activity
-                    RecentActivityCard()
-                    
-                    Spacer(minLength: 100) // Space for tab bar
+        ZStack {
+            // HARDCODED mint background for testing
+            Color(red: 0.063, green: 0.737, blue: 0.502) // Explicit mint color
+                .ignoresSafeArea()
+                .onAppear {
+                    print("DEBUG: Background color being applied - Personality: \(personalityManager.personalityType?.rawValue ?? "none")")
+                    print("DEBUG: Theme background applied: \(personalityManager.currentTheme.background)")
                 }
-                .padding()
+            
+            NavigationView {
+                ScrollView {
+                    VStack(spacing: 20) {
+                        
+                        // Main Character Card - Hero Component
+                        CharacterCard(title: nil, size: 0) // Auto-sized
+                            .padding(.horizontal)
+                        
+                        // Focus Stats Card - Below character
+                        FocusStatsCard()
+                        
+                        // Quick Actions
+                        QuickActionsCard()
+                        
+                        // Recent Activity
+                        RecentActivityCard()
+                        
+                        Spacer(minLength: 100) // Space for tab bar
+                    }
+                    .padding()
+                }
+                .navigationTitle("")
+                .navigationBarHidden(true)
+                .background(Color.clear) // Make navigation transparent
             }
-            .navigationTitle("")
-            .navigationBarHidden(true)
-            .background(personalityManager.currentTheme.background.ignoresSafeArea())
+            .background(Color.clear) // Make navigation view transparent
         }
     }
 }
