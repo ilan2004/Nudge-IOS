@@ -38,13 +38,9 @@ workflows:
           <plist version="1.0">
           <dict>
               <key>method</key>
-              <string>development</string>
+              <string>debugging</string>
               <key>signingStyle</key>
-              <string>manual</string>
-              <key>signingCertificate</key>
-              <string>-</string>
-              <key>provisioningProfiles</key>
-              <dict/>
+              <string>automatic</string>
               <key>stripSwiftSymbols</key>
               <false/>
               <key>uploadBitcode</key>
@@ -53,6 +49,8 @@ workflows:
               <false/>
               <key>compileBitcode</key>
               <false/>
+              <key>teamID</key>
+              <string></string>
           </dict>
           </plist>
           EOF
