@@ -11,6 +11,19 @@
 		8D1107330486CEB800E47090 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1107340486CEB800E47090 /* ContentView.swift */; };
 		8D1107350486CEB800E47090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107360486CEB800E47090 /* Assets.xcassets */; };
 		8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107380486CEB800E47090 /* Preview Assets.xcassets */; };
+		A20000000000000000000001 /* DEBUG_ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000001 /* DEBUG_ContentView.swift */; };
+		A20000000000000000000002 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000002 /* PersistenceController.swift */; };
+		A20000000000000000000003 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* AppSettings.swift */; };
+		A20000000000000000000004 /* FocusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000004 /* FocusManager.swift */; };
+		A20000000000000000000005 /* PersonalityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000005 /* PersonalityManager.swift */; };
+		A20000000000000000000006 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000006 /* Colors.swift */; };
+		A20000000000000000000007 /* PersonalityTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000007 /* PersonalityTheme.swift */; };
+		A20000000000000000000008 /* PersonalityBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000008 /* PersonalityBadge.swift */; };
+		A20000000000000000000009 /* CharacterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000009 /* CharacterCard.swift */; };
+		A2000000000000000000000A /* FocusRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000A /* FocusRing.swift */; };
+		A2000000000000000000000B /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000B /* DashboardView.swift */; };
+		A2000000000000000000000C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000C /* OnboardingView.swift */; };
+		A2000000000000000000000D /* PlaceholderViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000000D /* PlaceholderViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +32,19 @@
 		8D1107340486CEB800E47090 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8D1107360486CEB800E47090 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D1107380486CEB800E47090 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A00000000000000000000001 /* DEBUG_ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DEBUG_ContentView.swift; sourceTree = "<group>"; };
+		A00000000000000000000002 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		A00000000000000000000003 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		A00000000000000000000004 /* FocusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusManager.swift; sourceTree = "<group>"; };
+		A00000000000000000000005 /* PersonalityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityManager.swift; sourceTree = "<group>"; };
+		A00000000000000000000006 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		A00000000000000000000007 /* PersonalityTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityTheme.swift; sourceTree = "<group>"; };
+		A00000000000000000000008 /* PersonalityBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityBadge.swift; sourceTree = "<group>"; };
+		A00000000000000000000009 /* CharacterCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCard.swift; sourceTree = "<group>"; };
+		A0000000000000000000000A /* FocusRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusRing.swift; sourceTree = "<group>"; };
+		A0000000000000000000000B /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		A0000000000000000000000C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		A0000000000000000000000D /* PlaceholderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +62,10 @@
 			isa = PBXGroup;
 			children = (
 				8D1107210486CEB800E47090 /* App */,
+				A10000000000000000000001 /* Core */,
+				A10000000000000000000003 /* UI */,
+				A10000000000000000000006 /* Features */,
+				A00000000000000000000001 /* DEBUG_ContentView.swift */,
 				8D11072C0486CEB800E47090 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,6 +79,79 @@
 				8D1107390486CEB800E47090 /* Preview Content */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000001 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000002 /* Services */,
+				A00000000000000000000002 /* PersistenceController.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000002 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000003 /* AppSettings.swift */,
+				A00000000000000000000004 /* FocusManager.swift */,
+				A00000000000000000000005 /* PersonalityManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000003 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000004 /* Components */,
+				A10000000000000000000005 /* Theme */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000004 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000009 /* CharacterCard.swift */,
+				A00000000000000000000008 /* PersonalityBadge.swift */,
+				A0000000000000000000000A /* FocusRing.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000005 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000006 /* Colors.swift */,
+				A00000000000000000000007 /* PersonalityTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000006 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000007 /* Dashboard */,
+				A10000000000000000000008 /* Onboarding */,
+				A0000000000000000000000D /* PlaceholderViews.swift */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000007 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A0000000000000000000000B /* DashboardView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000008 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				A0000000000000000000000C /* OnboardingView.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		8D11072C0486CEB800E47090 /* Products */ = {
@@ -139,6 +242,19 @@
 			files = (
 				8D1107330486CEB800E47090 /* ContentView.swift in Sources */,
 				8D1107310486CEB800E47090 /* NudgeApp.swift in Sources */,
+				A20000000000000000000001 /* DEBUG_ContentView.swift in Sources */,
+				A20000000000000000000002 /* PersistenceController.swift in Sources */,
+				A20000000000000000000003 /* AppSettings.swift in Sources */,
+				A20000000000000000000004 /* FocusManager.swift in Sources */,
+				A20000000000000000000005 /* PersonalityManager.swift in Sources */,
+				A20000000000000000000006 /* Colors.swift in Sources */,
+				A20000000000000000000007 /* PersonalityTheme.swift in Sources */,
+				A20000000000000000000008 /* PersonalityBadge.swift in Sources */,
+				A20000000000000000000009 /* CharacterCard.swift in Sources */,
+				A2000000000000000000000A /* FocusRing.swift in Sources */,
+				A2000000000000000000000B /* DashboardView.swift in Sources */,
+				A2000000000000000000000C /* OnboardingView.swift in Sources */,
+				A2000000000000000000000D /* PlaceholderViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
