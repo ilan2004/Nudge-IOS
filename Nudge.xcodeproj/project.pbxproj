@@ -74,7 +74,7 @@
 		8D1107200486CEB800E47090 = {
 			isa = PBXGroup;
 			children = (
-				8D1107210486CEB800E47090 /* Nudge */,
+				8D1107210486CEB800E47090 /* App */,
 				8D11076A0486CEB800E47090 /* Core */,
 				8D11076F0486CEB800E47090 /* Features */,
 				8D1107740486CEB800E47090 /* UI */,
@@ -83,7 +83,7 @@
 			);
 			sourceTree = "<group>";
 		};
-		8D1107210486CEB800E47090 /* Nudge */ = {
+		8D1107210486CEB800E47090 /* App */ = {
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* NudgeApp.swift */,
@@ -92,7 +92,7 @@
 				8D11075C0486CEB800E47090 /* Info.plist */,
 				8D1107390486CEB800E47090 /* Preview Content */,
 			);
-			path = Nudge;
+			path = App;
 			sourceTree = "<group>";
 		};
 		8D11072C0486CEB800E47090 /* Products */ = {
@@ -399,7 +399,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = Nudge/Info.plist;
+				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -431,7 +431,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = Nudge/Info.plist;
+				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
