@@ -1,6 +1,67 @@
 // UI/Components/FooterFocusBarView.swift
 import SwiftUI
 
+// MARK: - ViewModel
+class FooterFocusBarViewModel: ObservableObject {
+    enum Mode {
+        case idle, focus, paused, breakTime
+    }
+    
+    @Published var mode: Mode = .idle
+    @Published var remainingMs: Int = 0
+    @Published var customMinutes: Int = 25
+    @Published var selectedPreset: Int? = 25
+    
+    private var timer: Timer?
+    private var targetMs: Int = 0
+    
+    func setPreset(_ minutes: Int) {
+        selectedPreset = minutes
+        customMinutes = minutes
+    }
+    
+    func start() {
+        mode = .focus
+        targetMs = customMinutes * 60 * 1000
+        remainingMs = targetMs
+        startTimer()
+    }
+    
+    func pause() {
+        mode = .paused
+        timer?.invalidate()
+    }
+    
+    func resume() {
+        mode = .focus
+        startTimer()
+    }
+    
+    func stop() {
+        mode = .idle
+        timer?.invalidate()
+        remainingMs = 0
+        selectedPreset = nil
+    }
+    
+    func startBreak(minutes: Int) {
+        mode = .breakTime
+        targetMs = minutes * 60 * 1000
+        remainingMs = targetMs
+        startTimer()
+    }
+    
+    private func startTimer() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            self.remainingMs = max(0, self.remainingMs - 1000)
+            if self.remainingMs <= 0 {
+                self.stop()
+            }
+        }
+    }
+}
 
 // MARK: - FooterFocusBarView
 struct FooterFocusBarView: View {
@@ -9,77 +70,131 @@ struct FooterFocusBarView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            VStack(spacing: 8) {
-                if geometry.size.width > 600 {
-                    // Wide layout: single row
-                    HStack(spacing: 6) {
-                        statusChip
-                        countdown
-                        presets
-                        Spacer(minLength: 4)
-                        customMinutes
-                        primaryAction
-                        stopButton
-                        breakButton
-                        settingsButton
-                    }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 10)
-                    .retroConsoleSurface()
+            let isCompact = geometry.size.width <= 600
+            
+            VStack(spacing: 6) {
+                if isCompact {
+                    compactLayout
                 } else {
-                    // Narrow layout: two rows
-                    VStack(spacing: 6) {
-                        // Top row: status and main controls
-                        HStack(spacing: 6) {
-                            statusChip
-                            countdown
-                            Spacer(minLength: 4)
-                            primaryAction
-                            stopButton
-                            settingsButton
-                        }
-                        
-                        // Bottom row: presets and additional controls
-                        HStack(spacing: 6) {
-                            presets
-                            Spacer(minLength: 4)
-                            customMinutes
-                            breakButton
-                        }
-                    }
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 8)
-                    .retroConsoleSurface()
+                    wideLayout
                 }
             }
-            .frame(maxWidth: geometry.size.width - 32) // Respect container bounds
+            .padding(.horizontal, isCompact ? 8 : 12)
+            .padding(.vertical, isCompact ? 8 : 10)
+            .retroConsoleSurface()
+            .frame(maxWidth: geometry.size.width - 32)
         }
-        .frame(height: 80) // Fixed height to prevent layout shifts
+        .frame(height: vm.mode == .idle ? 60 : 80) // Adaptive height
         .padding(.horizontal, 16)
         .padding(.bottom, 12)
+        .animation(.easeInOut(duration: 0.2), value: vm.mode)
         .sheet(isPresented: $showSettings) {
             FocusSettingsView()
         }
     }
+    
+    // MARK: - Wide Layout (Desktop)
+    private var wideLayout: some View {
+        HStack(spacing: 6) {
+            if vm.mode != .idle {
+                statusChip
+                countdown
+            }
+            
+            if vm.mode == .idle {
+                presets
+                Spacer(minLength: 4)
+                customMinutes
+            }
+            
+            Spacer(minLength: 4)
+            
+            dynamicActionButtons
+            
+            settingsButton
+        }
+    }
+    
+    // MARK: - Compact Layout (Mobile)
+    private var compactLayout: some View {
+        VStack(spacing: 6) {
+            // Top row: Status and primary actions
+            HStack(spacing: 6) {
+                if vm.mode != .idle {
+                    statusChip
+                    countdown
+                }
+                
+                Spacer(minLength: 4)
+                
+                dynamicActionButtons
+                
+                settingsButton
+            }
+            
+            // Bottom row: Only show presets when idle
+            if vm.mode == .idle {
+                HStack(spacing: 6) {
+                    presets
+                    Spacer(minLength: 4)
+                    customMinutes
+                }
+            }
+        }
+    }
+    
+    // MARK: - Dynamic Action Buttons (State-based)
+    @ViewBuilder
+    private var dynamicActionButtons: some View {
+        switch vm.mode {
+        case .idle:
+            // Idle: Just Start button
+            Button("Start") { vm.start() }
+                .buttonStyle(NavPillStyle(variant: .primary))
+            
+        case .focus:
+            // Focus: Pause + Break
+            Button("Pause") { vm.pause() }
+                .buttonStyle(NavPillStyle(variant: .amber))
+            
+            Button("Break") { vm.startBreak(minutes: 5) }
+                .buttonStyle(NavPillStyle(variant: .cyan, compact: true))
+            
+        case .paused:
+            // Paused: Resume + Stop
+            Button("Resume") { vm.resume() }
+                .buttonStyle(NavPillStyle(variant: .primary))
+            
+            Button("Stop") { vm.stop() }
+                .buttonStyle(NavPillStyle(variant: .accent, compact: true))
+            
+        case .breakTime:
+            // Break: End Break button
+            Button("End Break") { vm.stop() }
+                .buttonStyle(NavPillStyle(variant: .cyan))
+        }
+    }
 
+    // MARK: - UI Components
     private var statusChip: some View {
         Text(statusLabel)
             .font(.caption).bold()
-            .padding(.horizontal, 10).padding(.vertical, 6)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
             .background(Capsule().fill(statusChipColor.opacity(0.3)))
             .foregroundColor(Color.nudgeGreen900)
     }
 
     private var countdown: some View {
         Text(formatMMSS(vm.remainingMs))
-            .font(.system(.footnote, design: .monospaced))
-            .foregroundColor(.secondary)
+            .font(.system(.footnote, design: .monospaced).bold())
+            .foregroundColor(Color.nudgeGreen900)
     }
 
     private var presets: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 4) {
             ForEach([25, 45, 60], id: \.self) { m in
-                Button("\(m)m") { vm.setPreset(m) }
+                Button("\(m)") { vm.setPreset(m) }
                     .buttonStyle(NavPillStyle(variant: vm.selectedPreset == m ? .cyan : .outline, compact: true))
             }
         }
@@ -96,7 +211,7 @@ struct FooterFocusBarView: View {
             Text("\(vm.customMinutes)m")
                 .font(.caption2.bold())
                 .lineLimit(1)
-                .frame(minWidth: 30)
+                .frame(minWidth: 28)
             
             Button(action: { vm.customMinutes = min(240, vm.customMinutes + 1) }) {
                 Image(systemName: "plus.circle.fill")
@@ -104,8 +219,8 @@ struct FooterFocusBarView: View {
             }
             .foregroundColor(Color.nudgeGreen900)
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 6)
+        .padding(.horizontal, 6)
+        .padding(.vertical, 4)
         .background(
             Capsule()
                 .fill(Color(.systemBackground))
@@ -115,55 +230,21 @@ struct FooterFocusBarView: View {
         )
     }
 
-    private var primaryAction: some View {
-        Button(primaryLabel) {
-            switch (vm.mode) {
-            case .idle: vm.start()
-            case .paused: vm.resume()
-            case .focus, .breakTime: vm.pause()
-            }
-        }
-        .buttonStyle(NavPillStyle(variant: primaryVariant))
-    }
-
-    private var stopButton: some View {
-        Button("Stop") { vm.stop() }
-            .buttonStyle(NavPillStyle(variant: .accent))
-    }
-
-    private var breakButton: some View {
-        Button("Break 5m") { vm.startBreak(minutes: 5) }
-            .buttonStyle(NavPillStyle(variant: .cyan))
-    }
-
     private var settingsButton: some View {
         Button {
             showSettings = true
         } label: {
-            Image(systemName: "slider.horizontal.3")
+            Image(systemName: "gearshape.fill")
+                .font(.caption)
         }
         .buttonStyle(NavPillStyle(variant: .outline, compact: true))
     }
 
-    private var primaryLabel: String {
-        switch vm.mode {
-        case .idle: return "Start"
-        case .paused: return "Resume"
-        case .focus, .breakTime: return "Pause"
-        }
-    }
-
-    private var primaryVariant: PillVariant {
-        switch vm.mode {
-        case .idle, .paused: return .primary // Start/Resume -> green primary
-        case .focus, .breakTime: return .amber // Pause -> amber
-        }
-    }
-
+    // MARK: - Computed Properties
     private var statusLabel: String {
         switch vm.mode {
         case .idle: return "Idle"
-        case .focus: return "Focusing"
+        case .focus: return "Focus"
         case .paused: return "Paused"
         case .breakTime: return "Break"
         }
@@ -187,6 +268,34 @@ struct FooterFocusBarView: View {
     }
 }
 
+// MARK: - Placeholder Settings View
+struct FocusSettingsView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 20) {
+                Text("Settings")
+                    .font(.title.bold())
+                    .foregroundColor(.nudgeGreen900)
+                
+                Text("Configure your focus session preferences here.")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding()
+                
+                Spacer()
+                
+                Button("Close") {
+                    dismiss()
+                }
+                .buttonStyle(NavPillStyle(variant: .primary))
+            }
+            .padding()
+        }
+    }
+}
 
 // MARK: - Preview
 #Preview {
