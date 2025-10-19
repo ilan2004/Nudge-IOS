@@ -13,29 +13,26 @@ struct DashboardView: View {
             NavigationView {
                 // Ensure the content respects screen bounds
             ScrollView {
+                // Constrain and center the dashboard content to avoid any overflow/zoom
                 VStack(spacing: 20) {
-                    // Constrain max width to prevent oversized layouts on any device
-                    EmptyView()
-                        .frame(maxWidth: 600)
-                        .hidden()
-                        
-                        // Main Character Card - Hero Component
-                        CharacterCard(title: nil, size: 0) // Auto-sized
-                            .padding(.horizontal)
-                        
-                        // Focus Stats Card - Below character
-                        FocusStatsCard()
-                        
-                        // Quick Actions
-                        QuickActionsCard()
-                        
-                        // Recent Activity
-                        RecentActivityCard()
-                        
+                    // Main Character Card - Hero Component
+                    CharacterCard(title: nil, size: 0) // Auto-sized
+                    
+                    // Focus Stats Card - Below character
+                    FocusStatsCard()
+                    
+                    // Quick Actions
+                    QuickActionsCard()
+                    
+                    // Recent Activity
+                    RecentActivityCard()
+                    
                     Spacer(minLength: 24) // Smaller bottom spacer now that tab bar is removed
-                    }
-.padding(.horizontal, 16)
                 }
+                .frame(maxWidth: 600, alignment: .center)
+                .padding(.horizontal, 16)
+                .frame(maxWidth: .infinity, alignment: .center)
+            }
                 .navigationTitle("")
                 .navigationBarHidden(true)
                 .background(Color.clear) // Make navigation transparent
