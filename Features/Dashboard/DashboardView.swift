@@ -6,13 +6,9 @@ struct DashboardView: View {
     
     var body: some View {
         ZStack {
-            // HARDCODED mint background for testing
-            Color(red: 0.063, green: 0.737, blue: 0.502) // Explicit mint color
+            // Exact mint background: rgb(130, 237, 166)
+            Color(red: 130/255, green: 237/255, blue: 166/255)
                 .ignoresSafeArea()
-                .onAppear {
-                    print("DEBUG: Background color being applied - Personality: \(personalityManager.personalityType?.rawValue ?? "none")")
-                    print("DEBUG: Theme background applied: \(personalityManager.currentTheme.background)")
-                }
             
             NavigationView {
                 ScrollView {

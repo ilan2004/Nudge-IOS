@@ -87,7 +87,7 @@ struct PersonalityTheme {
                 secondary: Color(red: 0.627, green: 0.322, blue: 0.714),
                 accent: Color(red: 0.627, green: 0.322, blue: 0.714),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+background: Color(red: 130/255, green: 237/255, blue: 166/255), // mint background
                 text: Color.white, // white text on mint background
                 textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
             ),
