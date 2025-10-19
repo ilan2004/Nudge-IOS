@@ -11,7 +11,7 @@ struct NudgeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView() // FIXED: Using the real ContentView with mint background
+            DEBUG_ContentView() // Reverting to debug layout as requested
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(appSettings)
                 .environmentObject(personalityManager)
