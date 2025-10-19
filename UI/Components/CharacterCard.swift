@@ -234,41 +234,12 @@ struct CharacterMediaView: View {
     
     var body: some View {
         ZStack {
-            // Base static image with fallback
-            Group {
-                if Bundle.main.path(forResource: imageName.components(separatedBy: ".").first, ofType: "png") != nil ||
-                   Bundle.main.path(forResource: imageName.components(separatedBy: ".").first, ofType: "jpg") != nil {
-                    Image(imageName)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: size, height: size)
-                        .clipped()
-                } else {
-                    // Fallback: Create ENFJ-style placeholder
-                    ZStack {
-                        Circle()
-                            .fill(LinearGradient(
-                                colors: [
-                                    Color(red: 0.439, green: 0.859, blue: 0.804), // ENFJ teal
-                                    Color(red: 0.339, green: 0.759, blue: 0.704)  // darker teal
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ))
-                        
-                        VStack(spacing: 8) {
-                            Image(systemName: "person.fill")
-                                .font(.system(size: size * 0.3))
-                                .foregroundColor(.white)
-                            
-                            Text("ENFJ")
-                                .font(.custom("Tanker-Regular", size: size * 0.08))
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .frame(width: size, height: size)
-                }
+            // Base static image from Asset Catalog
+            Image(imageName)
+                .resizable()
+                .scaledToFill()
+                .frame(width: size, height: size)
+                .clipped()
             }
             .opacity(showVideoAnimation ? 0 : 1)
             .animation(.easeInOut(duration: 0.5), value: showVideoAnimation)
