@@ -73,9 +73,9 @@ struct PersonalityTheme {
         secondary: Color(red: 0.055, green: 0.259, blue: 0.184), // #0E4238 - green
         accent: Color(red: 1.0, green: 0.411, blue: 0.706), // #FF69B4 - pink
         surface: Color(red: 0.988, green: 0.973, blue: 0.949), // #FCF8F2 - cream
-        background: Color(red: 0.988, green: 0.973, blue: 0.949), // #FCF8F2 - cream
-        text: Color(red: 0.055, green: 0.259, blue: 0.184), // #0E4238 - green
-        textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6) // gray
+        background: Color(red: 0.063, green: 0.737, blue: 0.502), // #10BC80 - mint (CHANGED)
+        text: Color.white, // Changed to white for better contrast on mint background
+        textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9) // Light gray for secondary text
     )
     
     static func colors(for personalityType: PersonalityType, gender: Gender = .neutral) -> PersonalityColors {
@@ -87,8 +87,8 @@ struct PersonalityTheme {
                 secondary: Color(red: 0.627, green: 0.322, blue: 0.714),
                 accent: Color(red: 0.627, green: 0.322, blue: 0.714),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
                 textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
             ),
             .intp: PersonalityColors(
@@ -96,9 +96,9 @@ struct PersonalityTheme {
                 secondary: Color(red: 0.678, green: 0.847, blue: 0.902),
                 accent: Color(red: 0.678, green: 0.847, blue: 0.902),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
-                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
+                textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9)
             ),
             .entj: PersonalityColors(
                 primary: Color(red: 1.0, green: 0.596, blue: 0.0), // orange
@@ -123,61 +123,61 @@ struct PersonalityTheme {
                 secondary: Color(red: 0.392, green: 0.584, blue: 0.929),
                 accent: Color(red: 0.392, green: 0.584, blue: 0.929),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
-                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
+                textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9)
             ),
             .infp: PersonalityColors(
                 primary: Color(red: 0.878, green: 0.804, blue: 0.937), // lilac
                 secondary: Color(red: 0.878, green: 0.804, blue: 0.937),
                 accent: Color(red: 0.878, green: 0.804, blue: 0.937),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
-                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
+                textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9)
             ),
             .enfj: PersonalityColors(
                 primary: Color(red: 0.439, green: 0.859, blue: 0.804), // teal - ENFJ!
                 secondary: Color(red: 0.439, green: 0.859, blue: 0.804),
                 accent: Color(red: 0.439, green: 0.859, blue: 0.804),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
-                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
+                textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9)
             ),
             .enfp: PersonalityColors(
                 primary: Color(red: 1.0, green: 0.898, blue: 0.616), // yellow
                 secondary: Color(red: 1.0, green: 0.898, blue: 0.616),
                 accent: Color(red: 1.0, green: 0.898, blue: 0.616),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
-                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
+                textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9)
             ),
             .istj: PersonalityColors(
                 primary: Color(red: 0.392, green: 0.584, blue: 0.929), // blue
                 secondary: Color(red: 0.392, green: 0.584, blue: 0.929),
                 accent: Color(red: 0.392, green: 0.584, blue: 0.929),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
-                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
+                textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9)
             ),
             .isfj: PersonalityColors(
                 primary: Color(red: 0.918, green: 0.667, blue: 0.851), // pink light
                 secondary: Color(red: 0.918, green: 0.667, blue: 0.851),
                 accent: Color(red: 0.918, green: 0.667, blue: 0.851),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
-                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
+                textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9)
             ),
             .estj: PersonalityColors(
                 primary: Color(red: 1.0, green: 0.596, blue: 0.0), // orange
                 secondary: Color(red: 1.0, green: 0.596, blue: 0.0),
                 accent: Color(red: 1.0, green: 0.596, blue: 0.0),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
                 text: Color.white,
                 textSecondary: Color(red: 0.8, green: 0.8, blue: 0.8)
             ),
@@ -186,7 +186,7 @@ struct PersonalityTheme {
                 secondary: Color(red: 1.0, green: 0.411, blue: 0.706),
                 accent: Color(red: 1.0, green: 0.411, blue: 0.706),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
                 text: Color.white,
                 textSecondary: Color(red: 0.8, green: 0.8, blue: 0.8)
             ),
@@ -195,25 +195,25 @@ struct PersonalityTheme {
                 secondary: Color(red: 0.439, green: 0.859, blue: 0.804),
                 accent: Color(red: 0.439, green: 0.859, blue: 0.804),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
-                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
+                textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9)
             ),
             .isfp: PersonalityColors(
                 primary: Color(red: 0.878, green: 0.804, blue: 0.937), // lilac
                 secondary: Color(red: 0.878, green: 0.804, blue: 0.937),
                 accent: Color(red: 0.878, green: 0.804, blue: 0.937),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
-                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
+                textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9)
             ),
             .estp: PersonalityColors(
                 primary: Color(red: 1.0, green: 0.757, blue: 0.027), // amber
                 secondary: Color(red: 1.0, green: 0.757, blue: 0.027),
                 accent: Color(red: 1.0, green: 0.757, blue: 0.027),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
                 text: Color.white,
                 textSecondary: Color(red: 0.8, green: 0.8, blue: 0.8)
             ),
@@ -222,9 +222,9 @@ struct PersonalityTheme {
                 secondary: Color(red: 1.0, green: 0.898, blue: 0.616),
                 accent: Color(red: 1.0, green: 0.898, blue: 0.616),
                 surface: Color(red: 0.988, green: 0.973, blue: 0.949),
-                background: Color(red: 0.988, green: 0.973, blue: 0.949),
-                text: Color(red: 0.055, green: 0.259, blue: 0.184),
-                textSecondary: Color(red: 0.6, green: 0.6, blue: 0.6)
+                background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
+                text: Color.white, // white text on mint background
+                textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9)
             )
         ]
         
