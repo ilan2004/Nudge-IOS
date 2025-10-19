@@ -1,95 +1,111 @@
+// UI/Theme/NudgeStyles.swift
 import SwiftUI
 
-// Nudge style system approximating the web nav-pill and retro console surface
-public enum PillVariant { case primary, cyan, amber, accent, outline, neutral }
+// MARK: - Pill Variant
+public enum PillVariant { 
+    case primary, cyan, amber, accent, outline, neutral 
+}
 
+// MARK: - NavPillStyle (Nudge style system)
 public struct NavPillStyle: ButtonStyle {
     var variant: PillVariant = .neutral
     var compact: Bool = false
-
+    
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(compact ? .footnote.bold() : .callout.bold())
             .padding(.horizontal, compact ? 10 : 14)
             .padding(.vertical, compact ? 6 : 8)
-            .background(background(configuration: configuration))
-            .overlay(
-                Capsule().stroke(borderColor.opacity(1.0), lineWidth: 2)
-            )
+            .background(bgColor)
             .foregroundStyle(foregroundColor)
             .clipShape(Capsule())
-            .shadow(color: shadowColor.opacity(1.0), radius: 0, x: 0, y: 4)
-    }
-
-    private var bgColor: Color {
-        switch variant {
-        case .primary: return Color("NudgeGreenSurface", bundle: .main).opacity(1)
-        case .cyan: return Color("NudgeCyanSurface", bundle: .main).opacity(1)
-        case .amber: return Color("NudgeAmberSurface", bundle: .main).opacity(1)
-        case .accent: return Color("NudgeAccentSurface", bundle: .main).opacity(1)
-        case .outline, .neutral: return Color(.systemBackground)
-        }
-    }
-
-    private var borderColor: Color {
-        switch variant {
-        case .primary: return Color("NudgeGreen900", bundle: .main)
-        case .cyan: return Color("NudgeCyan600", bundle: .main)
-        case .amber: return Color("NudgeAmber600", bundle: .main)
-        case .accent: return Color("NudgeGreen900", bundle: .main)
-        case .outline, .neutral: return Color("NudgeGreen900", bundle: .main)
-        }
-    }
-
-    private var foregroundColor: Color {
-        switch variant {
-        case .primary, .cyan, .amber, .accent: return Color("NudgeGreen900", bundle: .main)
-        case .outline, .neutral: return Color("NudgeGreen900", bundle: .main)
-        }
-    }
-
-    private var shadowColor: Color { Color("NudgeGreen900", bundle: .main) }
-
-    @ViewBuilder
-    private func background(configuration: Configuration) -> some View {
-        Capsule()
-            .fill( variant == .outline || variant == .neutral ? Color(.systemBackground) : bgColor )
+            .overlay(
+                Capsule()
+                    .strokeBorder(borderColor, lineWidth: 2)
+                    .padding(.bottom, 4) // Creates the white gap for 3D effect
+            )
             .overlay(
                 Capsule()
                     .stroke(borderColor, lineWidth: 2)
             )
-            .shadow(color: shadowColor.opacity(1.0), radius: 0, x: 0, y: 4)
-            .opacity(configuration.isPressed ? 0.9 : 1.0)
+            .shadow(color: shadowColor, radius: 0, x: 0, y: 3)
+            .opacity(configuration.isPressed ? 0.85 : 1.0)
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+    }
+    
+    private var bgColor: Color {
+        switch variant {
+        case .primary: return Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87))
+        case .cyan: return Color("NudgeCyanSurface", bundle: .main, default: Color(red: 0.81, green: 0.98, blue: 1.0))
+        case .amber: return Color("NudgeAmberSurface", bundle: .main, default: Color(red: 1.0, green: 0.95, blue: 0.78))
+        case .accent: return Color("NudgeAccentSurface", bundle: .main, default: Color(red: 0.86, green: 0.99, blue: 0.91))
+        case .outline, .neutral: return Color(.systemBackground)
+        }
+    }
+    
+    private var borderColor: Color {
+        switch variant {
+        case .primary: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
+        case .cyan: return Color("NudgeCyan600", bundle: .main, default: Color(red: 0.03, green: 0.57, blue: 0.70))
+        case .amber: return Color("NudgeAmber600", bundle: .main, default: Color(red: 0.85, green: 0.46, blue: 0.02))
+        case .accent: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
+        case .outline, .neutral: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
+        }
+    }
+    
+    private var foregroundColor: Color {
+        Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
+    }
+    
+    private var shadowColor: Color {
+        switch variant {
+        case .primary: return Color(red: 0.0, green: 0.20, blue: 0.16) // Darker shadow for primary
+        case .cyan: return Color("NudgeCyan600", bundle: .main, default: Color(red: 0.03, green: 0.57, blue: 0.70))
+        case .amber: return Color("NudgeAmber600", bundle: .main, default: Color(red: 0.85, green: 0.46, blue: 0.02))
+        case .accent, .outline, .neutral: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
+        }
     }
 }
 
+// MARK: - RetroConsoleSurface Modifier
 public struct RetroConsoleSurface: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .background(
                 Capsule()
-                    .fill(Color("NudgeSurface", bundle: .main))
+                    .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
             )
             .overlay(
-                Capsule().stroke(Color("NudgeGreen900", bundle: .main), lineWidth: 2)
+                Capsule()
+                    .strokeBorder(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), lineWidth: 2)
+                    .padding(.bottom, 4) // Creates white gap effect
             )
-            .shadow(color: Color("NudgeGreen900", bundle: .main), radius: 0, x: 0, y: 4)
-            .shadow(color: Color("NudgeGreen900", bundle: .main).opacity(0.2), radius: 24, x: 0, y: 8)
+            .overlay(
+                Capsule().stroke(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), lineWidth: 2)
+            )
+            .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), radius: 0, x: 0, y: 4)
+            .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.2), radius: 12, x: 0, y: 4)
     }
 }
 
 public extension View {
-    func retroConsoleSurface() -> some View { self.modifier(RetroConsoleSurface()) }
-}
-
-// Provide default color assets if not present by falling back to RGB values
-public extension Color {
-    static var nudgeGreen900: Color { Color("NudgeGreen900", bundle: .main, default: Color(red: 3/255, green: 89/255, blue: 77/255)) }
-}
-
-private extension Color {
-    init(_ name: String, bundle: Bundle, default fallback: Color) {
-        if let _ = UIColor(named: name, in: bundle, compatibleWith: nil) { self = Color(name) } else { self = fallback }
+    func retroConsoleSurface() -> some View { 
+        self.modifier(RetroConsoleSurface()) 
     }
 }
 
+// MARK: - Color Extensions
+public extension Color {
+    static var nudgeGreen900: Color { 
+        Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
+    }
+    
+    // Helper initializer with fallback
+    init(_ name: String, bundle: Bundle, default fallback: Color) {
+        if let _ = UIColor(named: name, in: bundle, compatibleWith: nil) {
+            self = Color(name, bundle: bundle)
+        } else {
+            self = fallback
+        }
+    }
+}

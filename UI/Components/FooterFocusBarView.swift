@@ -1,5 +1,69 @@
+// UI/Components/FooterFocusBarView.swift
 import SwiftUI
 
+// MARK: - ViewModel
+class FooterFocusBarViewModel: ObservableObject {
+    enum Mode {
+        case idle, focus, paused, breakTime
+    }
+    
+    @Published var mode: Mode = .idle
+    @Published var remainingMs: Int = 0
+    @Published var customMinutes: Int = 25
+    @Published var selectedPreset: Int? = 25
+    
+    private var timer: Timer?
+    private var targetMs: Int = 0
+    
+    func setPreset(_ minutes: Int) {
+        selectedPreset = minutes
+        customMinutes = minutes
+    }
+    
+    func start() {
+        mode = .focus
+        targetMs = customMinutes * 60 * 1000
+        remainingMs = targetMs
+        startTimer()
+    }
+    
+    func pause() {
+        mode = .paused
+        timer?.invalidate()
+    }
+    
+    func resume() {
+        mode = .focus
+        startTimer()
+    }
+    
+    func stop() {
+        mode = .idle
+        timer?.invalidate()
+        remainingMs = 0
+        selectedPreset = nil
+    }
+    
+    func startBreak(minutes: Int) {
+        mode = .breakTime
+        targetMs = minutes * 60 * 1000
+        remainingMs = targetMs
+        startTimer()
+    }
+    
+    private func startTimer() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            self.remainingMs = max(0, self.remainingMs - 1000)
+            if self.remainingMs <= 0 {
+                self.stop()
+            }
+        }
+    }
+}
+
+// MARK: - FooterFocusBarView
 struct FooterFocusBarView: View {
     @StateObject private var vm = FooterFocusBarViewModel()
     @State private var showSettings = false
@@ -63,7 +127,8 @@ struct FooterFocusBarView: View {
         Text(statusLabel)
             .font(.caption).bold()
             .padding(.horizontal, 10).padding(.vertical, 6)
-            .background(Capsule().fill(Color.cyan.opacity(0.2)))
+            .background(Capsule().fill(statusChipColor.opacity(0.3)))
+            .foregroundColor(Color.nudgeGreen900)
     }
 
     private var countdown: some View {
@@ -75,7 +140,7 @@ struct FooterFocusBarView: View {
     private var presets: some View {
         HStack(spacing: 6) {
             ForEach([25, 45, 60], id: \.self) { m in
-                Button("\\(m)m") { vm.setPreset(m) }
+                Button("\(m)m") { vm.setPreset(m) }
                     .buttonStyle(NavPillStyle(variant: vm.selectedPreset == m ? .cyan : .outline, compact: true))
             }
         }
@@ -83,13 +148,32 @@ struct FooterFocusBarView: View {
 
     private var customMinutes: some View {
         HStack(spacing: 4) {
-            Stepper(value: $vm.customMinutes, in: 1...240, step: 1) {
-                Text("\(vm.customMinutes)m")
-                    .font(.caption2)
-                    .lineLimit(1)
+            Button(action: { vm.customMinutes = max(1, vm.customMinutes - 1) }) {
+                Image(systemName: "minus.circle.fill")
+                    .font(.caption)
             }
-            .frame(minWidth: 80, maxWidth: 120) // Flexible width
+            .foregroundColor(Color.nudgeGreen900)
+            
+            Text("\(vm.customMinutes)m")
+                .font(.caption2.bold())
+                .lineLimit(1)
+                .frame(minWidth: 30)
+            
+            Button(action: { vm.customMinutes = min(240, vm.customMinutes + 1) }) {
+                Image(systemName: "plus.circle.fill")
+                    .font(.caption)
+            }
+            .foregroundColor(Color.nudgeGreen900)
         }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 6)
+        .background(
+            Capsule()
+                .fill(Color(.systemBackground))
+                .overlay(
+                    Capsule().stroke(Color.nudgeGreen900, lineWidth: 2)
+                )
+        )
     }
 
     private var primaryAction: some View {
@@ -145,6 +229,15 @@ struct FooterFocusBarView: View {
         case .breakTime: return "Break"
         }
     }
+    
+    private var statusChipColor: Color {
+        switch vm.mode {
+        case .idle: return .gray
+        case .focus: return Color(red: 0.24, green: 0.84, blue: 0.91)
+        case .paused: return Color(red: 0.96, green: 0.69, blue: 0.13)
+        case .breakTime: return Color(red: 0.24, green: 0.84, blue: 0.91)
+        }
+    }
 
     private func formatMMSS(_ ms: Int) -> String {
         guard ms > 0 else { return "00:00" }
@@ -155,8 +248,40 @@ struct FooterFocusBarView: View {
     }
 }
 
-#Preview {
-    FooterFocusBarView()
-        .padding()
+// MARK: - Placeholder Settings View
+struct FocusSettingsView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 20) {
+                Text("Settings")
+                    .font(.title.bold())
+                    .foregroundColor(.nudgeGreen900)
+                
+                Text("Configure your focus session preferences here.")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding()
+                
+                Spacer()
+                
+                Button("Close") {
+                    dismiss()
+                }
+                .buttonStyle(NavPillStyle(variant: .primary))
+            }
+            .padding()
+        }
+    }
 }
 
+// MARK: - Preview
+#Preview {
+    VStack {
+        Spacer()
+        FooterFocusBarView()
+    }
+    .background(Color(red: 0.96, green: 0.96, blue: 0.94))
+}
