@@ -27,7 +27,7 @@ struct DashboardView: View {
                         // Recent Activity
                         RecentActivityCard()
                         
-                        Spacer(minLength: 100) // Space for tab bar
+                    Spacer(minLength: 24) // Smaller bottom spacer now that tab bar is removed
                     }
                     .padding()
                 }
