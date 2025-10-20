@@ -10,8 +10,7 @@ struct ContentView: View {
             // Global mint background for all tabs
             Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea()
             
-            RetroTabView {
-                TabView {
+            TabView {
                 // 1) Nudge (Home)
                 NudgeHomeView()
                     .foregroundColor(Color.green)
@@ -56,9 +55,24 @@ struct ContentView: View {
                         Image(systemName: "person.fill")
                         Text("Profile")
                     }
-                }
-                .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
             }
+            .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
+            
+            // Custom tab bar background overlay with retro console surface styling
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(height: 49) // Standard tab bar height
+                        .padding(.horizontal, 16)
+                        .retroConsoleSurface()
+                        .padding(.bottom, 34) // Safe area bottom padding
+                    Spacer()
+                }
+            }
+            .allowsHitTesting(false) // Let tab bar touches pass through
             
             // Footer sits above tab bar
             VStack {
@@ -70,11 +84,41 @@ struct ContentView: View {
         .environment(\.dynamicTypeSize, .medium)
         .preferredColorScheme(appSettings.colorScheme)
         .onAppear {
+            setupRetroTabBarAppearance()
             print("Tab layout loaded")
             print("Personality type: \(personalityManager.personalityType?.rawValue ?? "nil")")
         }
     }
     
+    // MARK: - Tab Bar Styling
+    private func setupRetroTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .clear
+        
+        // Tab item styling to match retro console surface theme
+        let borderColor = UIColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
+        let normalColor = borderColor.withAlphaComponent(0.6)
+        let selectedColor = borderColor
+        
+        // Normal state
+        appearance.stackedLayoutAppearance.normal.iconColor = normalColor
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: normalColor,
+            .font: UIFont.systemFont(ofSize: 10, weight: .medium)
+        ]
+        
+        // Selected state
+        appearance.stackedLayoutAppearance.selected.iconColor = selectedColor
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: selectedColor,
+            .font: UIFont.systemFont(ofSize: 10, weight: .bold)
+        ]
+        
+        // Apply to all tab bars
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+    }
     
     // MARK: - Tabs Content
     struct NudgeHomeView: View {
