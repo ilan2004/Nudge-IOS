@@ -61,10 +61,6 @@ struct RetroTabBar: View {
             TopRoundedRectangle(radius: 20)
                 .ignoresSafeArea(edges: .bottom) // extend mask shape to bottom
         )
-        .overlay(
-            TopRoundedRectangle(radius: 20)
-                .stroke(Color(red: 0.01, green: 0.35, blue: 0.30), lineWidth: 2)
-        )
         .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30), radius: 0, x: 0, y: -4) // upward drop shadow
         .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30).opacity(0.2), radius: 12, x: 0, y: -8) // upward soft shadow
     }
