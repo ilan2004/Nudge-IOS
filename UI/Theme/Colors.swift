@@ -64,4 +64,7 @@ extension Color {
     static let defaultMint = Color(red: 0.063, green: 0.737, blue: 0.502) // #10BC80
     static let defaultCream = Color(red: 0.988, green: 0.973, blue: 0.949) // #FCF8F2
     static let defaultSurface = Color(red: 0.988, green: 0.973, blue: 0.949) // Same as cream
+    
+    // Compatibility color for .green references
+    static let green = Color(red: 0.055, green: 0.259, blue: 0.184) // Default green
 }
