@@ -6,23 +6,7 @@ struct FooterFocusBarView: View {
     @State private var showSettings = false
 
     var body: some View {
-        VStack(spacing: 0) {
-            if viewModel.mode == .idle {
-                idleLayout
-            } else {
-                activeLayout
-            }
-        }
-    .background(.clear)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .retroConsoleSurface()
-        .padding(.horizontal, 12)
-        .padding(.bottom, 12)
-        .animation(.easeInOut(duration: 0.2), value: viewModel.mode)
-        .sheet(isPresented: $showSettings) {
-            FocusSettingsView()
-        }
+        EmptyView()
     }
     
     // MARK: - Idle Layout
