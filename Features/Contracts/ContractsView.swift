@@ -4,7 +4,7 @@ import SwiftUI
 public struct ContractsView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 20) {
             Text("Contracts")
                 .font(.title)

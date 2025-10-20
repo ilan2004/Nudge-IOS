@@ -4,7 +4,7 @@ import SwiftUI
 public struct ProfileView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 20) {
             // Profile Header
             if let personalityType = personalityManager.personalityType {
@@ -57,7 +57,7 @@ public struct SettingsRow: View {
     let icon: String
     let action: () -> Void
     
-    var body: some View {
+    public var body: some View {
         Button(action: action) {
             HStack {
                 Image(systemName: icon)

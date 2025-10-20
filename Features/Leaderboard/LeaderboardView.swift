@@ -4,7 +4,7 @@ import SwiftUI
 public struct LeaderboardView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 20) {
             Text("Leaderboard")
                 .font(.title)
@@ -37,7 +37,7 @@ public struct LeaderboardRow: View {
     let isCurrentUser: Bool
     @EnvironmentObject var personalityManager: PersonalityManager
     
-    var body: some View {
+    public var body: some View {
         HStack {
             Text("#\(rank)")
                 .font(.headline)
