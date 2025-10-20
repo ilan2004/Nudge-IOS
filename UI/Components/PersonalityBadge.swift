@@ -1,170 +1,119 @@
 import SwiftUI
-#if canImport(FamilyControls)
-import FamilyControls
-#endif
 
-struct FocusSettingsView: View {
-    @Environment(\.dismiss) private var dismiss
-    @StateObject private var restrictions = RestrictionsController()
-
-    @State private var showPicker = false
-
-    var body: some View {
-        ZStack {
-            // Background
-            Color(red: 0.96, green: 0.96, blue: 0.94)
-                .ignoresSafeArea()
-
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Header
-                    HStack {
-                        Text("Focus Settings")
-                            .font(.title2.bold())
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
-                        Spacer()
-                        Button("Done") { dismiss() }
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
-                            .font(.body.weight(.semibold))
-                    }
-                    .padding(.bottom, 4)
-
-                    // Blocking section
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Blocking")
-                            .font(.headline.weight(.bold))
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
-
-                        Button {
-                            showPicker.toggle()
-                        } label: {
-                            HStack(spacing: 10) {
-                                Image(systemName: "lock.slash")
-                                    .font(.body.weight(.medium))
-                                Text("Choose Apps & Websites")
-                                    .font(.body.weight(.medium))
-                            }
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .padding(.horizontal, 16)
-                        }
-                        .background(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
-                                .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), radius: 0, x: 0, y: 4)
-                                .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.2), radius: 12, x: 0, y: 8)
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .stroke(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), lineWidth: 2)
-                        )
-
-                        #if canImport(FamilyControls)
-                        if #available(iOS 16.0, *) {
-                            if showPicker {
-                                FamilyActivityPicker(selection: Binding(get: {
-                                    restrictions.selection
-                                }, set: { new in
-                                    restrictions.selection = new
-                                }))
-                                .frame(height: 320)
-                            }
-                        } else {
-                            Text("Requires iOS 16+")
-                                .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.6))
-                                .font(.subheadline)
-                        }
-                        #else
-                        Text("Screen Time APIs not available in this build environment.")
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.6))
-                            .font(.subheadline)
-                        #endif
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                    // Current selection
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Current Selection")
-                            .font(.headline.weight(.bold))
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
-
-                        #if canImport(FamilyControls)
-                        if #available(iOS 16.0, *) {
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("Apps: \(restrictions.selection.applicationTokens.count)")
-                                    .font(.body)
-                                Text("Websites: \(restrictions.selection.webDomainTokens.count)")
-                                    .font(.body)
-                            }
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
-                        }
-                        #else
-                        Text("N/A")
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
-                            .font(.body)
-                        #endif
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                    // Session policy
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Session Policy")
-                            .font(.headline.weight(.bold))
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
-
-                        HStack(spacing: 12) {
-                            Button("Apply Now") {
-                                Task { 
-                                    await restrictions.requestAuthorizationIfNeeded()
-                                    restrictions.applyShields()
-                                }
-                            }
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
-                            .font(.body.weight(.medium))
-                            .padding(.vertical, 12)
-                            .padding(.horizontal, 16)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
-                                    .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), radius: 0, x: 0, y: 4)
-                                    .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.2), radius: 12, x: 0, y: 8)
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .stroke(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), lineWidth: 2)
-                            )
-
-                            Button("Clear") {
-                                restrictions.clearShields()
-                            }
-                            .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
-                            .font(.body.weight(.medium))
-                            .padding(.vertical, 12)
-                            .padding(.horizontal, 16)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
-                                    .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), radius: 0, x: 0, y: 4)
-                                    .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.2), radius: 12, x: 0, y: 8)
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .stroke(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, big: 0.30)), lineWidth: 2)
-                            )
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(24)
-            }
+struct PersonalityBadge: View {
+    let personalityType: PersonalityType
+    let gender: Gender
+    
+    private var personalityInfo: (group: String, name: String) {
+        switch personalityType.group {
+        case .analyst: return ("Analyst", personalityType.displayName)
+        case .diplomat: return ("Diplomat", personalityType.displayName)
+        case .sentinel: return ("Sentinel", personalityType.displayName)
+        case .explorer: return ("Explorer", personalityType.displayName)
         }
-        .task { await restrictions.requestAuthorizationIfNeeded() }
+    }
+    
+    private var colors: PersonalityColors {
+        PersonalityTheme.colors(for: personalityType, gender: gender)
+    }
+    
+    private var isDarkBackground: Bool {
+        // Check if we need light text on dark backgrounds
+        [PersonalityType.intj, PersonalityType.entj, PersonalityType.istj, PersonalityType.estj].contains(personalityType)
+    }
+    
+    private var textColor: Color {
+        isDarkBackground ? Color.white : Color(red: 0.055, green: 0.259, blue: 0.184) // green
+    }
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // Retro console container
+            HStack(spacing: 16) {
+                // Main MBTI Badge - nav-pill style
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(colors.primary)
+                        .frame(height: 44)
+                        .shadow(color: Color(red: 0.055, green: 0.259, blue: 0.184), radius: 0, x: 0, y: 4)
+                        .shadow(color: Color(red: 0.055, green: 0.259, blue: 0.184).opacity(0.2), radius: 12, x: 0, y: 8)
+                    
+                    Text(personalityType.rawValue)
+                        .font(.custom("Tanker-Regular", size: 18))
+                        .fontWeight(.bold)
+                        .foregroundColor(textColor)
+                        .textCase(.uppercase)
+                        .kerning(1.2)
+                }
+                .padding(.horizontal, 20)
+                .scaleEffect(1.0)
+                .onTapGesture {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                        // Add subtle tap animation
+                    }
+                }
+                
+                // Personality Group badge
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(red: 0.95, green: 0.95, blue: 0.95)) // light gray
+                        .frame(height: 32)
+                    
+                    Text(personalityInfo.group.uppercased())
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(Color(red: 0.055, green: 0.259, blue: 0.184)) // green
+                        .kerning(1.1)
+                }
+                .padding(.horizontal, 16)
+                
+                // Decorative DNA-style elements
+                HStack(spacing: 4) {
+                    ForEach(0..<3, id: \.self) { index in
+                        DNANode(color: colors.primary, delay: Double(index) * 0.3)
+                    }
+                }
+                .opacity(0.7)
+            }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(red: 0.98, green: 0.98, blue: 0.98)) // light gray console bg
+                    .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+            )
+        }
+        .padding(.top, 24)
+    }
+}
+
+struct DNANode: View {
+    let color: Color
+    let delay: Double
+    @State private var isAnimating = false
+    
+    var body: some View {
+        Circle()
+            .fill(color)
+            .frame(width: 6, height: 6)
+            .scaleEffect(isAnimating ? 1.2 : 1.0)
+            .animation(
+                Animation.easeInOut(duration: 2.0)
+                    .repeatForever(autoreverses: true)
+                    .delay(delay),
+                value: isAnimating
+            )
+            .onAppear {
+                isAnimating = true
+            }
     }
 }
 
 #Preview {
-    FocusSettingsView()
+    VStack(spacing: 30) {
+        PersonalityBadge(personalityType: .enfj, gender: .female)
+        PersonalityBadge(personalityType: .intj, gender: .male)
+        PersonalityBadge(personalityType: .esfp, gender: .neutral)
+    }
+    .padding()
+    .background(Color("Background"))
 }
