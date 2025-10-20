@@ -58,14 +58,6 @@ struct DEBUG_ContentView: View {
                     }
             }
             .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
-            
-            // Footer sits above tab bar
-            VStack {
-                Spacer()
-                FooterFocusBarView(viewModel: FooterFocusBarViewModel())
-                    .background(Color(red: 0.96, green: 0.96, blue: 0.94))
-                    .padding(.bottom, 90) // More space above tab bar
-            }
         }
         .environment(\.dynamicTypeSize, .medium)
         .environmentObject(personalityManager)
@@ -84,14 +76,16 @@ struct DEBUG_ContentView: View {
         
         var body: some View {
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 20) {
+                VStack(spacing: 12) {
                     CharacterCard(title: "Alex", size: 280)
                     
-                    Spacer(minLength: 24)
+                    // Footer focus bar positioned directly under the character card (debug)
+                    FooterFocusBarView(viewModel: FooterFocusBarViewModel())
+                        .padding(.top, 8)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
-                .padding(.bottom, 180) // Extra padding to avoid footer overlap
+                .padding(.bottom, 40)
             }
         }
     }
