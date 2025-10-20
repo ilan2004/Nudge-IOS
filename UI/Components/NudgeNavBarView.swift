@@ -10,7 +10,8 @@ struct NudgeNavBarView: View {
             Spacer()
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .padding(.top, 6)
+        .padding(.bottom, 12)
         .frame(maxWidth: .infinity)
         .background(
             Rectangle()
