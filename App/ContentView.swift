@@ -219,6 +219,7 @@ struct ContentView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
+                .padding(.top, 24) // push main content a bit down from the top navbar
                 .padding(.bottom, 180) // Extra padding to avoid footer overlap
             }
         }
@@ -232,7 +233,7 @@ struct ContentView: View {
                 VStack(spacing: 16) {
                     if let type = personalityManager.personalityType {
                         PersonalityBadge(personalityType: type, gender: personalityManager.gender)
-                            .padding(.top, 12)
+                            .padding(.top, 20)
                         Text(type.displayName)
                             .font(.title2).bold()
                         Text(type.rawValue)
