@@ -62,6 +62,7 @@ private extension View {
 struct FooterFocusBarView: View {
     @ObservedObject var viewModel: FooterFocusBarViewModel
     @State private var showSettings = false
+    @StateObject private var restrictions = RestrictionsController()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -78,36 +79,28 @@ struct FooterFocusBarView: View {
         .padding(.bottom, 20)
         .animation(.easeInOut(duration: 0.2), value: viewModel.mode)
         .sheet(isPresented: $showSettings) {
-            // Reference existing FocusSettingsView, don't redeclare
-            // FocusSettingsView()
-            Text("Settings") // Placeholder - use your existing FocusSettingsView
+            FocusSettingsView()
         }
+        .task { await restrictions.requestAuthorizationIfNeeded() }
     }
     
     // MARK: - Idle Layout
     private var idleLayout: some View {
         VStack(spacing: 12) {
-            // Top row: Presets
+            // Top row: Blocked apps/websites summary + selector
             HStack(spacing: 8) {
-                ForEach([25, 45, 60], id: \.self) { minutes in
-                    Button("\(minutes)") {
-                        viewModel.setPreset(minutes)
-                    }
- .buttonStyle(FooterPillStyle(
-                        variant: (viewModel.selectedPreset == minutes ? .cyan : .outline),
-                        compact: true
-                    ))
-                }
-                
-                Spacer()
-                
                 Button {
                     showSettings = true
                 } label: {
-                    Image(systemName: "gearshape.fill")
-                        .font(.system(size: 14))
+                    HStack(spacing: 8) {
+                        Image(systemName: "lock.slash")
+                            .font(.system(size: 14, weight: .semibold))
+                        Text(blockedSummary)
+                            .font(.footnote.weight(.semibold))
+                    }
                 }
- .buttonStyle(FooterPillStyle(variant: .outline, compact: true))
+                .buttonStyle(FooterPillStyle(variant: .outline, compact: true))
+                Spacer()
             }
             
             // Middle row: Time adjustment
@@ -254,6 +247,16 @@ struct FooterFocusBarView: View {
     }
     
     // MARK: - Helper Methods
+    private var blockedSummary: String {
+        #if canImport(FamilyControls)
+        let apps = restrictions.selection.applicationTokens.count
+        let sites = restrictions.selection.webDomainTokens.count
+        return "Blocked • \(apps) apps / \(sites) sites"
+        #else
+        return "Blocked • Choose apps & sites"
+        #endif
+    }
+
     private var statusLabel: String {
         switch viewModel.mode {
         case .idle: return "Idle"
