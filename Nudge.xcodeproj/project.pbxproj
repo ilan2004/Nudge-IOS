@@ -31,6 +31,9 @@
 		A20000000000000000000010 /* RestrictionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000010 /* RestrictionsController.swift */; };
 		A20000000000000000000011 /* FocusSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000011 /* FocusSettingsView.swift */; };
 		A20000000000000000000012 /* NudgeStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000012 /* NudgeStyles.swift */; };
+		A20000000000000000000013 /* ContractsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000013 /* ContractsView.swift */; };
+		A20000000000000000000014 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000014 /* LeaderboardView.swift */; };
+		A20000000000000000000015 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000015 /* ProfileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +62,9 @@ A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference
 		7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.otf"; sourceTree = "<group>"; };
 		C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.ttf"; sourceTree = "<group>"; };
 		A00000000000000000000012 /* NudgeStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeStyles.swift; sourceTree = "<group>"; };
+		A00000000000000000000013 /* ContractsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contracts/ContractsView.swift; sourceTree = "<group>"; };
+		A00000000000000000000014 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leaderboard/LeaderboardView.swift; sourceTree = "<group>"; };
+		A00000000000000000000015 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile/ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +158,9 @@ A10000000000000000000006 /* Features */ = {
 			children = (
 				A10000000000000000000007 /* Dashboard */,
 				A10000000000000000000008 /* Onboarding */,
+				A1000000000000000000000B /* Contracts */,
+				A1000000000000000000000C /* Leaderboard */,
+				A1000000000000000000000D /* Profile */,
 				A00000000000000000000011 /* FocusSettingsView.swift */,
 				A0000000000000000000000D /* PlaceholderViews.swift */,
 			);
@@ -172,6 +181,30 @@ A10000000000000000000006 /* Features */ = {
 				A0000000000000000000000C /* OnboardingView.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		A1000000000000000000000B /* Contracts */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000013 /* ContractsView.swift */,
+			);
+			path = Contracts;
+			sourceTree = "<group>";
+		};
+		A1000000000000000000000C /* Leaderboard */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000014 /* LeaderboardView.swift */,
+			);
+			path = Leaderboard;
+			sourceTree = "<group>";
+		};
+		A1000000000000000000000D /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000015 /* ProfileView.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		8D11072C0486CEB800E47090 /* Products */ = {
@@ -278,7 +311,7 @@ A10000000000000000000006 /* Features */ = {
 		8D1107290486CEB800E47090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
-files = (
+			files = (
 				8D1107330486CEB800E47090 /* ContentView.swift in Sources */,
 				8D1107310486CEB800E47090 /* NudgeApp.swift in Sources */,
 				A20000000000000000000001 /* DEBUG_ContentView.swift in Sources */,
@@ -299,6 +332,9 @@ files = (
 				A20000000000000000000010 /* RestrictionsController.swift in Sources */,
 				A20000000000000000000011 /* FocusSettingsView.swift in Sources */,
 				A20000000000000000000012 /* NudgeStyles.swift in Sources */,
+				A20000000000000000000013 /* ContractsView.swift in Sources */,
+				A20000000000000000000014 /* LeaderboardView.swift in Sources */,
+				A20000000000000000000015 /* ProfileView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
