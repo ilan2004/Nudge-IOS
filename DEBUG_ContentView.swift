@@ -14,7 +14,7 @@ struct DEBUG_ContentView: View {
             TabView {
                 // 1) Nudge (Home)
                 NudgeHomeView()
-                    .foregroundColor(.greenPrimary)
+                    .foregroundColor(Color.greenPrimary)
                     .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "house.fill")
@@ -23,7 +23,7 @@ struct DEBUG_ContentView: View {
                 
                 // 2) Stakes (reuse ContractsView)
                 ContractsView()
-                    .foregroundColor(.greenPrimary)
+                    .foregroundColor(Color.greenPrimary)
                     .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "handshake.fill")
@@ -32,7 +32,7 @@ struct DEBUG_ContentView: View {
                 
                 // 3) My Type
                 MyTypeView()
-                    .foregroundColor(.greenPrimary)
+                    .foregroundColor(Color.greenPrimary)
                     .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.text.rectangle")
@@ -41,7 +41,7 @@ struct DEBUG_ContentView: View {
                 
                 // 4) Friends / Leaderboard
                 LeaderboardView()
-                    .foregroundColor(.greenPrimary)
+                    .foregroundColor(Color.greenPrimary)
                     .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.3.fill")
@@ -50,7 +50,7 @@ struct DEBUG_ContentView: View {
                 
                 // 5) Profile
                 ProfileView()
-                    .foregroundColor(.greenPrimary)
+                    .foregroundColor(Color.greenPrimary)
                     .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.fill")

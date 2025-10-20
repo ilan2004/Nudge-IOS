@@ -13,7 +13,7 @@ struct ContentView: View {
             TabView {
                 // 1) Nudge (Home)
                 NudgeHomeView()
-                    .foregroundColor(.green)
+                    .foregroundColor(Color.green)
                     .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "house.fill")
@@ -22,7 +22,7 @@ struct ContentView: View {
                 
                 // 2) Stakes (reuse ContractsView)
                 ContractsView()
-                    .foregroundColor(.green)
+                    .foregroundColor(Color.green)
                     .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "handshake.fill")
@@ -31,7 +31,7 @@ struct ContentView: View {
                 
                 // 3) My Type
                 MyTypeView()
-                    .foregroundColor(.green)
+                    .foregroundColor(Color.green)
                     .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.text.rectangle")
@@ -40,7 +40,7 @@ struct ContentView: View {
                 
                 // 4) Friends / Leaderboard
                 LeaderboardView()
-                    .foregroundColor(.green)
+                    .foregroundColor(Color.green)
                     .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.3.fill")
@@ -49,7 +49,7 @@ struct ContentView: View {
                 
                 // 5) Profile
                 ProfileView()
-                    .foregroundColor(.green)
+                    .foregroundColor(Color.green)
                     .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.fill")
