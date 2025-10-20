@@ -62,7 +62,6 @@ struct ContentView: View {
             VStack {
                 Spacer()
                 FooterFocusBarView(viewModel: FooterFocusBarViewModel())
-                    .background(Color(red: 0.96, green: 0.96, blue: 0.94))
                     .padding(.bottom, 90) // More space above tab bar
             }
         }
