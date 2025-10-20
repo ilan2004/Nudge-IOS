@@ -15,8 +15,8 @@ struct PersonalityTestView: View {
                 .font(.title)
                 .fontWeight(.bold)
             
-            Text("Question \(currentQuestion + 1) of 10")
-                .foregroundColor(.secondary)
+                Text("Question \(currentQuestion + 1) of 10")
+                    .foregroundColor(.gray)
             
             // Progress bar
             ProgressView(value: Double(currentQuestion), total: 10)
@@ -43,7 +43,7 @@ struct PersonalityTestView: View {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .padding()
-            .background(PersonalityTheme.defaultColors.primary)
+            .background(Color(red: 0.063, green: 0.737, blue: 0.502))
             .cornerRadius(12)
             .padding(.horizontal)
         }
@@ -80,7 +80,7 @@ struct FocusView: View {
                     
                     Circle()
                         .trim(from: 0, to: focusManager.progress)
-                        .stroke(PersonalityTheme.defaultColors.primary, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                        .stroke(Color(red: 0.063, green: 0.737, blue: 0.502), style: StrokeStyle(lineWidth: 8, lineCap: .round))
                         .frame(width: 200, height: 200)
                         .rotationEffect(.degrees(-90))
                     
@@ -92,7 +92,7 @@ struct FocusView: View {
                         
                         Text(focusManager.currentSessionType)
                             .font(.headline)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.gray)
                     }
                 }
                 
@@ -134,7 +134,7 @@ struct FocusView: View {
                     .font(.headline)
                 }
                 .padding()
-                .background(.ultraThinMaterial)
+                .background(Color.clear)
                 .cornerRadius(12)
                 
                 Spacer()
@@ -142,6 +142,8 @@ struct FocusView: View {
             .padding()
             .navigationTitle("Focus")
             .background(Color.clear)
+            .scrollContentBackground(.hidden)
+            .toolbarBackground(.hidden, for: .navigationBar)
         }
     }
     
@@ -165,7 +167,7 @@ struct LeaderboardView: View {
                     .foregroundColor(.white)
                 
                 Text("Social features coming soon!")
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.gray)
                 
                 // Mock leaderboard
                 VStack(spacing: 16) {
@@ -175,7 +177,7 @@ struct LeaderboardView: View {
                     LeaderboardRow(rank: 4, name: "Mike", score: 950, isCurrentUser: false)
                 }
                 .padding()
-                .background(.ultraThinMaterial)
+                .background(Color.clear)
                 .cornerRadius(12)
                 
                 Spacer()
@@ -183,6 +185,8 @@ struct LeaderboardView: View {
             .padding()
             .navigationTitle("Leaderboard")
             .background(Color.clear)
+            .scrollContentBackground(.hidden)
+            .toolbarBackground(.hidden, for: .navigationBar)
         }
     }
 }
@@ -210,7 +214,7 @@ struct LeaderboardRow: View {
             
             Text("\(score) pts")
                 .font(.body)
-                .foregroundColor(personalityManager.currentTheme.textSecondary)
+                .foregroundColor(.gray)
         }
         .padding(.vertical, 4)
     }
@@ -229,13 +233,15 @@ struct ContractsView: View {
                     .foregroundColor(.white)
                 
                 Text("Accountability system coming soon!")
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.gray)
                 
                 Spacer()
             }
             .padding()
             .navigationTitle("Contracts")
             .background(Color.clear)
+            .scrollContentBackground(.hidden)
+            .toolbarBackground(.hidden, for: .navigationBar)
         }
     }
 }
@@ -284,7 +290,7 @@ struct ProfileView: View {
                     }
                 }
                 .padding()
-                .background(.ultraThinMaterial)
+                .background(Color.clear)
                 .cornerRadius(12)
                 
                 Spacer()
@@ -292,6 +298,8 @@ struct ProfileView: View {
             .padding()
             .navigationTitle("Profile")
             .background(Color.clear)
+            .scrollContentBackground(.hidden)
+            .toolbarBackground(.hidden, for: .navigationBar)
         }
     }
 }
@@ -305,16 +313,16 @@ struct SettingsRow: View {
         Button(action: action) {
             HStack {
                 Image(systemName: icon)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
                     .frame(width: 24)
                 
                 Text(title)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
                 
                 Spacer()
                 
                 Image(systemName: "chevron.right")
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.gray)
                     .font(.caption)
             }
             .padding(.vertical, 4)
