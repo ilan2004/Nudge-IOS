@@ -13,8 +13,10 @@ struct FooterFocusBarView: View {
                 activeLayout
             }
         }
+    .background(.clear)  // ← Add this line here!
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
+        .retroConsoleSurface()  // ← Using the modifier now!
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
         .animation(.easeInOut(duration: 0.2), value: viewModel.mode)
