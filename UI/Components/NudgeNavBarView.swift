@@ -5,7 +5,7 @@ struct NudgeNavBarView: View {
     var body: some View {
         HStack(spacing: 12) {
             Text("nudge")
-                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .font(.custom("Tanker-Regular", size: 24))
                 .foregroundColor(Color.nudgeGreen900)
             Spacer()
         }
