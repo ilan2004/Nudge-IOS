@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Profile View
-struct ProfileView: View {
+public struct ProfileView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     
     var body: some View {
@@ -21,11 +21,11 @@ struct ProfileView: View {
                     Text(personalityType.displayName)
                         .font(.title2)
                         .fontWeight(.semibold)
-                        .foregroundColor(.green)
+                        .foregroundColor(Color.green)
                     
                     Text(personalityType.rawValue)
                         .font(.custom("Tanker-Regular", size: 20))
-                        .foregroundColor(.green)
+                        .foregroundColor(Color.green)
                 }
             }
             
@@ -52,7 +52,7 @@ struct ProfileView: View {
     }
 }
 
-struct SettingsRow: View {
+public struct SettingsRow: View {
     let title: String
     let icon: String
     let action: () -> Void
@@ -61,11 +61,11 @@ struct SettingsRow: View {
         Button(action: action) {
             HStack {
                 Image(systemName: icon)
-                    .foregroundColor(.green)
+                    .foregroundColor(Color.green)
                     .frame(width: 24)
                 
                 Text(title)
-                    .foregroundColor(.green)
+                    .foregroundColor(Color.green)
                 
                 Spacer()
                 

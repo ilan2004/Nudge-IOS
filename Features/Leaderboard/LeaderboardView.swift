@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Leaderboard View
-struct LeaderboardView: View {
+public struct LeaderboardView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     
     var body: some View {
@@ -9,7 +9,7 @@ struct LeaderboardView: View {
             Text("Leaderboard")
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundColor(.green)
+                .foregroundColor(Color.green)
             
             Text("Social features coming soon!")
                 .foregroundColor(.gray)
@@ -30,7 +30,7 @@ struct LeaderboardView: View {
     }
 }
 
-struct LeaderboardRow: View {
+public struct LeaderboardRow: View {
     let rank: Int
     let name: String
     let score: Int
@@ -41,13 +41,13 @@ struct LeaderboardRow: View {
         HStack {
             Text("#\(rank)")
                 .font(.headline)
-                .foregroundColor(isCurrentUser ? .green : .gray)
+                .foregroundColor(isCurrentUser ? Color.green : .gray)
                 .frame(width: 30)
             
             Text(name)
                 .font(.body)
                 .fontWeight(isCurrentUser ? .semibold : .regular)
-                .foregroundColor(.green)
+                .foregroundColor(Color.green)
             
             Spacer()
             

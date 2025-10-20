@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Contracts View
-struct ContractsView: View {
+public struct ContractsView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     
     var body: some View {
@@ -9,7 +9,7 @@ struct ContractsView: View {
             Text("Contracts")
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundColor(.green)
+                .foregroundColor(Color.green)
             
             Text("Accountability system coming soon!")
                 .foregroundColor(.gray)
