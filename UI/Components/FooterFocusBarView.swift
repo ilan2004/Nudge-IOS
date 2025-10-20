@@ -13,12 +13,12 @@ struct FooterFocusBarView: View {
                 activeLayout
             }
         }
-    .background(.clear)  // ← Add this line here!
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .retroConsoleSurface()  // ← Using the modifier now!
-        .padding(.horizontal, 16)
-        .padding(.bottom, 20)
+    .background(.clear)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .retroConsoleSurface()
+        .padding(.horizontal, 12)
+        .padding(.bottom, 12)
         .animation(.easeInOut(duration: 0.2), value: viewModel.mode)
         .sheet(isPresented: $showSettings) {
             FocusSettingsView()
@@ -27,7 +27,7 @@ struct FooterFocusBarView: View {
     
     // MARK: - Idle Layout
     private var idleLayout: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 8) {
             // Top row: Settings button
             HStack {
                 Spacer()
@@ -35,36 +35,36 @@ struct FooterFocusBarView: View {
                 Button {
                     showSettings = true
                 } label: {
-                    Image(systemName: "gearshape.fill")
-                        .font(.system(size: 14))
+                    Text("Blocked Apps")
+                        .font(.system(size: 12, weight: .semibold))
                 }
                 .buttonStyle(NavPillStyle(variant: .outline, compact: true))
             }
             
             // Middle row: Time adjustment
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 Button {
                     viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
                 } label: {
                     Image(systemName: "minus")
-                        .font(.system(size: 16, weight: .bold))
-                        .frame(width: 40, height: 40)
+                        .font(.system(size: 14, weight: .bold))
+                        .frame(width: 28, height: 28)
                 }
-                .buttonStyle(NavPillStyle(variant: .accent, compact: false))
+                .buttonStyle(NavPillStyle(variant: .accent, compact: true))
                 
                 Text("\(formatHoursMinutes(viewModel.customMinutes))")
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .font(.system(size: 22, weight: .bold, design: .rounded))
                     .foregroundColor(Color.nudgeGreen900)
-                    .frame(minWidth: 80)
+                    .frame(minWidth: 64)
                 
                 Button {
                     viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
                 } label: {
                     Image(systemName: "plus")
-                        .font(.system(size: 16, weight: .bold))
-                        .frame(width: 40, height: 40)
+                        .font(.system(size: 14, weight: .bold))
+                        .frame(width: 28, height: 28)
                 }
-                .buttonStyle(NavPillStyle(variant: .accent, compact: false))
+                .buttonStyle(NavPillStyle(variant: .accent, compact: true))
             }
             
             // Bottom row: Start button
@@ -73,10 +73,10 @@ struct FooterFocusBarView: View {
             } label: {
                 HStack {
                     Image(systemName: "play.fill")
-                    Text("Start Timer")
+                    Text("Set Timer")
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 44)
+                .frame(height: 40)
             }
             .buttonStyle(NavPillStyle(variant: .primary))
         }
@@ -84,7 +84,7 @@ struct FooterFocusBarView: View {
     
     // MARK: - Active Layout
     private var activeLayout: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 8) {
             // Top row: Status and countdown
             HStack(spacing: 12) {
                 // Status chip
@@ -102,7 +102,7 @@ struct FooterFocusBarView: View {
                 
                 // Countdown timer
                 Text(formatMMSS(viewModel.remainingMs))
-                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundColor(Color.nudgeGreen900)
                 
                 Spacer()
@@ -110,8 +110,8 @@ struct FooterFocusBarView: View {
                 Button {
                     showSettings = true
                 } label: {
-                    Image(systemName: "gearshape.fill")
-                        .font(.system(size: 14))
+                    Text("Blocked Apps")
+                        .font(.system(size: 12, weight: .semibold))
                 }
                 .buttonStyle(NavPillStyle(variant: .outline, compact: true))
             }
