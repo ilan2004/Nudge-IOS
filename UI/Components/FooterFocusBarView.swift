@@ -49,7 +49,7 @@ struct FooterFocusBarView: View {
                         .font(.system(size: 16, weight: .bold))
                         .frame(width: 40, height: 40)
                 }
-                .buttonStyle(NavPillStyle(variant: .outline, compact: false))
+                .buttonStyle(NavPillStyle(variant: .accent, compact: false))
                 
                 Text("\(formatHoursMinutes(viewModel.customMinutes))")
                     .font(.system(size: 28, weight: .bold, design: .rounded))
@@ -63,7 +63,7 @@ struct FooterFocusBarView: View {
                         .font(.system(size: 16, weight: .bold))
                         .frame(width: 40, height: 40)
                 }
-                .buttonStyle(NavPillStyle(variant: .outline, compact: false))
+                .buttonStyle(NavPillStyle(variant: .accent, compact: false))
             }
             
             // Bottom row: Start button
