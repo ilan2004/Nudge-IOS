@@ -20,43 +20,33 @@ struct FooterFocusBarView: View {
     // MARK: - Idle Layout
     private var idleLayout: some View {
         VStack(spacing: 8) {
-            // Top row: Settings button
-            HStack {
-                Button {
-                    showSettings = true
-                } label: {
-                    Text("Blocked Apps")
-                        .font(.system(size: 12, weight: .semibold))
-                }
-                .buttonStyle(NavPillStyle(variant: .cyan, compact: false))
+            // Controls row: Blocked Apps (left), Timer (center), Arrows (right)
+            HStack(spacing: 12) {
+                blockedAppsButton
+
                 Spacer()
-            }
-            
-            // Middle row: Time adjustment
-            HStack(spacing: 8) {
-                Spacer()
-                
+
                 timerSquare(ms: viewModel.customMinutes * 60_000)
                     .frame(width: 80, height: 80)
-                
+
                 Spacer()
-                
-                VStack(spacing: 6) {
+
+                VStack(spacing: 8) {
                     Button {
                         viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
                     } label: {
                         Text("↑")
                             .font(.system(size: 14, weight: .bold))
-                            .frame(width: 28, height: 28)
+                            .frame(width: 36, height: 36)
                     }
                     .buttonStyle(NavPillStyle(variant: .primary, compact: true))
-                    
+
                     Button {
                         viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
                     } label: {
                         Text("↓")
                             .font(.system(size: 14, weight: .bold))
-                            .frame(width: 28, height: 28)
+                            .frame(width: 36, height: 36)
                     }
                     .buttonStyle(NavPillStyle(variant: .amber, compact: true))
                 }
@@ -80,23 +70,17 @@ struct FooterFocusBarView: View {
     // MARK: - Active Layout
     private var activeLayout: some View {
         VStack(spacing: 8) {
-            // Top row: Status and countdown
+            // Top row: Blocked Apps (left), Timer (center), Status (right)
             HStack(spacing: 12) {
-                Button {
-                    showSettings = true
-                } label: {
-                    Text("Blocked Apps")
-                        .font(.system(size: 12, weight: .semibold))
-                }
-                .buttonStyle(NavPillStyle(variant: .cyan, compact: false))
-                
+                blockedAppsButton
+
                 Spacer()
-                
+
                 timerSquare(ms: viewModel.remainingMs)
                     .frame(width: 80, height: 80)
-                
+
                 Spacer()
-                
+
                 // Status chip
                 Text(statusLabel)
                     .font(.caption.bold())
@@ -164,6 +148,33 @@ struct FooterFocusBarView: View {
                 }
             }
         }
+    }
+    
+    // MARK: - Blocked Apps Button
+    private var blockedAppsButton: some View {
+        Button {
+            showSettings = true
+        } label: {
+            VStack(spacing: 2) {
+                Text("Blocked")
+                Text("Apps")
+            }
+            .font(.system(size: 12, weight: .semibold))
+            .multilineTextAlignment(.center)
+            .foregroundColor(Color.nudgeGreen900)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(8)
+        }
+        .frame(width: 88, height: 80)
+        .background(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(Color.white.opacity(0.7))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .stroke(Color.nudgeGreen900.opacity(0.2), lineWidth: 1)
+                )
+        )
+        .retroConsoleSurface()
     }
     
     // MARK: - Timer Square
