@@ -15,16 +15,7 @@ struct FooterFocusBarView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
-        .background(
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .stroke(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), lineWidth: 2)
-        )
-        .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), radius: 0, x: 0, y: 4)
-        .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.2), radius: 12, x: 0, y: 4)
+        .retroConsoleSurface()  // ← Using the modifier now!
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
         .animation(.easeInOut(duration: 0.2), value: viewModel.mode)

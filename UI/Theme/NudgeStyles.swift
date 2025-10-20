@@ -19,6 +19,8 @@ public struct NavPillStyle: ButtonStyle {
             .background(
                 Capsule()
                     .fill(bgColor)
+                    .shadow(color: shouldHaveShadow ? shadowColor : .clear, radius: 0, x: 0, y: 4)
+                    .shadow(color: shouldHaveShadow ? shadowColor.opacity(0.2) : .clear, radius: 12, x: 0, y: 8)
             )
             .foregroundStyle(foregroundColor)
             .overlay(
@@ -64,10 +66,11 @@ public struct NavPillStyle: ButtonStyle {
     
     private var shadowColor: Color {
         switch variant {
-        case .primary: return Color(red: 0.0, green: 0.20, blue: 0.16)
+        case .primary: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
         case .cyan: return Color("NudgeCyan600", bundle: .main, default: Color(red: 0.03, green: 0.57, blue: 0.70))
         case .amber: return Color("NudgeAmber600", bundle: .main, default: Color(red: 0.85, green: 0.46, blue: 0.02))
-        case .accent, .outline, .neutral: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
+        case .accent: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
+        case .outline, .neutral: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
         }
     }
 }
@@ -79,13 +82,13 @@ public struct RetroConsoleSurface: ViewModifier {
             .background(
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
                     .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
+                    .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), radius: 0, x: 0, y: 4)
+                    .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.2), radius: 12, x: 0, y: 8)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
                     .stroke(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), lineWidth: 2)
             )
-            .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), radius: 0, x: 0, y: 4)
-            .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.2), radius: 12, x: 0, y: 4)
     }
 }
 
