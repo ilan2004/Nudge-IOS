@@ -20,7 +20,7 @@ struct RetroTabBar: View {
     let tabs: [TabItem]
     
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 8) {
             ForEach(Array(tabs.enumerated()), id: \.offset) { index, tab in
                 RetroTabButton(
                     icon: tab.icon,
@@ -57,19 +57,19 @@ struct RetroTabButton: View {
                     .font(.system(size: 10, weight: isSelected ? .bold : .medium))
                     .foregroundColor(accent)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .frame(minWidth: 60, minHeight: 56)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .frame(minWidth: 70, minHeight: 66)
         }
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color.defaultCream)
+                .fill(Color(red: 0.988, green: 0.973, blue: 0.949)) // defaultCream hardcoded
                 .shadow(color: accent, radius: 0, x: 0, y: 4)
                 .shadow(color: accent.opacity(0.2), radius: 12, x: 0, y: 8)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(accent, lineWidth: isSelected ? 2 : 1)
+                .stroke(accent, lineWidth: isSelected ? 3 : 2)
         )
         .opacity(isPressed ? 0.85 : 1.0)
         .scaleEffect(isPressed ? 0.95 : 1.0)
@@ -88,13 +88,20 @@ struct ContentView: View {
     
     @State private var selectedTab = 0
     
+    // Accent colors - hardcoded for visibility
+    private var accentGreen: Color { Color(red: 0.01, green: 0.35, blue: 0.30) } // Dark green
+    private var accentOrange: Color { Color(red: 0.85, green: 0.46, blue: 0.02) } // Orange
+    private var accentCyan: Color { Color(red: 0.03, green: 0.57, blue: 0.70) } // Cyan
+    private var accentBlue: Color { Color(red: 0.392, green: 0.584, blue: 0.929) } // Blue
+    private var accentTeal: Color { Color(red: 0.439, green: 0.859, blue: 0.804) } // Teal
+    
     private var tabs: [TabItem] {
         [
-            TabItem(icon: "house.fill", title: "Nudge", accent: Color.greenPrimary) { NudgeHomeView() },
-            TabItem(icon: "handshake.fill", title: "Stakes", accent: Color.orangePrimary) { ContractsView() },
-            TabItem(icon: "person.text.rectangle", title: "My Type", accent: Color.cyanPrimary) { MyTypeView() },
-            TabItem(icon: "person.3.fill", title: "Friends", accent: Color.bluePrimary) { LeaderboardView() },
-            TabItem(icon: "person.fill", title: "Profile", accent: Color.tealPrimary) { ProfileView() }
+            TabItem(icon: "house.fill", title: "Nudge", accent: accentGreen) { NudgeHomeView() },
+            TabItem(icon: "handshake.fill", title: "Stakes", accent: accentOrange) { ContractsView() },
+            TabItem(icon: "person.text.rectangle", title: "My Type", accent: accentCyan) { MyTypeView() },
+            TabItem(icon: "person.3.fill", title: "Friends", accent: accentBlue) { LeaderboardView() },
+            TabItem(icon: "person.fill", title: "Profile", accent: accentTeal) { ProfileView() }
         ]
     }
     
