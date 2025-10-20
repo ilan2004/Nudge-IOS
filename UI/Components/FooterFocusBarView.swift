@@ -4,7 +4,6 @@ import SwiftUI
 struct FooterFocusBarView: View {
     @ObservedObject var viewModel: FooterFocusBarViewModel
     @State private var showSettings = false
-    @StateObject private var restrictions = RestrictionsController()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -16,33 +15,38 @@ struct FooterFocusBarView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
-        .retroConsoleSurface()
+        .background(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), lineWidth: 2)
+        )
+        .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), radius: 0, x: 0, y: 4)
+        .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)).opacity(0.2), radius: 12, x: 0, y: 4)
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
         .animation(.easeInOut(duration: 0.2), value: viewModel.mode)
         .sheet(isPresented: $showSettings) {
             FocusSettingsView()
         }
-        .task { await restrictions.requestAuthorizationIfNeeded() }
     }
     
     // MARK: - Idle Layout
     private var idleLayout: some View {
         VStack(spacing: 12) {
-            // Top row: Blocked apps/websites summary + selector
-            HStack(spacing: 8) {
+            // Top row: Settings button
+            HStack {
+                Spacer()
+                
                 Button {
                     showSettings = true
                 } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "lock.slash")
-                            .font(.system(size: 14, weight: .semibold))
-                        Text(blockedSummary)
-                            .font(.footnote.weight(.semibold))
-                    }
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 14))
                 }
                 .buttonStyle(NavPillStyle(variant: .outline, compact: true))
-                Spacer()
             }
             
             // Middle row: Time adjustment
@@ -189,16 +193,6 @@ struct FooterFocusBarView: View {
     }
     
     // MARK: - Helper Methods
-    private var blockedSummary: String {
-        #if canImport(FamilyControls)
-        let apps = restrictions.selection.applicationTokens.count
-        let sites = restrictions.selection.webDomainTokens.count
-        return "Blocked • \(apps) apps / \(sites) sites"
-        #else
-        return "Blocked • Choose apps & sites"
-        #endif
-    }
-
     private var statusLabel: String {
         switch viewModel.mode {
         case .idle: return "Idle"
@@ -242,7 +236,6 @@ struct FooterFocusBarView: View {
 
 // MARK: - Preview
 #Preview {
-    // Use actual ViewModel from Core/Services
     let vm = FooterFocusBarViewModel()
     
     return VStack {
