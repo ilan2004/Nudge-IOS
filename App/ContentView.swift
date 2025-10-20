@@ -156,14 +156,9 @@ struct ContentView: View {
                 FooterFocusBarView(viewModel: FooterFocusBarViewModel())
                     .padding(.bottom, 120) // More space above custom tab bar
             }
-            
-            // Custom retro tab bar at bottom
-            VStack {
-                Spacer()
-                RetroTabBar(selectedTab: $selectedTab, tabs: tabs)
-                    .padding(.bottom, 0) // Touch the bottom edge
-                    .ignoresSafeArea(edges: .bottom)
-            }
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            RetroTabBar(selectedTab: $selectedTab, tabs: tabs)
         }
         .environment(\.dynamicTypeSize, .medium)
         .preferredColorScheme(appSettings.colorScheme)
