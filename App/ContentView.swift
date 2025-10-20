@@ -47,11 +47,11 @@ struct RetroTabButton: View {
             VStack(spacing: 4) {
                 Image(systemName: icon)
                     .font(.system(size: 16, weight: isSelected ? .bold : .medium))
-                    .foregroundColor(.greenPrimary)
+                    .foregroundColor(Color.greenPrimary)
                 
                 Text(title)
                     .font(.system(size: 10, weight: isSelected ? .bold : .medium))
-                    .foregroundColor(.greenPrimary)
+                    .foregroundColor(Color.greenPrimary)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -60,12 +60,12 @@ struct RetroTabButton: View {
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
-                .shadow(color: .greenPrimary, radius: 0, x: 0, y: 4)
+                .shadow(color: Color.greenPrimary, radius: 0, x: 0, y: 4)
                 .shadow(color: Color.greenPrimary.opacity(0.2), radius: 12, x: 0, y: 8)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(.greenPrimary, lineWidth: isSelected ? 2 : 1)
+                .stroke(Color.greenPrimary, lineWidth: isSelected ? 2 : 1)
         )
         .opacity(isPressed ? 0.85 : 1.0)
         .scaleEffect(isPressed ? 0.95 : 1.0)
