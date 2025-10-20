@@ -34,10 +34,20 @@ struct FooterFocusBarView: View {
             
             // Middle row: Time adjustment
             HStack(spacing: 8) {
-                Text("\(formatHoursMinutes(viewModel.customMinutes))")
-                    .font(.system(size: 22, weight: .bold, design: .rounded))
-                    .foregroundColor(Color.nudgeGreen900)
-                    .frame(minWidth: 64, alignment: .leading)
+                Spacer()
+                
+                HStack(spacing: 8) {
+                    Image(systemName: "clock.fill")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(Color.nudgeGreen900)
+                    Text(formatMMSS(viewModel.customMinutes * 60_000))
+                        .font(.custom("Tanker-Regular", size: 28))
+                        .foregroundColor(Color.nudgeGreen900)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .frame(minWidth: 140)
+                .retroConsoleSurface()
                 
                 Spacer()
                 
