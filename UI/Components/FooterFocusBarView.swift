@@ -29,9 +29,9 @@ private struct FooterPillStyle: ButtonStyle {
             .background(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
                     .fill(bgColor)
+                    .shadow(color: shadowColor, radius: 0, x: 0, y: 4)
+                    .shadow(color: shadowColor.opacity(0.2), radius: 12, x: 0, y: 8)
             )
-            .shadow(color: shadowColor, radius: 0, x: 0, y: 4)
-            .shadow(color: shadowColor.opacity(0.2), radius: 12, x: 0, y: 8)
             .opacity(configuration.isPressed ? 0.85 : 1.0)
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
     }
