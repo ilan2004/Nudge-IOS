@@ -45,7 +45,7 @@ struct FooterFocusBarView: View {
                     Button {
                         viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
                     } label: {
-                        Image(systemName: "chevron.up")
+                        Text("↑")
                             .font(.system(size: 14, weight: .bold))
                             .frame(width: 28, height: 28)
                     }
@@ -54,7 +54,7 @@ struct FooterFocusBarView: View {
                     Button {
                         viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
                     } label: {
-                        Image(systemName: "chevron.down")
+                        Text("↓")
                             .font(.system(size: 14, weight: .bold))
                             .frame(width: 28, height: 28)
                     }
@@ -92,6 +92,21 @@ struct FooterFocusBarView: View {
                 
                 Spacer()
                 
+                HStack(spacing: 8) {
+                    Image(systemName: "clock.fill")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(Color.nudgeGreen900)
+                    Text(formatMMSS(viewModel.remainingMs))
+                        .font(.custom("Tanker-Regular", size: 28))
+                        .foregroundColor(Color.nudgeGreen900)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .frame(minWidth: 140)
+                .retroConsoleSurface()
+                
+                Spacer()
+                
                 // Status chip
                 Text(statusLabel)
                     .font(.caption.bold())
@@ -101,13 +116,6 @@ struct FooterFocusBarView: View {
                         Capsule()
                             .fill(statusChipColor.opacity(0.3))
                     )
-                    .foregroundColor(Color.nudgeGreen900)
-                
-                Spacer()
-                
-                // Countdown timer
-                Text(formatMMSS(viewModel.remainingMs))
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundColor(Color.nudgeGreen900)
             }
             
