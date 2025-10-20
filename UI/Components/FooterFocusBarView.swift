@@ -3,7 +3,8 @@ import SwiftUI
 
 struct FooterFocusBarView: View {
     @ObservedObject var viewModel: FooterFocusBarViewModel
-    @State private var showBlockedApps = false
+    @State private var showSettings = false
+    @StateObject private var restrictions = RestrictionsController()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -19,48 +20,30 @@ struct FooterFocusBarView: View {
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
         .animation(.easeInOut(duration: 0.2), value: viewModel.mode)
-        .sheet(isPresented: $showBlockedApps) {
-            BlockedAppsSelectionView(viewModel: viewModel)
+        .sheet(isPresented: $showSettings) {
+            FocusSettingsView()
         }
+        .task { await restrictions.requestAuthorizationIfNeeded() }
     }
     
     // MARK: - Idle Layout
     private var idleLayout: some View {
         VStack(spacing: 12) {
-            // Top row: Blocked apps display
-            Button {
-                showBlockedApps = true
-            } label: {
-                HStack(spacing: 8) {
-                    if viewModel.blockedApps.isEmpty {
-                        Image(systemName: "app.badge.checkmark")
-                            .font(.system(size: 14))
-                        Text("No Apps Blocked")
-                            .font(.footnote)
-                    } else {
-                        Image(systemName: "app.badge.fill")
-                            .font(.system(size: 14))
-                        Text("\(viewModel.blockedApps.count) Blocked")
-                            .font(.footnote)
-                        
-                        // Show first 3 app icons/names
-                        ForEach(viewModel.blockedApps.prefix(3), id: \.self) { app in
-                            Text(String(app.prefix(1)))
-                                .font(.caption2.bold())
-                                .frame(width: 20, height: 20)
-                                .background(Circle().fill(Color.nudgeGreen900.opacity(0.2)))
-                        }
-                        
-                        if viewModel.blockedApps.count > 3 {
-                            Text("+\(viewModel.blockedApps.count - 3)")
-                                .font(.caption2.bold())
-                        }
+            // Top row: Blocked apps/websites summary + selector
+            HStack(spacing: 8) {
+                Button {
+                    showSettings = true
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "lock.slash")
+                            .font(.system(size: 14, weight: .semibold))
+                        Text(blockedSummary)
+                            .font(.footnote.weight(.semibold))
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+                .buttonStyle(NavPillStyle(variant: .outline, compact: true))
+                Spacer()
             }
-            .buttonStyle(NavPillStyle(variant: .outline, compact: false))
             
             // Middle row: Time adjustment
             HStack(spacing: 12) {
@@ -129,7 +112,7 @@ struct FooterFocusBarView: View {
                 Spacer()
                 
                 Button {
-                    showBlockedApps = true
+                    showSettings = true
                 } label: {
                     Image(systemName: "gearshape.fill")
                         .font(.system(size: 14))
@@ -206,6 +189,16 @@ struct FooterFocusBarView: View {
     }
     
     // MARK: - Helper Methods
+    private var blockedSummary: String {
+        #if canImport(FamilyControls)
+        let apps = restrictions.selection.applicationTokens.count
+        let sites = restrictions.selection.webDomainTokens.count
+        return "Blocked • \(apps) apps / \(sites) sites"
+        #else
+        return "Blocked • Choose apps & sites"
+        #endif
+    }
+
     private var statusLabel: String {
         switch viewModel.mode {
         case .idle: return "Idle"
@@ -257,94 +250,4 @@ struct FooterFocusBarView: View {
         FooterFocusBarView(viewModel: vm)
     }
     .background(Color(red: 0.96, green: 0.96, blue: 0.94))
-}
-
-// MARK: - Blocked Apps Selection View
-struct BlockedAppsSelectionView: View {
-    @ObservedObject var viewModel: FooterFocusBarViewModel
-    @Environment(\.dismiss) var dismiss
-    @State private var searchText = ""
-    
-    // Sample apps/websites list - replace with your actual data source
-    let availableApps = [
-        "Safari", "Chrome", "Instagram", "Twitter", "TikTok", 
-        "YouTube", "Facebook", "Reddit", "Netflix", "Discord",
-        "Slack", "Teams", "WhatsApp", "Telegram", "Snapchat"
-    ]
-    
-    var filteredApps: [String] {
-        if searchText.isEmpty {
-            return availableApps
-        }
-        return availableApps.filter { $0.localizedCaseInsensitiveContains(searchText) }
-    }
-    
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
-                // Search bar
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    TextField("Search apps or websites", text: $searchText)
-                        .textFieldStyle(.plain)
-                }
-                .padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
-                .padding()
-                
-                // Apps list
-                List {
-                    ForEach(filteredApps, id: \.self) { app in
-                        Button {
-                            toggleApp(app)
-                        } label: {
-                            HStack {
-                                // App icon placeholder
-                                Circle()
-                                    .fill(Color.nudgeGreen900.opacity(0.2))
-                                    .frame(width: 40, height: 40)
-                                    .overlay(
-                                        Text(String(app.prefix(1)))
-                                            .font(.headline)
-                                            .foregroundColor(.nudgeGreen900)
-                                    )
-                                
-                                Text(app)
-                                    .foregroundColor(.primary)
-                                
-                                Spacer()
-                                
-                                if viewModel.blockedApps.contains(app) {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundColor(.nudgeGreen900)
-                                }
-                            }
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .listStyle(.plain)
-            }
-            .navigationTitle("Block Apps & Websites")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
-            }
-        }
-    }
-    
-    private func toggleApp(_ app: String) {
-        if viewModel.blockedApps.contains(app) {
-            viewModel.blockedApps.removeAll { $0 == app }
-        } else {
-            viewModel.blockedApps.append(app)
-        }
-    }
 }
