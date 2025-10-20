@@ -4,11 +4,13 @@ import SwiftUI
 struct TabItem {
     let icon: String
     let title: String
+    let accent: Color
     let view: AnyView
     
-    init<V: View>(icon: String, title: String, @ViewBuilder view: () -> V) {
+    init<V: View>(icon: String, title: String, accent: Color, @ViewBuilder view: () -> V) {
         self.icon = icon
         self.title = title
+        self.accent = accent
         self.view = AnyView(view())
     }
 }
@@ -23,6 +25,7 @@ struct RetroTabBar: View {
                 RetroTabButton(
                     icon: tab.icon,
                     title: tab.title,
+                    accent: tab.accent,
                     isSelected: selectedTab == index,
                     action: { selectedTab = index }
                 )
@@ -37,6 +40,7 @@ struct RetroTabBar: View {
 struct RetroTabButton: View {
     let icon: String
     let title: String
+    let accent: Color
     let isSelected: Bool
     let action: () -> Void
     
@@ -46,12 +50,12 @@ struct RetroTabButton: View {
         Button(action: action) {
             VStack(spacing: 4) {
                 Image(systemName: icon)
-                    .font(.system(size: 16, weight: isSelected ? .bold : .medium))
-                    .foregroundColor(Color.greenPrimary)
+                    .font(.system(size: 18, weight: isSelected ? .bold : .medium))
+                    .foregroundColor(accent)
                 
                 Text(title)
                     .font(.system(size: 10, weight: isSelected ? .bold : .medium))
-                    .foregroundColor(Color.greenPrimary)
+                    .foregroundColor(accent)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -59,13 +63,13 @@ struct RetroTabButton: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
-                .shadow(color: Color.greenPrimary, radius: 0, x: 0, y: 4)
-                .shadow(color: Color.greenPrimary.opacity(0.2), radius: 12, x: 0, y: 8)
+                .fill(Color.defaultCream)
+                .shadow(color: accent, radius: 0, x: 0, y: 4)
+                .shadow(color: accent.opacity(0.2), radius: 12, x: 0, y: 8)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(Color.greenPrimary, lineWidth: isSelected ? 2 : 1)
+                .stroke(accent, lineWidth: isSelected ? 2 : 1)
         )
         .opacity(isPressed ? 0.85 : 1.0)
         .scaleEffect(isPressed ? 0.95 : 1.0)
@@ -86,11 +90,11 @@ struct ContentView: View {
     
     private var tabs: [TabItem] {
         [
-            TabItem(icon: "house.fill", title: "Nudge") { NudgeHomeView() },
-            TabItem(icon: "handshake.fill", title: "Stakes") { ContractsView() },
-            TabItem(icon: "person.text.rectangle", title: "My Type") { MyTypeView() },
-            TabItem(icon: "person.3.fill", title: "Friends") { LeaderboardView() },
-            TabItem(icon: "person.fill", title: "Profile") { ProfileView() }
+            TabItem(icon: "house.fill", title: "Nudge", accent: Color.greenPrimary) { NudgeHomeView() },
+            TabItem(icon: "handshake.fill", title: "Stakes", accent: Color.orangePrimary) { ContractsView() },
+            TabItem(icon: "person.text.rectangle", title: "My Type", accent: Color.cyanPrimary) { MyTypeView() },
+            TabItem(icon: "person.3.fill", title: "Friends", accent: Color.bluePrimary) { LeaderboardView() },
+            TabItem(icon: "person.fill", title: "Profile", accent: Color.tealPrimary) { ProfileView() }
         ]
     }
     
