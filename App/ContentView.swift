@@ -50,17 +50,23 @@ struct RetroTabBar: View {
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 8)
+        .padding(.bottom, 0) // no bottom padding so it extends down
         .frame(maxWidth: .infinity) // make container span full width
         .background(
-            TopRoundedRectangle(radius: 20)
+            Rectangle() // Use Rectangle instead of TopRoundedRectangle for background
                 .fill(Color(red: 0.988, green: 0.973, blue: 0.949)) // defaultCream
-                .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30), radius: 0, x: 0, y: -4) // upward drop shadow
-                .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30).opacity(0.2), radius: 12, x: 0, y: -8) // upward soft shadow
+                .ignoresSafeArea(edges: .bottom) // extend background to very bottom
+        )
+        .mask(
+            TopRoundedRectangle(radius: 20)
+                .ignoresSafeArea(edges: .bottom) // extend mask shape to bottom
         )
         .overlay(
             TopRoundedRectangle(radius: 20)
                 .stroke(Color(red: 0.01, green: 0.35, blue: 0.30), lineWidth: 2)
         )
+        .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30), radius: 0, x: 0, y: -4) // upward drop shadow
+        .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30).opacity(0.2), radius: 12, x: 0, y: -8) // upward soft shadow
     }
 }
 
@@ -156,9 +162,12 @@ struct ContentView: View {
                 FooterFocusBarView(viewModel: FooterFocusBarViewModel())
                     .padding(.bottom, 120) // More space above custom tab bar
             }
-        }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            RetroTabBar(selectedTab: $selectedTab, tabs: tabs)
+            
+            // Custom retro tab bar at bottom
+            VStack {
+                Spacer()
+                RetroTabBar(selectedTab: $selectedTab, tabs: tabs)
+            }
         }
         .environment(\.dynamicTypeSize, .medium)
         .preferredColorScheme(appSettings.colorScheme)
