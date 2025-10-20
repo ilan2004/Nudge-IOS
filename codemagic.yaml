@@ -45,27 +45,29 @@ workflows:
             ENABLE_PREVIEWS=NO \
             DEVELOPMENT_ASSET_PATHS="" \
             -verbose
-      - name: Ensure UIAppFonts includes Tanker-Regular (repair if missing)
+      - name: Ensure UIAppFonts includes Nippo-Regular (repair if missing)
         script: |
           APP_PATH="$PWD/build/$XCODE_SCHEME.xcarchive/Products/Applications/$XCODE_SCHEME.app"
           if [ ! -d "$APP_PATH" ]; then echo "Archive missing app at $APP_PATH" >&2; exit 1; fi
-          echo "Listing bundled Tanker fonts:"; find "$APP_PATH" -maxdepth 2 -iname "*tanker*.*" -print || true
+          echo "Listing bundled fonts:"; find "$APP_PATH" -maxdepth 2 -iname "*.otf" -o -iname "*.ttf" -print || true
           # Create UIAppFonts if missing
           if ! /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" >/dev/null 2>&1; then
             echo "UIAppFonts key missing; creating..."
             /usr/libexec/PlistBuddy -c 'Add :UIAppFonts array' "$APP_PATH/Info.plist"
           fi
-          # Add Tanker-Regular.otf if not present
+          # Add Nippo-Regular.otf if not present
+          if ! /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" | grep -qi "Nippo-Regular.otf"; then
+            echo "Adding Nippo-Regular.otf to UIAppFonts"
+            /usr/libexec/PlistBuddy -c 'Add :UIAppFonts:0 string Nippo-Regular.otf' "$APP_PATH/Info.plist" || true
+          fi
+          # Optionally ensure Tanker remains listed
           if ! /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" | grep -qi "Tanker-Regular.otf"; then
-            echo "Adding Tanker-Regular.otf to UIAppFonts"
             /usr/libexec/PlistBuddy -c 'Add :UIAppFonts:0 string Tanker-Regular.otf' "$APP_PATH/Info.plist" || true
-            # De-duplicate entries and ensure Tanker-Regular.otf exists as an item
-            /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" | nl -ba
-            # No strict validation here since unsigned IPA; runtime will load it
           fi
           echo "Final UIAppFonts:"; /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" || true
-          if ! find "$APP_PATH" -maxdepth 1 -iname "Tanker-Regular.otf" | grep -q "."; then
-            echo "Error: Tanker-Regular.otf not found in app bundle root (Copy Bundle Resources)" >&2; exit 1; fi
+          # Validate Nippo font is in the app bundle (Copy Bundle Resources)
+          if ! find "$APP_PATH" -maxdepth 1 -iname "Nippo-Regular.otf" | grep -q "."; then
+            echo "Error: Nippo-Regular.otf not found in app bundle root (Copy Bundle Resources)" >&2; exit 1; fi
       - name: Create IPA manually
         script: |
           echo "Archive succeeded! Creating IPA manually..."

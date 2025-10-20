@@ -36,18 +36,8 @@ struct FooterFocusBarView: View {
             HStack(spacing: 8) {
                 Spacer()
                 
-                HStack(spacing: 8) {
-                    Image(systemName: "clock.fill")
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(Color.nudgeGreen900)
-                    Text(formatMMSS(viewModel.customMinutes * 60_000))
-                        .font(.custom("Tanker-Regular", size: 28))
-                        .foregroundColor(Color.nudgeGreen900)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .frame(minWidth: 140)
-                .retroConsoleSurface()
+                timerSquare(ms: viewModel.customMinutes * 60_000)
+                    .frame(width: 80, height: 80)
                 
                 Spacer()
                 
@@ -102,18 +92,8 @@ struct FooterFocusBarView: View {
                 
                 Spacer()
                 
-                HStack(spacing: 8) {
-                    Image(systemName: "clock.fill")
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(Color.nudgeGreen900)
-                    Text(formatMMSS(viewModel.remainingMs))
-                        .font(.custom("Tanker-Regular", size: 28))
-                        .foregroundColor(Color.nudgeGreen900)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .frame(minWidth: 140)
-                .retroConsoleSurface()
+                timerSquare(ms: viewModel.remainingMs)
+                    .frame(width: 80, height: 80)
                 
                 Spacer()
                 
@@ -184,6 +164,33 @@ struct FooterFocusBarView: View {
                 }
             }
         }
+    }
+    
+    // MARK: - Timer Square
+    private func timerSquare(ms: Int) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(Color.white.opacity(0.7))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .stroke(Color.nudgeGreen900.opacity(0.2), lineWidth: 1)
+                )
+                .retroConsoleSurface()
+            
+            VStack(spacing: 4) {
+                Image(systemName: "clock.fill")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(Color.nudgeGreen900)
+                Text(formatMMSS(ms))
+                    .font(.custom("Nippo-Regular", size: 22))
+                    .minimumScaleFactor(0.5)
+                    .lineLimit(1)
+                    .foregroundColor(Color.nudgeGreen900)
+                    .monospacedDigit()
+            }
+            .padding(8)
+        }
+        .aspectRatio(1, contentMode: .fit)
     }
     
     // MARK: - Helper Methods
