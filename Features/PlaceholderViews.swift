@@ -141,7 +141,7 @@ struct FocusView: View {
             }
             .padding()
             .navigationTitle("Focus")
-            .background(personalityManager.currentTheme.background.ignoresSafeArea())
+            .background(Color.clear)
         }
     }
     
@@ -182,7 +182,7 @@ struct LeaderboardView: View {
             }
             .padding()
             .navigationTitle("Leaderboard")
-            .background(personalityManager.currentTheme.background.ignoresSafeArea())
+            .background(Color.clear)
         }
     }
 }
@@ -235,7 +235,7 @@ struct ContractsView: View {
             }
             .padding()
             .navigationTitle("Contracts")
-            .background(personalityManager.currentTheme.background.ignoresSafeArea())
+            .background(Color.clear)
         }
     }
 }
@@ -291,7 +291,7 @@ struct ProfileView: View {
             }
             .padding()
             .navigationTitle("Profile")
-            .background(personalityManager.currentTheme.background.ignoresSafeArea())
+            .background(Color.clear)
         }
     }
 }
