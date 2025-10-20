@@ -158,6 +158,8 @@ struct ContentView: View {
             
             // Main content area
             VStack(spacing: 0) {
+                // Reserve space for top navbar overlay
+                Color.clear.frame(height: 60)
                 // Current tab content
                 if selectedTab < tabs.count {
                     tabs[selectedTab].view
@@ -167,6 +169,12 @@ struct ContentView: View {
                 } else {
                     Color.clear
                 }
+            }
+            
+            // Top navbar overlay
+            VStack {
+                NudgeNavBarView()
+                Spacer()
             }
             
             // Footer sits above custom tab bar

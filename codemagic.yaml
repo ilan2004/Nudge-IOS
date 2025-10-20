@@ -11,84 +11,57 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Disable code signing for unsigned build
+      - name: Prepare for unsigned build
         script: |
-          echo "Preparing for unsigned build - disabling code signing"
-      - name: Get CocoaPods dependencies
+          echo "Preparing for unsigned build - code signing disabled"
+      - name: Get CocoaPods dependencies (if any)
         script: |
           if [ -f "Podfile" ]; then
             pod install
           fi
-      - name: Build unsigned IPA
+      - name: Validate project presence (non-fatal)
         script: |
-          # Create build directory
-          mkdir -p build/ios/ipa
-          
-          # List current directory contents for debugging
-          echo "Current directory: $PWD"
-          ls -la
-          echo "App directory contents:"
-          ls -la App/
-          echo "Core directory contents:"
-          ls -la Core/
-          echo "UI directory contents:"
-          ls -la UI/
-          echo "Resources directory contents:"
-          ls -la Resources/
-          
-          # Create export options for unsigned build first
-          cat > /tmp/export_options.plist <<EOF
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-              <key>method</key>
-              <string>ad-hoc</string>
-              <key>stripSwiftSymbols</key>
-              <false/>
-              <key>uploadBitcode</key>
-              <false/>
-              <key>uploadSymbols</key>
-              <false/>
-              <key>compileBitcode</key>
-              <false/>
-          </dict>
-          </plist>
-          EOF
-          
-          # Build unsigned IPA using project file
-          echo "Building with project file: $XCODE_PROJECT"
+          echo "PWD: $PWD"
+          ls -la || true
+          if [ -d "Core" ]; then ls -la Core || true; fi
+          if [ -d "Features" ]; then ls -la Features || true; fi
+          if [ -d "UI" ]; then ls -la UI || true; fi
+          if [ -d "Resources" ]; then ls -la Resources || true; fi
+          if [ ! -d "$XCODE_PROJECT" ]; then echo "Warning: $XCODE_PROJECT not found"; fi
+      - name: Build unsigned archive
+        script: |
+          mkdir -p "$PWD/build/ios/ipa"
+          echo "Building with project: $XCODE_PROJECT, scheme: $XCODE_SCHEME"
           xcodebuild archive \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -configuration Release \
             -destination "generic/platform=iOS" \
-            -archivePath "$PWD/build/Nudge.xcarchive" \
+            -archivePath "$PWD/build/$XCODE_SCHEME.xcarchive" \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             PROVISIONING_PROFILE="" \
+            ENABLE_PREVIEWS=NO \
+            DEVELOPMENT_ASSET_PATHS="" \
             -verbose
-          
-          # Instead of export, manually create IPA from archive
-          echo "Archive succeeded! Now creating IPA manually..."
-          
-          # Create IPA directory structure
+      - name: Create IPA manually
+        script: |
+          echo "Archive succeeded! Creating IPA manually..."
           mkdir -p "$PWD/build/ios/ipa/Payload"
-          
-          # Copy .app from archive to Payload directory
-          cp -r "$PWD/build/Nudge.xcarchive/Products/Applications/Nudge.app" "$PWD/build/ios/ipa/Payload/"
-          
-          # Create IPA by zipping the Payload directory
-          cd "$PWD/build/ios/ipa"
-          zip -r Nudge.ipa Payload/
-          
+          APP_PATH="$PWD/build/$XCODE_SCHEME.xcarchive/Products/Applications/$XCODE_SCHEME.app"
+          if [ ! -d "$APP_PATH" ]; then
+            echo "Error: App not found at $APP_PATH" >&2
+            echo "Contents of archive Applications directory:"; ls -la "$PWD/build/$XCODE_SCHEME.xcarchive/Products/Applications" || true
+            exit 1
+          fi
+          cp -R "$APP_PATH" "$PWD/build/ios/ipa/Payload/"
+          (cd "$PWD/build/ios/ipa" && zip -r "$XCODE_SCHEME".ipa Payload)
           echo "✅ IPA created successfully!"
-          ls -la *.ipa
+          ls -la "$PWD/build/ios/ipa"/*.ipa || true
     artifacts:
       - build/ios/ipa/*.ipa
-      - build/Nudge.xcarchive
-      - /tmp/xcodebuild_logs/*.log
+      - build/*.xcarchive
     publishing:
       # Uncomment and configure if you want to publish to external services
       # slack:
