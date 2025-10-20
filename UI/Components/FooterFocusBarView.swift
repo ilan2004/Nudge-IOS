@@ -6,7 +6,15 @@ struct FooterFocusBarView: View {
     @State private var showSettings = false
 
     var body: some View {
-        EmptyView()
+        VStack(spacing: 12) {
+            if viewModel.mode == .idle {
+                idleLayout
+            } else {
+                activeLayout
+            }
+        }
+        .padding(12)
+        .retroConsoleSurface()
     }
     
     // MARK: - Idle Layout
