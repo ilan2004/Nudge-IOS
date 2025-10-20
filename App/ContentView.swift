@@ -10,7 +10,8 @@ struct ContentView: View {
             // Global mint background for all tabs
             Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea()
             
-            TabView {
+            RetroTabView {
+                TabView {
                 // 1) Nudge (Home)
                 NudgeHomeView()
                     .foregroundColor(Color.green)
@@ -55,8 +56,9 @@ struct ContentView: View {
                         Image(systemName: "person.fill")
                         Text("Profile")
                     }
+                }
+                .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
             }
-            .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
             
             // Footer sits above tab bar
             VStack {
@@ -72,6 +74,7 @@ struct ContentView: View {
             print("Personality type: \(personalityManager.personalityType?.rawValue ?? "nil")")
         }
     }
+    
     
     // MARK: - Tabs Content
     struct NudgeHomeView: View {
