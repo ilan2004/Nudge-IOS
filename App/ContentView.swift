@@ -31,9 +31,19 @@ struct RetroTabBar: View {
                 )
             }
         }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color(red: 0.988, green: 0.973, blue: 0.949)) // defaultCream
+                .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30), radius: 0, x: 0, y: -4) // upward drop shadow
+                .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30).opacity(0.2), radius: 12, x: 0, y: -8) // upward soft shadow
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .stroke(Color(red: 0.01, green: 0.35, blue: 0.30), lineWidth: 2)
+        )
         .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(Color.clear)
     }
 }
 
@@ -134,7 +144,7 @@ struct ContentView: View {
             VStack {
                 Spacer()
                 RetroTabBar(selectedTab: $selectedTab, tabs: tabs)
-                    .padding(.bottom, 34) // Safe area padding
+                    .padding(.bottom, 8) // Closer to bottom like native tab bars
             }
         }
         .environment(\.dynamicTypeSize, .medium)
