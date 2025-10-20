@@ -165,7 +165,7 @@ struct ContentView: View {
             // Main content area
             VStack(spacing: 0) {
                 // Reserve space for top navbar overlay
-                Color.clear.frame(height: 60)
+                Color.clear.frame(height: 36)
                 // Current tab content
                 if selectedTab < tabs.count {
                     tabs[selectedTab].view
@@ -256,13 +256,14 @@ struct SimpleTopNavBar: View {
     var body: some View {
         HStack(spacing: 12) {
             Text("NUDGE")
-                .font(.custom("Tanker-Regular", size: 24))
+                .font(.custom("Tanker-Regular", size: 22))
+                .fontWeight(.heavy)
                 .foregroundColor(Color(red: 0.01, green: 0.35, blue: 0.30))
             Spacer()
         }
         .padding(.horizontal, 16)
-        .padding(.top, 6)
-        .padding(.bottom, 12)
+        .padding(.top, 2)
+        .padding(.bottom, 6)
         .frame(maxWidth: .infinity)
         .background(
             Rectangle()

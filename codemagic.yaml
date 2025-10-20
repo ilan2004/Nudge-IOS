@@ -45,6 +45,16 @@ workflows:
             ENABLE_PREVIEWS=NO \
             DEVELOPMENT_ASSET_PATHS="" \
             -verbose
+      - name: Verify bundled fonts in archive (fail if missing)
+        script: |
+          APP_PATH="$PWD/build/$XCODE_SCHEME.xcarchive/Products/Applications/$XCODE_SCHEME.app"
+          if [ ! -d "$APP_PATH" ]; then echo "Archive missing app at $APP_PATH" >&2; exit 1; fi
+          echo "Listing bundled Tanker fonts:"; find "$APP_PATH" -maxdepth 2 -iname "*tanker*.*" -print || true
+          echo "Reading UIAppFonts from Info.plist:"; /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" || echo "No UIAppFonts key"
+          if ! /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" 2>/dev/null | grep -qi "Tanker-Regular.otf"; then
+            echo "Error: UIAppFonts missing Tanker-Regular.otf" >&2; exit 1; fi
+          if ! find "$APP_PATH" -maxdepth 1 -iname "Tanker-Regular.otf" | grep -q "."; then
+            echo "Error: Tanker-Regular.otf not found in app bundle root (Copy Bundle Resources)" >&2; exit 1; fi
       - name: Create IPA manually
         script: |
           echo "Archive succeeded! Creating IPA manually..."

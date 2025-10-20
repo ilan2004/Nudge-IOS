@@ -12,7 +12,6 @@
 		8D1107350486CEB800E47090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107360486CEB800E47090 /* Assets.xcassets */; };
 		8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107380486CEB800E47090 /* Preview Assets.xcassets */; };
 		7917D39CE5B94FD88438F7DE /* Tanker-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */; };
-		C79AFC0B2F324BF1998E0F9A /* Tanker-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */; };
 		A20000000000000000000001 /* DEBUG_ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000001 /* DEBUG_ContentView.swift */; };
 		A20000000000000000000002 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000002 /* PersistenceController.swift */; };
 		A20000000000000000000003 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* AppSettings.swift */; };
@@ -61,7 +60,6 @@ A0000000000000000000000F /* FooterFocusBarViewModel.swift */ = {isa = PBXFileRef
 A00000000000000000000010 /* RestrictionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionsController.swift; sourceTree = "<group>"; };
 A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focus/FocusSettingsView.swift; sourceTree = "<group>"; };
 		7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.otf"; sourceTree = "<group>"; };
-		C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.ttf"; sourceTree = "<group>"; };
 		A00000000000000000000012 /* NudgeStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeStyles.swift; sourceTree = "<group>"; };
 		A00000000000000000000013 /* ContractsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsView.swift; sourceTree = "<group>"; };
 		A00000000000000000000014 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
@@ -238,7 +236,6 @@ A10000000000000000000006 /* Features */ = {
 			isa = PBXGroup;
 			children = (
 				7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */,
-				C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -304,7 +301,6 @@ A10000000000000000000006 /* Features */ = {
 				8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */,
 				8D1107350486CEB800E47090 /* Assets.xcassets in Resources */,
 				7917D39CE5B94FD88438F7DE /* Tanker-Regular.otf in Resources */,
-				C79AFC0B2F324BF1998E0F9A /* Tanker-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,7 +465,6 @@ A10000000000000000000006 /* Features */ = {
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIAppFonts = (
 					"Tanker-Regular.otf",
-					"Tanker-Regular.ttf",
 				);
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -502,7 +497,6 @@ A10000000000000000000006 /* Features */ = {
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIAppFonts = (
 					"Tanker-Regular.otf",
-					"Tanker-Regular.ttf",
 				);
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
