@@ -6,13 +6,8 @@ struct DEBUG_ContentView: View {
     @StateObject private var focusManager = FocusManager()
     @StateObject private var appSettings = AppSettings()
     
-    // Exact mint: rgb(130, 237, 166)
-    private let exactMint = Color(red: 130/255, green: 237/255, blue: 166/255)
-    
     var body: some View {
-        ZStack {
-            exactMint.ignoresSafeArea()
-            
+        ZStack(alignment: .bottom) {
             TabView {
                 // 1) Nudge (Home)
                 NudgeHomeView()
@@ -49,12 +44,9 @@ struct DEBUG_ContentView: View {
                         Text("Profile")
                     }
             }
-            .padding(.bottom, 88) // reserve space above the tab bar for the footer
-            .overlay(alignment: .bottom) {
+            .safeAreaInset(edge: .bottom, spacing: 0) {
                 FooterFocusBarView(viewModel: FooterFocusBarViewModel())
-                    .padding(.horizontal)
-                    .padding(.bottom, 8)
-                    .zIndex(10)
+                    .background(Color(red: 0.96, green: 0.96, blue: 0.94))
             }
         }
         .environment(\.dynamicTypeSize, .medium)
