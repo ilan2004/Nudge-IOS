@@ -62,9 +62,9 @@ A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference
 		7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.otf"; sourceTree = "<group>"; };
 		C79AFC0B2F324BF1998E0F9B /* Tanker-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.ttf"; sourceTree = "<group>"; };
 		A00000000000000000000012 /* NudgeStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeStyles.swift; sourceTree = "<group>"; };
-		A00000000000000000000013 /* ContractsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contracts/ContractsView.swift; sourceTree = "<group>"; };
-		A00000000000000000000014 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leaderboard/LeaderboardView.swift; sourceTree = "<group>"; };
-		A00000000000000000000015 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile/ProfileView.swift; sourceTree = "<group>"; };
+		A00000000000000000000013 /* ContractsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsView.swift; sourceTree = "<group>"; };
+		A00000000000000000000014 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
+		A00000000000000000000015 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
