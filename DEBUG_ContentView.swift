@@ -49,11 +49,12 @@ struct DEBUG_ContentView: View {
                         Text("Profile")
                     }
             }
-            .safeAreaInset(edge: .bottom) {
+            .padding(.bottom, 88) // reserve space above the tab bar for the footer
+            .overlay(alignment: .bottom) {
                 FooterFocusBarView(viewModel: FooterFocusBarViewModel())
                     .padding(.horizontal)
                     .padding(.bottom, 8)
-                    .zIndex(1)
+                    .zIndex(10)
             }
         }
         .environment(\.dynamicTypeSize, .medium)
