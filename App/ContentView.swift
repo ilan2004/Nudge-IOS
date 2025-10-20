@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Shapes
 struct TopRoundedRectangle: Shape {
@@ -76,7 +77,23 @@ struct RetroTabButton: View {
     @State private var isPressed = false
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            #if os(iOS)
+            // Use different haptics based on selection state
+            if isSelected {
+                // Already selected - light tap feedback
+                let generator = UIImpactFeedbackGenerator(style: .light)
+                generator.prepare()
+                generator.impactOccurred()
+            } else {
+                // New selection - medium impact feedback
+                let generator = UIImpactFeedbackGenerator(style: .medium)
+                generator.prepare()
+                generator.impactOccurred()
+            }
+            #endif
+            action()
+        }) {
             VStack(spacing: 4) {
                 Image(systemName: icon)
                     .font(.system(size: 18, weight: isSelected ? .bold : .medium))
