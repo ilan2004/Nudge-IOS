@@ -467,6 +467,10 @@ A10000000000000000000006 /* Features */ = {
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIAppFonts = (
+					"Tanker-Regular.otf",
+					"Tanker-Regular.ttf",
+				);
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -496,6 +500,10 @@ A10000000000000000000006 /* Features */ = {
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIAppFonts = (
+					"Tanker-Regular.otf",
+					"Tanker-Regular.ttf",
+				);
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
