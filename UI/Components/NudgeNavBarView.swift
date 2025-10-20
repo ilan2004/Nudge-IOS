@@ -1,16 +1,6 @@
 // UI/Components/NudgeNavBarView.swift
 import SwiftUI
 
-private struct BottomRoundedRectangle: Shape {
-    var radius: CGFloat = 20
-    func path(in rect: CGRect) -> Path {
-        let bez = UIBezierPath(roundedRect: rect,
-                               byRoundingCorners: [.bottomLeft, .bottomRight],
-                               cornerRadii: CGSize(width: radius, height: radius))
-        return Path(bez.cgPath)
-    }
-}
-
 struct NudgeNavBarView: View {
     var body: some View {
         HStack(spacing: 12) {
