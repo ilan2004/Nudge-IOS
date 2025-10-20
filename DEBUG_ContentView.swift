@@ -103,10 +103,10 @@ struct DEBUG_ContentView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     if let type = personalityManager.personalityType {
-                        PersonalityBadge(personalityType: type, gender: personalityManager.gender)
-                            .padding(.top, 12)
+                        // PersonalityBadge temporarily removed in debug main view
                         Text(type.displayName)
                             .font(.title2).bold()
+                            .padding(.top, 12)
                         Text(type.rawValue)
                             .font(.headline)
                     } else {

@@ -99,20 +99,14 @@ struct CharacterCard: View {
             }
             .frame(height: cardSize + 24)
             
-            // Personality Badge and Dialogue
-            if let personalityType = personalityManager.personalityType {
+            // Personality Badge removed for now; keep dialogue only
+            if personalityManager.personalityType != nil {
                 VStack(spacing: 12) {
-                    PersonalityBadge(
-                        personalityType: personalityType,
-                        gender: personalityManager.gender
-                    )
-                    
                     // Character Dialogue
                     VStack(spacing: 8) {
                         if !greeting.isEmpty {
                             DialogueBubble(text: greeting, style: .greeting)
                         }
-                        
                         if !motivation.isEmpty {
                             DialogueBubble(text: motivation, style: .motivation)
                         }
