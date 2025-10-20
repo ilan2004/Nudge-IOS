@@ -44,9 +44,13 @@ struct DEBUG_ContentView: View {
                         Text("Profile")
                     }
             }
-            .safeAreaInset(edge: .bottom, spacing: 0) {
+            
+            // Footer sits above tab bar
+            VStack {
+                Spacer()
                 FooterFocusBarView(viewModel: FooterFocusBarViewModel())
                     .background(Color(red: 0.96, green: 0.96, blue: 0.94))
+                    .padding(.bottom, 90) // More space above tab bar
             }
         }
         .environment(\.dynamicTypeSize, .medium)
@@ -73,6 +77,7 @@ struct DEBUG_ContentView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
+                .padding(.bottom, 180) // Extra padding to avoid footer overlap
             }
         }
     }
@@ -81,22 +86,25 @@ struct DEBUG_ContentView: View {
         @EnvironmentObject var personalityManager: PersonalityManager
         
         var body: some View {
-            VStack(spacing: 16) {
-                if let type = personalityManager.personalityType {
-                    PersonalityBadge(personalityType: type, gender: personalityManager.gender)
-                        .padding(.top, 12)
-                    Text(type.displayName)
-                        .font(.title2).bold()
-                    Text(type.rawValue)
-                        .font(.headline)
-                } else {
-                    Text("Take the personality test to see your type")
-                        .font(.headline)
-                        .padding()
+            ScrollView {
+                VStack(spacing: 16) {
+                    if let type = personalityManager.personalityType {
+                        PersonalityBadge(personalityType: type, gender: personalityManager.gender)
+                            .padding(.top, 12)
+                        Text(type.displayName)
+                            .font(.title2).bold()
+                        Text(type.rawValue)
+                            .font(.headline)
+                    } else {
+                        Text("Take the personality test to see your type")
+                            .font(.headline)
+                            .padding()
+                    }
+                    Spacer()
                 }
-                Spacer()
+                .padding()
+                .padding(.bottom, 180) // Extra padding to avoid footer overlap
             }
-            .padding()
         }
     }
 }
