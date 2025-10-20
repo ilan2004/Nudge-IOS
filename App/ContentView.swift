@@ -7,14 +7,14 @@ struct ContentView: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Global mint background for all tabs - hardcoded RGB
-            Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea()
+            // Global mint background for all tabs
+            Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea()
             
             TabView {
                 // 1) Nudge (Home)
                 NudgeHomeView()
-                    .foregroundColor(.greenPrimary)
-                    .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
+                    .foregroundColor(.green)
+                    .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "house.fill")
                         Text("Nudge")
@@ -22,8 +22,8 @@ struct ContentView: View {
                 
                 // 2) Stakes (reuse ContractsView)
                 ContractsView()
-                    .foregroundColor(.greenPrimary)
-                    .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
+                    .foregroundColor(.green)
+                    .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "handshake.fill")
                         Text("Stakes")
@@ -31,8 +31,8 @@ struct ContentView: View {
                 
                 // 3) My Type
                 MyTypeView()
-                    .foregroundColor(.greenPrimary)
-                    .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
+                    .foregroundColor(.green)
+                    .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.text.rectangle")
                         Text("My Type")
@@ -40,8 +40,8 @@ struct ContentView: View {
                 
                 // 4) Friends / Leaderboard
                 LeaderboardView()
-                    .foregroundColor(.greenPrimary)
-                    .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
+                    .foregroundColor(.green)
+                    .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.3.fill")
                         Text("Friends")
@@ -49,14 +49,14 @@ struct ContentView: View {
                 
                 // 5) Profile
                 ProfileView()
-                    .foregroundColor(.greenPrimary)
-                    .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
+                    .foregroundColor(.green)
+                    .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.fill")
                         Text("Profile")
                     }
             }
-            .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
+            .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
             
             // Footer sits above tab bar
             VStack {
