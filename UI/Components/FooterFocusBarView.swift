@@ -22,41 +22,44 @@ struct FooterFocusBarView: View {
         VStack(spacing: 8) {
             // Top row: Settings button
             HStack {
-                Spacer()
-                
                 Button {
                     showSettings = true
                 } label: {
                     Text("Blocked Apps")
                         .font(.system(size: 12, weight: .semibold))
                 }
-                .buttonStyle(NavPillStyle(variant: .outline, compact: true))
+                .buttonStyle(NavPillStyle(variant: .cyan, compact: false))
+                Spacer()
             }
             
             // Middle row: Time adjustment
             HStack(spacing: 8) {
-                Button {
-                    viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
-                } label: {
-                    Image(systemName: "minus")
-                        .font(.system(size: 14, weight: .bold))
-                        .frame(width: 28, height: 28)
-                }
-                .buttonStyle(NavPillStyle(variant: .accent, compact: true))
-                
                 Text("\(formatHoursMinutes(viewModel.customMinutes))")
                     .font(.system(size: 22, weight: .bold, design: .rounded))
                     .foregroundColor(Color.nudgeGreen900)
-                    .frame(minWidth: 64)
+                    .frame(minWidth: 64, alignment: .leading)
                 
-                Button {
-                    viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
-                } label: {
-                    Image(systemName: "plus")
-                        .font(.system(size: 14, weight: .bold))
-                        .frame(width: 28, height: 28)
+                Spacer()
+                
+                VStack(spacing: 6) {
+                    Button {
+                        viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
+                    } label: {
+                        Image(systemName: "chevron.up")
+                            .font(.system(size: 14, weight: .bold))
+                            .frame(width: 28, height: 28)
+                    }
+                    .buttonStyle(NavPillStyle(variant: .primary, compact: true))
+                    
+                    Button {
+                        viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
+                    } label: {
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 14, weight: .bold))
+                            .frame(width: 28, height: 28)
+                    }
+                    .buttonStyle(NavPillStyle(variant: .amber, compact: true))
                 }
-                .buttonStyle(NavPillStyle(variant: .accent, compact: true))
             }
             
             // Bottom row: Start button
@@ -79,6 +82,16 @@ struct FooterFocusBarView: View {
         VStack(spacing: 8) {
             // Top row: Status and countdown
             HStack(spacing: 12) {
+                Button {
+                    showSettings = true
+                } label: {
+                    Text("Blocked Apps")
+                        .font(.system(size: 12, weight: .semibold))
+                }
+                .buttonStyle(NavPillStyle(variant: .cyan, compact: false))
+                
+                Spacer()
+                
                 // Status chip
                 Text(statusLabel)
                     .font(.caption.bold())
@@ -96,33 +109,12 @@ struct FooterFocusBarView: View {
                 Text(formatMMSS(viewModel.remainingMs))
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundColor(Color.nudgeGreen900)
-                
-                Spacer()
-                
-                Button {
-                    showSettings = true
-                } label: {
-                    Text("Blocked Apps")
-                        .font(.system(size: 12, weight: .semibold))
-                }
-                .buttonStyle(NavPillStyle(variant: .outline, compact: true))
             }
             
             // Bottom row: Action buttons
             HStack(spacing: 8) {
                 switch viewModel.mode {
                 case .focus:
-                    Button {
-                        viewModel.pause()
-                    } label: {
-                        HStack {
-                            Image(systemName: "pause.fill")
-                            Text("Pause")
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(NavPillStyle(variant: .amber))
-                    
                     Button {
                         viewModel.startBreak(minutes: 5)
                     } label: {
