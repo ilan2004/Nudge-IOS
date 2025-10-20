@@ -14,6 +14,16 @@ struct TopRoundedRectangle: Shape {
     }
 }
 
+struct BottomRoundedRectangle: Shape {
+    var radius: CGFloat = 20
+    func path(in rect: CGRect) -> Path {
+        let bez = UIBezierPath(roundedRect: rect,
+                               byRoundingCorners: [.bottomLeft, .bottomRight],
+                               cornerRadii: CGSize(width: radius, height: radius))
+        return Path(bez.cgPath)
+    }
+}
+
 // MARK: - Custom Tab Infrastructure (inlined to ensure build target visibility)
 struct TabItem {
     let icon: String
@@ -246,16 +256,24 @@ struct SimpleTopNavBar: View {
     var body: some View {
         HStack(spacing: 12) {
             Text("NUDGE")
-                .font(.custom("Tanker", size: 24))
-                .fontWeight(.semibold)
+                .font(.custom("Tanker-Regular", size: 24))
                 .foregroundColor(Color(red: 0.01, green: 0.35, blue: 0.30))
             Spacer()
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .retroConsoleSurface()
-        .padding(.horizontal, 16)
-        .padding(.top, 12)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity)
+        .background(
+            Rectangle()
+                .fill(Color(red: 0.988, green: 0.973, blue: 0.949))
+                .ignoresSafeArea(edges: .top)
+        )
+        .mask(
+            BottomRoundedRectangle(radius: 20)
+                .ignoresSafeArea(edges: .top)
+        )
+        .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30), radius: 0, x: 0, y: 4)
+        .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30).opacity(0.2), radius: 12, x: 0, y: 8)
     }
 }
 
