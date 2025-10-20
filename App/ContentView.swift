@@ -245,8 +245,9 @@ struct ContentView: View {
 struct SimpleTopNavBar: View {
     var body: some View {
         HStack(spacing: 12) {
-            Text("nudge")
+            Text("NUDGE")
                 .font(.custom("Tanker-Regular", size: 24))
+                .fontWeight(.semibold)
                 .foregroundColor(Color(red: 0.01, green: 0.35, blue: 0.30))
             Spacer()
         }
