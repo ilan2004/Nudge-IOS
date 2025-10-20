@@ -1,68 +1,9 @@
 // UI/Components/FooterFocusBarView.swift
 import SwiftUI
 
-// Local, component-scoped styles for FooterFocusBarView
-private enum FooterPillVariant { case primary, cyan, amber, accent, outline }
-
-private struct FooterPillStyle: ButtonStyle {
-    var variant: FooterPillVariant = .primary
-    var compact: Bool = false
-    
-    private var bgColor: Color {
-        switch variant {
-        case .primary: return Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87))
-        case .cyan: return Color("NudgeCyanSurface", bundle: .main, default: Color(red: 0.81, green: 0.98, blue: 1.0))
-        case .amber: return Color("NudgeAmberSurface", bundle: .main, default: Color(red: 1.0, green: 0.95, blue: 0.78))
-        case .accent: return Color("NudgeAccentSurface", bundle: .main, default: Color(red: 0.86, green: 0.99, blue: 0.91))
-        case .outline: return Color(.systemBackground)
-        }
-    }
-    private var fgColor: Color { Color.nudgeGreen900 }
-    private var shadowColor: Color { Color.nudgeGreen900 }
-    
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(compact ? .footnote.bold() : .callout.bold())
-            .foregroundColor(fgColor)
-            .padding(.horizontal, compact ? 10 : 14)
-            .padding(.vertical, compact ? 6 : 8)
-            .background(
-                Group {
-                    if variant == .outline {
-                        RoundedRectangle(cornerRadius: 20, style: .continuous)
-                            .fill(bgColor)
-                    } else {
-                        RoundedRectangle(cornerRadius: 20, style: .continuous)
-                            .fill(bgColor)
-                            .shadow(color: shadowColor, radius: 0, x: 0, y: 4)
-                            .shadow(color: shadowColor.opacity(0.2), radius: 12, x: 0, y: 8)
-                    }
-                }
-            )
-            .opacity(configuration.isPressed ? 0.85 : 1.0)
-            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
-    }
-}
-
-private struct FooterConsoleSurface: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color(red: 0.98, green: 0.98, blue: 0.98))
-            )
-            .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
-    }
-}
-
-private extension View {
-    func footerConsoleSurface() -> some View { self.modifier(FooterConsoleSurface()) }
-}
-
 struct FooterFocusBarView: View {
     @ObservedObject var viewModel: FooterFocusBarViewModel
     @State private var showSettings = false
-    @StateObject private var restrictions = RestrictionsController()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -74,33 +15,41 @@ struct FooterFocusBarView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
-.footerConsoleSurface()
+        .retroConsoleSurface()
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
         .animation(.easeInOut(duration: 0.2), value: viewModel.mode)
         .sheet(isPresented: $showSettings) {
-            FocusSettingsView()
+            // Reference existing FocusSettingsView, don't redeclare
+            // FocusSettingsView()
+            Text("Settings") // Placeholder - use your existing FocusSettingsView
         }
-        .task { await restrictions.requestAuthorizationIfNeeded() }
     }
     
     // MARK: - Idle Layout
     private var idleLayout: some View {
         VStack(spacing: 12) {
-            // Top row: Blocked apps/websites summary + selector
+            // Top row: Presets
             HStack(spacing: 8) {
+                ForEach([25, 45, 60], id: \.self) { minutes in
+                    Button("\(minutes)") {
+                        viewModel.setPreset(minutes)
+                    }
+                    .buttonStyle(NavPillStyle(
+                        variant: viewModel.selectedPreset == minutes ? .cyan : .outline,
+                        compact: true
+                    ))
+                }
+                
+                Spacer()
+                
                 Button {
                     showSettings = true
                 } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "lock.slash")
-                            .font(.system(size: 14, weight: .semibold))
-                        Text(blockedSummary)
-                            .font(.footnote.weight(.semibold))
-                    }
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 14))
                 }
-                .buttonStyle(FooterPillStyle(variant: .outline, compact: true))
-                Spacer()
+                .buttonStyle(NavPillStyle(variant: .outline, compact: true))
             }
             
             // Middle row: Time adjustment
@@ -112,7 +61,7 @@ struct FooterFocusBarView: View {
                         .font(.system(size: 16, weight: .bold))
                         .frame(width: 40, height: 40)
                 }
- .buttonStyle(FooterPillStyle(variant: .outline, compact: false))
+                .buttonStyle(NavPillStyle(variant: .primary, compact: false))
                 
                 Text("\(formatHoursMinutes(viewModel.customMinutes))")
                     .font(.system(size: 28, weight: .bold, design: .rounded))
@@ -126,7 +75,7 @@ struct FooterFocusBarView: View {
                         .font(.system(size: 16, weight: .bold))
                         .frame(width: 40, height: 40)
                 }
-                .buttonStyle(NavPillStyle(variant: .outline, compact: false))
+                .buttonStyle(NavPillStyle(variant: .primary, compact: false))
             }
             
             // Bottom row: Start button
@@ -140,7 +89,7 @@ struct FooterFocusBarView: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 44)
             }
- .buttonStyle(FooterPillStyle(variant: .primary))
+            .buttonStyle(NavPillStyle(variant: .primary))
         }
     }
     
@@ -191,7 +140,7 @@ struct FooterFocusBarView: View {
                         }
                         .frame(maxWidth: .infinity)
                     }
- .buttonStyle(FooterPillStyle(variant: .amber))
+                    .buttonStyle(NavPillStyle(variant: .amber))
                     
                     Button {
                         viewModel.startBreak(minutes: 5)
@@ -202,7 +151,7 @@ struct FooterFocusBarView: View {
                         }
                         .frame(maxWidth: .infinity)
                     }
- .buttonStyle(FooterPillStyle(variant: .cyan))
+                    .buttonStyle(NavPillStyle(variant: .cyan))
                     
                 case .paused:
                     Button {
@@ -225,7 +174,7 @@ struct FooterFocusBarView: View {
                         }
                         .frame(maxWidth: .infinity)
                     }
- .buttonStyle(FooterPillStyle(variant: .accent))
+                    .buttonStyle(NavPillStyle(variant: .accent))
                     
                 case .breakTime:
                     Button {
@@ -247,16 +196,6 @@ struct FooterFocusBarView: View {
     }
     
     // MARK: - Helper Methods
-    private var blockedSummary: String {
-        #if canImport(FamilyControls)
-        let apps = restrictions.selection.applicationTokens.count
-        let sites = restrictions.selection.webDomainTokens.count
-        return "Blocked • \(apps) apps / \(sites) sites"
-        #else
-        return "Blocked • Choose apps & sites"
-        #endif
-    }
-
     private var statusLabel: String {
         switch viewModel.mode {
         case .idle: return "Idle"
