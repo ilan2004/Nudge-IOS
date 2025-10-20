@@ -246,13 +246,16 @@ struct SimpleTopNavBar: View {
     var body: some View {
         HStack(spacing: 12) {
             Text("NUDGE")
-                .font(.custom("Tanker-Regular", size: 24))
+                .font(.custom("Tanker", size: 24))
                 .fontWeight(.semibold)
                 .foregroundColor(Color(red: 0.01, green: 0.35, blue: 0.30))
             Spacer()
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
+        .retroConsoleSurface()
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
     }
 }
 
