@@ -79,8 +79,8 @@ public struct NavPillStyle: ButtonStyle {
 public struct RetroConsoleSurface: ViewModifier {
     public func body(content: Content) -> some View {
         content
+            .background(.clear)  
             .background(
-                .background(.clear)  // ← Add this line!
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
                     .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
                     .shadow(color: Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)), radius: 0, x: 0, y: 4)
