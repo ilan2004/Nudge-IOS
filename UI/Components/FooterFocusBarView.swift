@@ -27,10 +27,17 @@ private struct FooterPillStyle: ButtonStyle {
             .padding(.horizontal, compact ? 10 : 14)
             .padding(.vertical, compact ? 6 : 8)
             .background(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(bgColor)
-                    .shadow(color: shadowColor, radius: 0, x: 0, y: 4)
-                    .shadow(color: shadowColor.opacity(0.2), radius: 12, x: 0, y: 8)
+                Group {
+                    if variant == .outline {
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .fill(bgColor)
+                    } else {
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .fill(bgColor)
+                            .shadow(color: shadowColor, radius: 0, x: 0, y: 4)
+                            .shadow(color: shadowColor.opacity(0.2), radius: 12, x: 0, y: 8)
+                    }
+                }
             )
             .opacity(configuration.isPressed ? 0.85 : 1.0)
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
