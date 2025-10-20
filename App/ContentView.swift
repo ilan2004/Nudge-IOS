@@ -1,5 +1,22 @@
 import SwiftUI
 
+// MARK: - Shapes
+struct TopRoundedRectangle: Shape {
+    var radius: CGFloat = 20
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let tl = CGSize(width: radius, height: radius)
+        let tr = CGSize(width: radius, height: radius)
+        let br = CGSize(width: 0, height: 0)
+        let bl = CGSize(width: 0, height: 0)
+        let bez = UIBezierPath(roundedRect: rect,
+                               byRoundingCorners: [.topLeft, .topRight],
+                               cornerRadii: CGSize(width: radius, height: radius))
+        path.addPath(Path(bez.cgPath))
+        return path
+    }
+}
+
 // MARK: - Custom Tab Infrastructure (inlined to ensure build target visibility)
 struct TabItem {
     let icon: String
@@ -33,17 +50,17 @@ struct RetroTabBar: View {
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 8)
+        .frame(maxWidth: .infinity) // make container span full width
         .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
+            TopRoundedRectangle(radius: 20)
                 .fill(Color(red: 0.988, green: 0.973, blue: 0.949)) // defaultCream
                 .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30), radius: 0, x: 0, y: -4) // upward drop shadow
                 .shadow(color: Color(red: 0.01, green: 0.35, blue: 0.30).opacity(0.2), radius: 12, x: 0, y: -8) // upward soft shadow
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
+            TopRoundedRectangle(radius: 20)
                 .stroke(Color(red: 0.01, green: 0.35, blue: 0.30), lineWidth: 2)
         )
-        .padding(.horizontal, 16)
     }
 }
 
@@ -144,7 +161,8 @@ struct ContentView: View {
             VStack {
                 Spacer()
                 RetroTabBar(selectedTab: $selectedTab, tabs: tabs)
-                    .padding(.bottom, 8) // Closer to bottom like native tab bars
+                    .padding(.bottom, 0) // Touch the bottom edge
+                    .ignoresSafeArea(edges: .bottom)
             }
         }
         .environment(\.dynamicTypeSize, .medium)
