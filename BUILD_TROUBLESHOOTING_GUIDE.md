@@ -175,6 +175,65 @@ ENABLE_PREVIEWS = NO;
 
 ---
 
+### **Error 6: "Public SwiftUI View does not conform to 'View' (body not public)"**
+
+**Symptoms:**
+- Errors like:
+  - `type 'ContractsView' does not conform to protocol 'View'`
+  - `property 'body' must be declared public because it matches a requirement in public protocol 'View'`
+- "cannot find 'ContractsView' in scope" in files that reference feature views
+- Archive step produces no .app; resulting IPA is ~166 bytes and logs `cp: ...Nudge.app: No such file or directory`
+
+**Root Cause:**
+- Swift visibility mismatch: view structs were marked `public` while their `body` properties remained internal.
+- Additionally, view files existed on disk but were not part of the target's "Compile Sources" in the Xcode project, so the compiler could not see them.
+
+**Fix:**
+1) Make `body` public for any public SwiftUI `View`:
+   ```swift
+   public struct ContractsView: View {
+       public var body: some View {
+           Text("Contracts")
+       }
+   }
+   ```
+   Do the same for `LeaderboardView`, `ProfileView`, and nested views like `LeaderboardRow` and `SettingsRow` if they are public.
+
+2) Ensure Feature views are included in the app target:
+   - In Xcode: select each file → File Inspector → Target Membership: check "Nudge".
+   - Or, update `project.pbxproj` so each file has a PBXFileReference under Features and a corresponding `*.swift in Sources` entry in the Nudge target's PBXSourcesBuildPhase.
+
+3) Provide explicit color type context where needed:
+   - Replace `.green` / `.greenPrimary` with `Color.green` / `Color.greenPrimary`.
+   - Ensure `greenPrimary` exists (e.g., in `UI/Theme/Colors.swift` or Assets colors).
+
+4) Rebuild and create IPA manually (unsigned builds):
+   - Archive:
+     ```bash
+     xcodebuild archive \
+       -project Nudge.xcodeproj \
+       -scheme Nudge \
+       -configuration Release \
+       -destination "generic/platform=iOS" \
+       -archivePath "$PWD/build/Nudge.xcarchive" \
+       CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+     ```
+   - Package IPA:
+     ```bash
+     mkdir -p "$PWD/build/ios/ipa/Payload"
+     cp -r "$PWD/build/Nudge.xcarchive/Products/Applications/Nudge.app" "$PWD/build/ios/ipa/Payload/"
+     (cd "$PWD/build/ios/ipa" && zip -r Nudge.ipa Payload)
+     ```
+
+**Verification:**
+- `SwiftCompile normal arm64` lists ContractsView/LeaderboardView/ProfileView
+- Archive contains `Products/Applications/Nudge.app`
+- IPA size > 1MB and includes `Payload/Nudge.app`
+
+**Notes:**
+- If a type is `public`, all protocol-required members (like `body`) must be at least `public`.
+- If cross-module access isn’t required, prefer default internal visibility instead of `public`.
+
 ## 📱 **Codemagic Configuration Best Practices**
 
 ### **Minimal Working codemagic.yaml:**
