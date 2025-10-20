@@ -8,14 +8,14 @@ struct DEBUG_ContentView: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Global mint background for all tabs
-            Color.defaultMint.ignoresSafeArea()
+            // Global mint background for all tabs - hardcoded RGB
+            Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea()
             
             TabView {
                 // 1) Nudge (Home)
                 NudgeHomeView()
                     .foregroundColor(.greenPrimary)
-                    .background(Color.defaultMint.ignoresSafeArea())
+                    .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "house.fill")
                         Text("Nudge")
@@ -24,7 +24,7 @@ struct DEBUG_ContentView: View {
                 // 2) Stakes (reuse ContractsView)
                 ContractsView()
                     .foregroundColor(.greenPrimary)
-                    .background(Color.defaultMint.ignoresSafeArea())
+                    .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "handshake.fill")
                         Text("Stakes")
@@ -33,7 +33,7 @@ struct DEBUG_ContentView: View {
                 // 3) My Type
                 MyTypeView()
                     .foregroundColor(.greenPrimary)
-                    .background(Color.defaultMint.ignoresSafeArea())
+                    .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.text.rectangle")
                         Text("My Type")
@@ -42,7 +42,7 @@ struct DEBUG_ContentView: View {
                 // 4) Friends / Leaderboard
                 LeaderboardView()
                     .foregroundColor(.greenPrimary)
-                    .background(Color.defaultMint.ignoresSafeArea())
+                    .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.3.fill")
                         Text("Friends")
@@ -51,13 +51,13 @@ struct DEBUG_ContentView: View {
                 // 5) Profile
                 ProfileView()
                     .foregroundColor(.greenPrimary)
-                    .background(Color.defaultMint.ignoresSafeArea())
+                    .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
                     .tabItem {
                         Image(systemName: "person.fill")
                         Text("Profile")
                     }
             }
-            .background(Color.defaultMint.ignoresSafeArea())
+            .background(Color(red: 0.063, green: 0.737, blue: 0.502).ignoresSafeArea())
             
             // Footer sits above tab bar
             VStack {

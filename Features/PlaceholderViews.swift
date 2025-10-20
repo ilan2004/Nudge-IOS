@@ -70,7 +70,7 @@ struct FocusView: View {
                 Text("Focus Timer")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(personalityManager.currentTheme.text)
+                    .foregroundColor(.white)
                 
                 // Timer Circle
                 ZStack {
@@ -88,7 +88,7 @@ struct FocusView: View {
                         Text(timeString(from: focusManager.remainingTime))
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                            .foregroundColor(personalityManager.currentTheme.text)
+                            .foregroundColor(.white)
                         
                         Text(focusManager.currentSessionType)
                             .font(.headline)
@@ -162,7 +162,7 @@ struct LeaderboardView: View {
                 Text("Leaderboard")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(personalityManager.currentTheme.text)
+                    .foregroundColor(.white)
                 
                 Text("Social features coming soon!")
                     .foregroundColor(.secondary)
@@ -198,13 +198,13 @@ struct LeaderboardRow: View {
         HStack {
             Text("#\(rank)")
                 .font(.headline)
-                .foregroundColor(isCurrentUser ? PersonalityTheme.defaultColors.primary : personalityManager.currentTheme.textSecondary)
+                .foregroundColor(isCurrentUser ? .white : .gray)
                 .frame(width: 30)
             
             Text(name)
                 .font(.body)
                 .fontWeight(isCurrentUser ? .semibold : .regular)
-                .foregroundColor(personalityManager.currentTheme.text)
+                .foregroundColor(.white)
             
             Spacer()
             
@@ -226,7 +226,7 @@ struct ContractsView: View {
                 Text("Contracts")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(personalityManager.currentTheme.text)
+                    .foregroundColor(.white)
                 
                 Text("Accountability system coming soon!")
                     .foregroundColor(.secondary)
@@ -265,7 +265,7 @@ struct ProfileView: View {
                         
                         Text(personalityType.rawValue)
                             .font(.custom("Tanker-Regular", size: 20))
-                            .foregroundColor(personalityManager.currentTheme.primary)
+                            .foregroundColor(.white)
                     }
                 }
                 
