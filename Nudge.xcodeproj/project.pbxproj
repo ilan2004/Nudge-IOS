@@ -34,6 +34,7 @@
 		A20000000000000000000013 /* ContractsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000013 /* ContractsView.swift */; };
 		A20000000000000000000014 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000014 /* LeaderboardView.swift */; };
 		A20000000000000000000015 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000015 /* ProfileView.swift */; };
+		A20000000000000000000016 /* NudgeNavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000016 /* NudgeNavBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@ A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference
 		A00000000000000000000013 /* ContractsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsView.swift; sourceTree = "<group>"; };
 		A00000000000000000000014 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		A00000000000000000000015 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		A00000000000000000000016 /* NudgeNavBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeNavBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,13 +134,14 @@ A10000000000000000000002 /* Services */ = {
 			path = UI;
 			sourceTree = "<group>";
 		};
-A10000000000000000000004 /* Components */ = {
+		A10000000000000000000004 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				A00000000000000000000009 /* CharacterCard.swift */,
 				A00000000000000000000008 /* PersonalityBadge.swift */,
 				A0000000000000000000000A /* FocusRing.swift */,
 				A0000000000000000000000E /* FooterFocusBarView.swift */,
+				A00000000000000000000016 /* NudgeNavBarView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@ A10000000000000000000006 /* Features */ = {
 				A20000000000000000000013 /* ContractsView.swift in Sources */,
 				A20000000000000000000014 /* LeaderboardView.swift in Sources */,
 				A20000000000000000000015 /* ProfileView.swift in Sources */,
+				A20000000000000000000016 /* NudgeNavBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

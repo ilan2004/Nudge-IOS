@@ -6,10 +6,6 @@ struct TopRoundedRectangle: Shape {
     var radius: CGFloat = 20
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let tl = CGSize(width: radius, height: radius)
-        let tr = CGSize(width: radius, height: radius)
-        let br = CGSize(width: 0, height: 0)
-        let bl = CGSize(width: 0, height: 0)
         let bez = UIBezierPath(roundedRect: rect,
                                byRoundingCorners: [.topLeft, .topRight],
                                cornerRadii: CGSize(width: radius, height: radius))
@@ -173,7 +169,7 @@ struct ContentView: View {
             
             // Top navbar overlay
             VStack {
-                NudgeNavBarView()
+                SimpleTopNavBar()
                 Spacer()
             }
             
@@ -242,6 +238,20 @@ struct ContentView: View {
                 .padding(.bottom, 180) // Extra padding to avoid footer overlap
             }
         }
+    }
+}
+
+// Minimal inline top bar to avoid missing dependency during build
+struct SimpleTopNavBar: View {
+    var body: some View {
+        HStack(spacing: 12) {
+            Text("nudge")
+                .font(.system(size: 24, weight: .bold))
+                .foregroundColor(Color(red: 0.01, green: 0.35, blue: 0.30))
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
     }
 }
 
