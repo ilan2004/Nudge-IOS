@@ -159,35 +159,28 @@ struct LeaderboardView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Text("Leaderboard")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                
-                Text("Social features coming soon!")
-                    .foregroundColor(.gray)
-                
-                // Mock leaderboard
-                VStack(spacing: 16) {
-                    LeaderboardRow(rank: 1, name: "You", score: 1250, isCurrentUser: true)
-                    LeaderboardRow(rank: 2, name: "Alex", score: 1180, isCurrentUser: false)
-                    LeaderboardRow(rank: 3, name: "Sarah", score: 1050, isCurrentUser: false)
-                    LeaderboardRow(rank: 4, name: "Mike", score: 950, isCurrentUser: false)
-                }
-                .padding()
-                .background(Color.clear)
-                .cornerRadius(12)
-                
-                Spacer()
+        VStack(spacing: 20) {
+            Text("Leaderboard")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.green)
+            
+            Text("Social features coming soon!")
+                .foregroundColor(.gray)
+            
+            // Mock leaderboard
+            VStack(spacing: 16) {
+                LeaderboardRow(rank: 1, name: "You", score: 1250, isCurrentUser: true)
+                LeaderboardRow(rank: 2, name: "Alex", score: 1180, isCurrentUser: false)
+                LeaderboardRow(rank: 3, name: "Sarah", score: 1050, isCurrentUser: false)
+                LeaderboardRow(rank: 4, name: "Mike", score: 950, isCurrentUser: false)
             }
             .padding()
-            .navigationTitle("Leaderboard")
-            .background(Color.clear)
-            .scrollContentBackground(.hidden)
-            .toolbarBackground(.hidden, for: .navigationBar)
+            .cornerRadius(12)
+            
+            Spacer()
         }
+        .padding()
     }
 }
 
@@ -202,13 +195,13 @@ struct LeaderboardRow: View {
         HStack {
             Text("#\(rank)")
                 .font(.headline)
-                .foregroundColor(isCurrentUser ? .white : .gray)
+                .foregroundColor(isCurrentUser ? .green : .gray)
                 .frame(width: 30)
             
             Text(name)
                 .font(.body)
                 .fontWeight(isCurrentUser ? .semibold : .regular)
-                .foregroundColor(.white)
+                .foregroundColor(.green)
             
             Spacer()
             
@@ -225,24 +218,18 @@ struct ContractsView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Text("Contracts")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                
-                Text("Accountability system coming soon!")
-                    .foregroundColor(.gray)
-                
-                Spacer()
-            }
-            .padding()
-            .navigationTitle("Contracts")
-            .background(Color.clear)
-            .scrollContentBackground(.hidden)
-            .toolbarBackground(.hidden, for: .navigationBar)
+        VStack(spacing: 20) {
+            Text("Contracts")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.green)
+            
+            Text("Accountability system coming soon!")
+                .foregroundColor(.gray)
+            
+            Spacer()
         }
+        .padding()
     }
 }
 
@@ -251,56 +238,50 @@ struct ProfileView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                // Profile Header
-                if let personalityType = personalityManager.personalityType {
-                    VStack(spacing: 16) {
-                        // Personality Image
-                        if let imageName = personalityManager.getPersonalityImageName() {
-                            Image(imageName)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 120, height: 120)
-                                .clipShape(Circle())
-                        }
-                        
-                        Text(personalityType.displayName)
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                        
-                        Text(personalityType.rawValue)
-                            .font(.custom("Tanker-Regular", size: 20))
-                            .foregroundColor(.white)
-                    }
-                }
-                
-                // Settings Options
+        VStack(spacing: 20) {
+            // Profile Header
+            if let personalityType = personalityManager.personalityType {
                 VStack(spacing: 16) {
-                    SettingsRow(title: "Retake Personality Test", icon: "person.fill") {
-                        personalityManager.resetPersonalityData()
+                    // Personality Image
+                    if let imageName = personalityManager.getPersonalityImageName() {
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 120, height: 120)
+                            .clipShape(Circle())
                     }
                     
-                    SettingsRow(title: "Notifications", icon: "bell.fill") {
-                        // TODO: Navigate to notification settings
-                    }
+                    Text(personalityType.displayName)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.green)
                     
-                    SettingsRow(title: "About", icon: "info.circle.fill") {
-                        // TODO: Navigate to about page
-                    }
+                    Text(personalityType.rawValue)
+                        .font(.custom("Tanker-Regular", size: 20))
+                        .foregroundColor(.green)
                 }
-                .padding()
-                .background(Color.clear)
-                .cornerRadius(12)
+            }
+            
+            // Settings Options
+            VStack(spacing: 16) {
+                SettingsRow(title: "Retake Personality Test", icon: "person.fill") {
+                    personalityManager.resetPersonalityData()
+                }
                 
-                Spacer()
+                SettingsRow(title: "Notifications", icon: "bell.fill") {
+                    // TODO: Navigate to notification settings
+                }
+                
+                SettingsRow(title: "About", icon: "info.circle.fill") {
+                    // TODO: Navigate to about page
+                }
             }
             .padding()
-            .navigationTitle("Profile")
-            .background(Color.clear)
-            .scrollContentBackground(.hidden)
-            .toolbarBackground(.hidden, for: .navigationBar)
+            .cornerRadius(12)
+            
+            Spacer()
         }
+        .padding()
     }
 }
 
@@ -313,11 +294,11 @@ struct SettingsRow: View {
         Button(action: action) {
             HStack {
                 Image(systemName: icon)
-                    .foregroundColor(.white)
+                    .foregroundColor(.green)
                     .frame(width: 24)
                 
                 Text(title)
-                    .foregroundColor(.white)
+                    .foregroundColor(.green)
                 
                 Spacer()
                 
