@@ -183,13 +183,6 @@ struct ContentView: View {
                 Spacer()
             }
             
-            // Footer sits above custom tab bar
-            VStack {
-                Spacer()
-                FooterFocusBarView(viewModel: FooterFocusBarViewModel())
-                    .padding(.bottom, 120) // More space above custom tab bar
-            }
-            
             // Custom retro tab bar at bottom
             VStack {
                 Spacer()
@@ -212,15 +205,17 @@ struct ContentView: View {
         
         var body: some View {
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 20) {
+                VStack(spacing: 12) {
                     CharacterCard(title: "Alex", size: 280)
                     
-                    Spacer(minLength: 24)
+                    // Footer focus bar positioned directly under the character card
+                    FooterFocusBarView(viewModel: FooterFocusBarViewModel())
+                        .padding(.top, 8)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
                 .padding(.top, 24) // push main content a bit down from the top navbar
-                .padding(.bottom, 180) // Extra padding to avoid footer overlap
+                .padding(.bottom, 40) // smaller bottom padding since footer is inline now
             }
         }
     }
