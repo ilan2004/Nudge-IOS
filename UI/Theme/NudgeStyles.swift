@@ -3,7 +3,7 @@ import SwiftUI
 
 // MARK: - Pill Variant
 public enum PillVariant { 
-    case primary, cyan, amber, accent, outline, neutral 
+    case primary, cyan, amber, accent, outline, neutral, danger 
 }
 
 // MARK: - NavPillStyle
@@ -33,7 +33,7 @@ public struct NavPillStyle: ButtonStyle {
     
     private var shouldHaveShadow: Bool {
         switch variant {
-        case .primary, .cyan, .amber, .accent:
+        case .primary, .cyan, .amber, .accent, .danger:
             return true
         case .outline, .neutral:
             return false
@@ -46,6 +46,7 @@ public struct NavPillStyle: ButtonStyle {
         case .cyan: return Color("NudgeCyanSurface", bundle: .main, default: Color(red: 0.81, green: 0.98, blue: 1.0))
         case .amber: return Color("NudgeAmberSurface", bundle: .main, default: Color(red: 1.0, green: 0.95, blue: 0.78))
         case .accent: return Color("NudgeAccentSurface", bundle: .main, default: Color(red: 0.86, green: 0.99, blue: 0.91))
+        case .danger: return Color("NudgeRedSurface", bundle: .main, default: Color(red: 1.0, green: 0.92, blue: 0.92))
         case .outline, .neutral: return Color(.systemBackground)
         }
     }
@@ -56,6 +57,7 @@ public struct NavPillStyle: ButtonStyle {
         case .cyan: return Color("NudgeCyan600", bundle: .main, default: Color(red: 0.03, green: 0.57, blue: 0.70))
         case .amber: return Color("NudgeAmber600", bundle: .main, default: Color(red: 0.85, green: 0.46, blue: 0.02))
         case .accent: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
+        case .danger: return Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20))
         case .outline, .neutral: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
         }
     }
@@ -70,6 +72,7 @@ public struct NavPillStyle: ButtonStyle {
         case .cyan: return Color("NudgeCyan600", bundle: .main, default: Color(red: 0.03, green: 0.57, blue: 0.70))
         case .amber: return Color("NudgeAmber600", bundle: .main, default: Color(red: 0.85, green: 0.46, blue: 0.02))
         case .accent: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
+        case .danger: return Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20))
         case .outline, .neutral: return Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30))
         }
     }
