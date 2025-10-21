@@ -4,7 +4,7 @@ import FamilyControls
 #endif
 
 struct FocusSettingsView: View {
-    @Environment(.dismiss) private var dismiss
+    @Environment(\.presentationMode) private var presentationMode
     @ObservedObject var restrictions: RestrictionsController
 
     @State private var showPicker = false
@@ -23,7 +23,7 @@ struct FocusSettingsView: View {
                             .font(.title2.bold())
                             .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
                         Spacer()
-                        Button("Done") { dismiss() }
+                        Button("Done") { presentationMode.wrappedValue.dismiss() }
                             .foregroundColor(Color("NudgeGreen900", bundle: .main, default: Color(red: 0.01, green: 0.35, blue: 0.30)))
                             .font(.body.weight(.semibold))
                     }
