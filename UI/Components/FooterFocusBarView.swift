@@ -10,6 +10,8 @@ struct FooterFocusBarView: View {
     @State var showSettings = false
     @StateObject var restrictions = RestrictionsController()
     @State var blinkColon = true
+    @State private var stepperTimer: Timer?
+    @State private var stepperDelta: Int = 0
 
     var body: some View {
         VStack(spacing: 12) {
@@ -38,22 +40,22 @@ var activeLayout: some View {
 
 // MARK: - Hybrid Layout (modern + subtle retro accents)
     func hybridLayout(ms: Int) -> some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 8) {
             GeometryReader { geo in
                 let width = max(0, geo.size.width)
                 // Spacing scales subtly with width
                 let gap: CGFloat = width >= 420 ? 16 : (width >= 360 ? 14 : 12)
                 let colW = (width - gap * 2) / 3
-                // Row height derived from column width with clamping for ergonomics
-                let rowH = min(max(112, colW * 0.9), 148)
-                // Status chip height budget
-                let chipH: CGFloat = 30
-                // Screen height fills remaining space minus small spacing
-                let screenH = min(max(64, rowH - chipH - 8), 104)
+                // Row height derived from column width with clamping for ergonomics (reduced)
+                let rowH = min(max(100, colW * 0.8), 128)
+                // Status chip height budget (reduced)
+                let chipH: CGFloat = 26
+                // Screen height fills remaining space minus small spacing (reduced)
+                let screenH = min(max(56, rowH - chipH - 6), 96)
                 // Stepper button size follows iOS hit target rules (>=44)
-                let stepperSize = min(max(44, colW * 0.38), 56)
-                // Time font size scales with screen height
-                let timeFontSize = min(max(22, screenH * 0.42), 34)
+                let stepperSize = min(max(44, colW * 0.36), 54)
+                // Time font size scales with screen height (slightly reduced maxima)
+                let timeFontSize = min(max(20, screenH * 0.42), 32)
 
                 HStack(spacing: gap) {
                     // Left: blocked apps card (flexible, no fixed internal size)
@@ -61,22 +63,8 @@ var activeLayout: some View {
                         .frame(width: colW, height: rowH)
 
                     // Center: status chip + timer "screen"
-                    VStack(spacing: 8) {
-                        Text(statusLabel.uppercased())
-                            .font(.system(size: 12, weight: .black))
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .foregroundColor(Color.nudgeGreen900)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(statusChipFill)
-                                    .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
-                                    .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                            .stroke(Color.nudgeGreen900, lineWidth: 2)
-                                    )
-                            )
+VStack(spacing: 6) {
+                        statusChipView
                             .frame(height: chipH)
 
                         timerSquare(ms: ms, fontSize: timeFontSize)
@@ -90,13 +78,13 @@ var activeLayout: some View {
                                     .init(color: Color.black.opacity(0.05), location: 1.0),
                                 ]), startPoint: .top, endPoint: .bottom)
                                 .blendMode(.multiply)
-                                .opacity(0.25)
+.opacity(0.15)
                             )
                     }
                     .frame(width: colW, height: rowH, alignment: .top)
 
-                    // Right: vertical stepper (no literal D‑pad)
-                    VStack {
+                    // Right: vertical stepper (reduced gap between arrows)
+                    VStack(spacing: 6) {
                         Button {
                             #if canImport(UIKit)
                             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -118,7 +106,11 @@ var activeLayout: some View {
                                         .stroke(Color.nudgeGreen900, lineWidth: 2)
                                 )
                         }
-                        Spacer(minLength: max(8, rowH - (stepperSize * 2)))
+                        .onLongPressGesture(minimumDuration: 0.3, pressing: { isPressing in
+                            if !isPressing { stopRepeat() }
+                        }) {
+                            startRepeat(delta: 5)
+                        }
                         Button {
                             #if canImport(UIKit)
                             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -131,7 +123,7 @@ var activeLayout: some View {
                                 .frame(width: stepperSize, height: stepperSize)
                                 .background(
                                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                        .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                                        .fill(Color(red: 253/255, green: 192/255, blue: 104/255))
                                         .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
                                         .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                                 )
@@ -140,11 +132,17 @@ var activeLayout: some View {
                                         .stroke(Color.nudgeGreen900, lineWidth: 2)
                                 )
                         }
+                        .onLongPressGesture(minimumDuration: 0.3, pressing: { isPressing in
+                            if !isPressing { stopRepeat() }
+                        }) {
+                            startRepeat(delta: -5)
+                        }
+                        Spacer(minLength: 0)
                     }
-                    .frame(width: colW, height: rowH)
+                    .frame(width: colW, height: rowH, alignment: .center)
                 }
             }
-            .frame(height: 130)
+            .frame(height: 112)
 
             // Bottom actions row, UX-first
             Group {
@@ -524,6 +522,24 @@ var blockedAppsButton: some View {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .stroke(Color.nudgeGreen900, lineWidth: 2)
             )
+            // Count badge overlay
+            .overlay(alignment: .topTrailing) {
+                #if canImport(FamilyControls) && canImport(ManagedSettings)
+                let appsCount = restrictions.selection.applicationTokens.count
+                let webCount = restrictions.selection.webDomainTokens.count
+                let totalSel = appsCount + webCount
+                if totalSel > 0 {
+                    Text("\(totalSel)")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(Color.nudgeGreen900)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Capsule().fill(Color.white.opacity(0.9)))
+                        .overlay(Capsule().stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
+                        .padding(6)
+                }
+                #endif
+            }
             .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         }
     }
@@ -543,13 +559,13 @@ func timerSquare(ms: Int, fontSize: CGFloat? = nil) -> some View {
                 // Outer bold stroke
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .stroke(Color.nudgeGreen900, lineWidth: 8)
+                        .stroke(Color.nudgeGreen900, lineWidth: 4)
                 )
                 // Inner subtle stroke for depth
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .inset(by: 6)
-                        .stroke(Color.nudgeGreen900.opacity(0.2), lineWidth: 2)
+                        .inset(by: 4)
+                        .stroke(Color.nudgeGreen900.opacity(0.2), lineWidth: 1)
                 )
                 // Top highlight to hint glossy plastic
                 .overlay(
@@ -572,22 +588,67 @@ func timerSquare(ms: Int, fontSize: CGFloat? = nil) -> some View {
                 Text(":").opacity(blinkColon ? 1 : 0.2)
                 Text(ss)
             }
-            .font(.custom("Nippo-Regular", size: fontSize ?? 28))
-            .kerning(-0.5)
+            .font(.custom("Nippo-Regular", size: fontSize ?? 28, relativeTo: .title2))
+            .kerning(-0.8)
             .minimumScaleFactor(0.6)
             .lineLimit(1)
             .foregroundColor(Color.nudgeGreen900)
             .monospacedDigit()
+            .dynamicTypeSize(.xSmall ... .accessibility3)
             .padding(.horizontal, 12)
         }
         .onAppear {
-            withAnimation(.easeInOut(duration: 0.7).repeatForever(autoreverses: true)) {
+            withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true)) {
                 blinkColon.toggle()
             }
         }
     }
     
 // MARK: - Helper Methods
+    // Modern status chip with dot indicator
+    var statusChipView: some View {
+        HStack(spacing: 8) {
+            Circle()
+                .fill(statusDotColor)
+                .frame(width: 8, height: 8)
+            Text(statusLabel.uppercased())
+                .font(.system(size: 12, weight: .heavy))
+                .foregroundColor(Color.nudgeGreen900)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(
+            Capsule(style: .continuous)
+                .fill(statusChipFill.opacity(0.7))
+        )
+        .overlay(
+            Capsule(style: .continuous)
+                .stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1)
+        )
+    }
+
+    var statusDotColor: Color {
+        switch viewModel.mode {
+        case .idle: return Color.nudgeGreen900.opacity(0.8)
+        case .focus: return Color.nudgeGreen900
+        case .paused: return Color(red: 1.0, green: 0.7, blue: 0.2)
+        case .breakTime: return Color(red: 0.1, green: 0.6, blue: 0.7)
+        }
+    }
+
+    func startRepeat(delta: Int) {
+        stopRepeat()
+        stepperDelta = delta
+        stepperTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+            incMinutes(delta)
+        }
+    }
+
+    func stopRepeat() {
+        stepperTimer?.invalidate()
+        stepperTimer = nil
+        stepperDelta = 0
+    }
     var statusLabel: String {
         switch viewModel.mode {
         case .idle: return "Idle"
