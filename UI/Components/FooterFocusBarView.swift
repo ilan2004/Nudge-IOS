@@ -28,12 +28,157 @@ struct FooterFocusBarView: View {
     
 // MARK: - Idle Layout
 var idleLayout: some View {
-        fullRetroLayout(ms: viewModel.customMinutes * 60_000)
+        hybridLayout(ms: viewModel.customMinutes * 60_000)
     }
     
 // MARK: - Active Layout
 var activeLayout: some View {
-        fullRetroLayout(ms: viewModel.remainingMs)
+        hybridLayout(ms: viewModel.remainingMs)
+    }
+
+// MARK: - Hybrid Layout (modern + subtle retro accents)
+    func hybridLayout(ms: Int) -> some View {
+        VStack(spacing: 10) {
+            GeometryReader { geo in
+                let gap: CGFloat = 12
+                let rowH: CGFloat = 130
+                let colW = (geo.size.width - gap * 2) / 3
+
+                HStack(spacing: gap) {
+                    // Left: blocked apps card
+                    blockedAppsButton
+                        .frame(width: colW, height: rowH)
+
+                    // Center: status chip + timer "screen"
+                    VStack(spacing: 8) {
+                        Text(statusLabel.uppercased())
+                            .font(.system(size: 12, weight: .black))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .foregroundColor(Color.nudgeGreen900)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(statusChipFill)
+                                    .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                                    .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                            .stroke(Color.nudgeGreen900, lineWidth: 2)
+                                    )
+                            )
+
+                        timerSquare(ms: ms)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: rowH - 36)
+                            .overlay(
+                                LinearGradient(gradient: Gradient(stops: [
+                                    .init(color: Color.black.opacity(0.06), location: 0.0),
+                                    .init(color: .clear, location: 0.02),
+                                    .init(color: .clear, location: 0.98),
+                                    .init(color: Color.black.opacity(0.06), location: 1.0),
+                                ]), startPoint: .top, endPoint: .bottom)
+                                .blendMode(.multiply)
+                                .opacity(0.35)
+                            )
+                    }
+                    .frame(width: colW, height: rowH, alignment: .top)
+
+                    // Right: vertical stepper (no literal D‑pad)
+                    VStack {
+                        Button {
+                            #if canImport(UIKit)
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            #endif
+                            viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
+                        } label: {
+                            Text("▲")
+                                .font(.system(size: 24, weight: .black))
+                                .foregroundColor(Color.nudgeGreen900)
+                                .frame(width: 52, height: 52)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .fill(Color(red: 253/255, green: 192/255, blue: 104/255))
+                                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .stroke(Color.nudgeGreen900, lineWidth: 2)
+                                )
+                        }
+                        Spacer()
+                        Button {
+                            #if canImport(UIKit)
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            #endif
+                            viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
+                        } label: {
+                            Text("▼")
+                                .font(.system(size: 24, weight: .black))
+                                .foregroundColor(Color.nudgeGreen900)
+                                .frame(width: 52, height: 52)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .stroke(Color.nudgeGreen900, lineWidth: 2)
+                                )
+                        }
+                    }
+                    .frame(width: colW, height: rowH)
+                }
+            }
+            .frame(height: 130)
+
+            // Bottom actions row, UX-first
+            Group {
+                switch viewModel.mode {
+                case .idle:
+                    Button {
+                        viewModel.start()
+                    } label: {
+                        HStack { Image(systemName: "play.fill"); Text("Start Session") }
+                            .font(.callout.bold())
+                            .foregroundColor(Color.nudgeGreen900)
+                            .frame(height: 42)
+                            .frame(maxWidth: 280)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                                    .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                                    .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .stroke(Color.nudgeGreen900, lineWidth: 2)
+                            )
+                    }
+                    .frame(maxWidth: .infinity)
+
+                case .focus:
+                    HStack(spacing: 8) {
+                        Button { viewModel.startBreak(minutes: 5) } label: { HStack { Image(systemName: "cup.and.saucer.fill"); Text("Break") }.frame(maxWidth: .infinity) }
+                            .buttonStyle(NavPillStyle(variant: .cyan))
+                        Button { viewModel.stop() } label: { HStack { Image(systemName: "stop.fill"); Text("Stop") }.frame(maxWidth: .infinity) }
+                            .buttonStyle(NavPillStyle(variant: .accent))
+                    }
+                case .paused:
+                    HStack(spacing: 8) {
+                        Button { viewModel.resume() } label: { HStack { Image(systemName: "play.fill"); Text("Resume") }.frame(maxWidth: .infinity) }
+                            .buttonStyle(NavPillStyle(variant: .primary))
+                        Button { viewModel.stop() } label: { HStack { Image(systemName: "stop.fill"); Text("Stop") }.frame(maxWidth: .infinity) }
+                            .buttonStyle(NavPillStyle(variant: .accent))
+                    }
+                case .breakTime:
+                    Button { viewModel.stop() } label: { HStack { Image(systemName: "xmark.circle.fill"); Text("End Break") }.frame(maxWidth: .infinity) }
+                        .buttonStyle(NavPillStyle(variant: .cyan))
+                }
+            }
+        }
     }
 
 // MARK: - Full Retro Layout and Controls
