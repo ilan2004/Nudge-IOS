@@ -33,7 +33,7 @@ var idleLayout: some View {
             HStack(spacing: 4) {
                 blockedAppsButton
 
-                VStack(spacing: 4) {
+                VStack(spacing: 8) {
                     Text(statusLabel.uppercased())
                         .font(.system(size: 12, weight: .black))
                         .padding(.horizontal, 12)
@@ -123,7 +123,7 @@ var idleLayout: some View {
                 .font(.callout.bold())
                 .foregroundColor(Color.nudgeGreen900)
                 .frame(height: 40)
-                .frame(width: 240)
+                .frame(width: 265)
                 .frame(alignment: .center)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -147,7 +147,7 @@ var activeLayout: some View {
             HStack(spacing: 4) {
                 blockedAppsButton
 
-                VStack(spacing: 4) {
+                VStack(spacing: 8) {
                     Text(statusLabel.uppercased())
                         .font(.system(size: 12, weight: .black))
                         .padding(.horizontal, 12)
