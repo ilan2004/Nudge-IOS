@@ -147,8 +147,11 @@ VStack(spacing: 6) {
             // Bottom actions row, UX-first
             Group {
                 switch viewModel.mode {
-                case .idle:
+case .idle:
                     Button {
+                        #if canImport(UIKit)
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        #endif
                         viewModel.start()
                     } label: {
                         HStack { Image(systemName: "play.fill"); Text("Start Session") }
@@ -169,22 +172,46 @@ VStack(spacing: 6) {
                     }
                     .frame(maxWidth: .infinity)
 
-                case .focus:
+case .focus:
                     HStack(spacing: 8) {
-                        Button { viewModel.startBreak(minutes: 5) } label: { HStack { Image(systemName: "cup.and.saucer.fill"); Text("Break") }.frame(maxWidth: .infinity) }
+                        Button { 
+                            #if canImport(UIKit)
+                            UINotificationFeedbackGenerator().notificationOccurred(.success)
+                            #endif
+                            viewModel.startBreak(minutes: 5) 
+                        } label: { HStack { Image(systemName: "cup.and.saucer.fill"); Text("Break") }.frame(maxWidth: .infinity) }
                             .buttonStyle(NavPillStyle(variant: .cyan))
-                        Button { viewModel.stop() } label: { HStack { Image(systemName: "stop.fill"); Text("Stop") }.frame(maxWidth: .infinity) }
+Button { 
+                            #if canImport(UIKit)
+                            UINotificationFeedbackGenerator().notificationOccurred(.warning)
+                            #endif
+                            viewModel.stop() 
+                        } label: { HStack { Image(systemName: "stop.fill"); Text("Stop") }.frame(maxWidth: .infinity) }
+ning)
+                            #endif
+                            viewModel.stop() 
+                        } label: { HStack { Image(systemName: "stop.fill"); Text("Stop") }.frame(maxWidth: .infinity) }
                             .buttonStyle(NavPillStyle(variant: .accent))
                     }
-                case .paused:
+case .paused:
                     HStack(spacing: 8) {
-                        Button { viewModel.resume() } label: { HStack { Image(systemName: "play.fill"); Text("Resume") }.frame(maxWidth: .infinity) }
+                        Button { 
+                            #if canImport(UIKit)
+                            UINotificationFeedbackGenerator().notificationOccurred(.success)
+                            #endif
+                            viewModel.resume() 
+                        } label: { HStack { Image(systemName: "play.fill"); Text("Resume") }.frame(maxWidth: .infinity) }
                             .buttonStyle(NavPillStyle(variant: .primary))
                         Button { viewModel.stop() } label: { HStack { Image(systemName: "stop.fill"); Text("Stop") }.frame(maxWidth: .infinity) }
                             .buttonStyle(NavPillStyle(variant: .accent))
                     }
-                case .breakTime:
-                    Button { viewModel.stop() } label: { HStack { Image(systemName: "xmark.circle.fill"); Text("End Break") }.frame(maxWidth: .infinity) }
+case .breakTime:
+                    Button { 
+                        #if canImport(UIKit)
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        #endif
+                        viewModel.stop() 
+                    } label: { HStack { Image(systemName: "xmark.circle.fill"); Text("End Break") }.frame(maxWidth: .infinity) }
                         .buttonStyle(NavPillStyle(variant: .cyan))
                 }
             }
@@ -380,27 +407,51 @@ VStack(spacing: 6) {
         }
     }
 
-    func primaryAction() {
+func primaryAction() {
         switch viewModel.mode {
         case .idle:
+            #if canImport(UIKit)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            #endif
             viewModel.start()
         case .focus:
+            #if canImport(UIKit)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            #endif
             viewModel.startBreak(minutes: 5)
         case .paused:
+            #if canImport(UIKit)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            #endif
             viewModel.resume()
         case .breakTime:
+            #if canImport(UIKit)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            #endif
             viewModel.stop()
         }
     }
-    func secondaryAction() {
+func secondaryAction() {
         switch viewModel.mode {
         case .idle:
+            #if canImport(UIKit)
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            #endif
             showSettings = true
         case .focus:
+            #if canImport(UIKit)
+            UINotificationFeedbackGenerator().notificationOccurred(.warning)
+            #endif
             viewModel.stop()
         case .paused:
+            #if canImport(UIKit)
+            UINotificationFeedbackGenerator().notificationOccurred(.warning)
+            #endif
             viewModel.stop()
         case .breakTime:
+            #if canImport(UIKit)
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            #endif
             showSettings = true
         }
     }
@@ -454,6 +505,9 @@ VStack(spacing: 6) {
 // MARK: - Blocked Apps Button
 var blockedAppsButton: some View {
         Button {
+            #if canImport(UIKit)
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            #endif
             showSettings = true
         } label: {
             VStack(spacing: 6) {
@@ -639,7 +693,13 @@ func timerSquare(ms: Int, fontSize: CGFloat? = nil) -> some View {
     func startRepeat(delta: Int) {
         stopRepeat()
         stepperDelta = delta
+        #if canImport(UIKit)
+        UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+        #endif
         stepperTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+            #if canImport(UIKit)
+            UISelectionFeedbackGenerator().selectionChanged()
+            #endif
             incMinutes(delta)
         }
     }
