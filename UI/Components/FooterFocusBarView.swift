@@ -32,9 +32,20 @@ private var idleLayout: some View {
             HStack(spacing: 4) {
                 blockedAppsButton
 
-                timerSquare(ms: viewModel.customMinutes * 60_000)
-                    .frame(width: 160, height: 72)
-                    .padding(.horizontal, 6)
+                VStack(spacing: 4) {
+                    Text(statusLabel)
+                        .font(.caption.bold())
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            Capsule()
+                                .fill(statusChipColor.opacity(0.3))
+                        )
+                        .foregroundColor(Color.nudgeGreen900)
+                    timerSquare(ms: viewModel.customMinutes * 60_000)
+                        .frame(width: 160, height: 72)
+                        .padding(.horizontal, 6)
+                }
                 
                 VStack(spacing: 8) {
                     Button {
@@ -84,27 +95,31 @@ private var idleLayout: some View {
             }
             
             // Bottom row: Start button
-            Button {
-                viewModel.start()
-            } label: {
-                HStack {
-                    Image(systemName: "play.fill")
-                    Text("Start Session")
+            HStack {
+                Spacer(minLength: 0)
+                Button {
+                    viewModel.start()
+                } label: {
+                    HStack {
+                        Image(systemName: "play.fill")
+                        Text("Start Session")
+                    }
+                    .font(.callout.bold())
+                    .foregroundColor(Color.nudgeGreen900)
+                    .frame(height: 40)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                            .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                            .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .stroke(Color.nudgeGreen900, lineWidth: 2)
+                    )
                 }
-                .font(.callout.bold())
-                .foregroundColor(Color.nudgeGreen900)
-                .frame(maxWidth: .infinity)
-                .frame(height: 40)
-                .background(
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
-                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
-                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .stroke(Color.nudgeGreen900, lineWidth: 2)
-                )
+                .frame(width: 324)
+                Spacer(minLength: 0)
             }
         }
     }
@@ -116,20 +131,66 @@ private var activeLayout: some View {
             HStack(spacing: 4) {
                 blockedAppsButton
 
-                timerSquare(ms: viewModel.remainingMs)
-                    .frame(width: 160, height: 72)
-                    .padding(.horizontal, 6)
+                VStack(spacing: 4) {
+                    Text(statusLabel)
+                        .font(.caption.bold())
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            Capsule()
+                                .fill(statusChipColor.opacity(0.3))
+                        )
+                        .foregroundColor(Color.nudgeGreen900)
+                    timerSquare(ms: viewModel.remainingMs)
+                        .frame(width: 160, height: 72)
+                        .padding(.horizontal, 6)
+                }
                 
-                // Status chip
-                Text(statusLabel)
-                    .font(.caption.bold())
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(
-                        Capsule()
-                            .fill(statusChipColor.opacity(0.3))
-                    )
-                    .foregroundColor(Color.nudgeGreen900)
+                VStack(spacing: 8) {
+                    Button {
+#if canImport(UIKit)
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+#endif
+                        viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
+                    } label: {
+                        Text("▲")
+                            .font(.system(size: 28, weight: .black))
+                            .foregroundColor(Color.nudgeGreen900)
+                            .frame(width: 56, height: 56)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                                    .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                                    .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .stroke(Color.nudgeGreen900, lineWidth: 3)
+                            )
+                    }
+
+                    Button {
+#if canImport(UIKit)
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+#endif
+                        viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
+                    } label: {
+                        Text("▼")
+                            .font(.system(size: 28, weight: .black))
+                            .foregroundColor(Color.nudgeGreen900)
+                            .frame(width: 56, height: 56)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                                    .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                                    .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .stroke(Color.nudgeGreen900, lineWidth: 3)
+                            )
+                    }
+                }
             }
             
             // Bottom row: Action buttons
