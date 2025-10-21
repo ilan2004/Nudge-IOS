@@ -108,7 +108,7 @@ var idleLayout: some View {
                 .font(.callout.bold())
                 .foregroundColor(Color.nudgeGreen900)
                 .frame(height: 40)
-                .frame(width: 200)
+                .frame(width: 240)
                 .frame(alignment: .center)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
