@@ -169,25 +169,25 @@ struct FooterFocusBarView: View {
                     Capsule()
                         .fill(Color.white.opacity(0.9))
                         .overlay(
-                            Capsule().stroke(Color.nudgeGreen900.opacity(0.3), lineWidth: 1)
+                            Capsule().stroke(Color(red: 0.75, green: 0.20, blue: 0.20).opacity(0.3), lineWidth: 1)
                         )
                         .frame(height: 20)
                         .overlay(
                             Text("Apps \(restrictions.selection.applicationTokens.count)")
                                 .font(.system(size: 10, weight: .semibold))
-                                .foregroundColor(Color.nudgeGreen900)
+                                .foregroundColor(Color(red: 0.60, green: 0.10, blue: 0.10))
                                 .padding(.horizontal, 8)
                         )
                     Capsule()
                         .fill(Color.white.opacity(0.9))
                         .overlay(
-                            Capsule().stroke(Color.nudgeGreen900.opacity(0.3), lineWidth: 1)
+                            Capsule().stroke(Color(red: 0.75, green: 0.20, blue: 0.20).opacity(0.3), lineWidth: 1)
                         )
                         .frame(height: 20)
                         .overlay(
                             Text("Web \(restrictions.selection.webDomainTokens.count)")
                                 .font(.system(size: 10, weight: .semibold))
-                                .foregroundColor(Color.nudgeGreen900)
+                                .foregroundColor(Color(red: 0.60, green: 0.10, blue: 0.10))
                                 .padding(.horizontal, 8)
                         )
                 }
@@ -197,17 +197,17 @@ struct FooterFocusBarView: View {
                 #endif
             }
             .multilineTextAlignment(.center)
-            .foregroundColor(Color.nudgeGreen900)
+            .foregroundColor(Color(red: 0.60, green: 0.10, blue: 0.10))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(8)
         }
         .frame(width: 120, height: 80)
         .background(
             RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(Color.white.opacity(0.7))
+                .fill(Color(red: 1.0, green: 0.94, blue: 0.94))
                 .overlay(
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .stroke(Color.nudgeGreen900.opacity(0.2), lineWidth: 1)
+                        .stroke(Color(red: 0.75, green: 0.20, blue: 0.20).opacity(0.35), lineWidth: 1)
                 )
         )
         .retroConsoleSurface()
