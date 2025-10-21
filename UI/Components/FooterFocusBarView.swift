@@ -160,45 +160,72 @@ struct FooterFocusBarView: View {
         Button {
             showSettings = true
         } label: {
-            VStack(spacing: 6) {
+            VStack(spacing: 8) {
                 Text("Blocked")
                     .font(.system(size: 12, weight: .semibold))
-                
+
                 #if canImport(FamilyControls) && canImport(ManagedSettings)
-                HStack(spacing: 6) {
-                    Capsule()
-                        .fill(Color.white.opacity(0.9))
-                        .overlay(
-                            Capsule().stroke(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)).opacity(0.3), lineWidth: 1)
-                        )
-                        .frame(height: 20)
-                        .overlay(
-                            Text("Apps \(restrictions.selection.applicationTokens.count)")
-                                .font(.system(size: 10, weight: .semibold))
-                                .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
-                                .padding(.horizontal, 8)
-                        )
-                    Capsule()
-                        .fill(Color.white.opacity(0.9))
-                        .overlay(
-                            Capsule().stroke(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)).opacity(0.3), lineWidth: 1)
-                        )
-                        .frame(height: 20)
-                        .overlay(
-                            Text("Web \(restrictions.selection.webDomainTokens.count)")
-                                .font(.system(size: 10, weight: .semibold))
-                                .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
-                                .padding(.horizontal, 8)
-                        )
+                let appsCount = restrictions.selection.applicationTokens.count
+                let webCount = restrictions.selection.webDomainTokens.count
+                let totalSel = appsCount + webCount
+
+                if totalSel == 0 {
+                    Text("Select apps to block")
+                        .font(.system(size: 11, weight: .semibold))
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
+                        .padding(.horizontal, 8)
+                } else {
+                    // Show only icons for selected items (apps first, then web)
+                    let showCore = min(3, totalSel)
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                        ForEach(0..<showCore, id: \.self) { idx in
+                            let isApp = idx < appsCount
+                            Circle()
+                                .fill(Color.white)
+                                .overlay(Circle().stroke(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)).opacity(0.25), lineWidth: 1))
+                                .frame(width: 24, height: 24)
+                                .overlay(
+                                    Image(systemName: isApp ? "app.fill" : "globe")
+                                        .font(.system(size: 12, weight: .semibold))
+                                        .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
+                                )
+                        }
+                        if totalSel > showCore {
+                            Circle()
+                                .fill(Color.white)
+                                .overlay(Circle().stroke(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)).opacity(0.25), lineWidth: 1))
+                                .frame(width: 24, height: 24)
+                                .overlay(
+                                    Text("+\(totalSel - showCore)")
+                                        .font(.system(size: 10, weight: .bold))
+                                        .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
+                                )
+                        }
+                    }
+                    .padding(.horizontal, 4)
                 }
                 #else
-                Text("Apps 0 • Web 0")
-                    .font(.system(size: 10, weight: .semibold))
+                Text("Select apps to block")
+                    .font(.system(size: 11, weight: .semibold))
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
+                    .padding(.horizontal, 8)
                 #endif
             }
-            .frame(width: 120, height: 80)
+            .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
+            .frame(width: 96, height: 140)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Color("NudgeRedSurface", bundle: .main, default: Color(red: 1.0, green: 0.92, blue: 0.92)))
+                    .shadow(color: Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)), radius: 0, x: 0, y: 4)
+                    .shadow(color: Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)).opacity(0.2), radius: 12, x: 0, y: 8)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .stroke(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)), lineWidth: 2)
+            )
         }
-        .buttonStyle(NavPillStyle(variant: .danger))
     }
     
     // MARK: - Timer Square
