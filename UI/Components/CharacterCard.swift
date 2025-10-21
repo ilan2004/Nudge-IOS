@@ -53,7 +53,7 @@ struct CharacterCard: View {
                     font: .custom("Tanker-Regular", size: 40),
                     foreground: .greenPrimary,
                     outline: .defaultCream,
-                    lineWidth: 3
+                    lineWidth: 1
                 )
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
@@ -457,23 +457,17 @@ struct OutlinedText: View {
     let font: Font
     let foreground: Color
     let outline: Color
-    let lineWidth: CGFloat
+    let lineWidth: CGFloat // use small values like 1–1.5 for readability
     
     var body: some View {
-        ZStack {
-            // 8-direction outline around the text
-            Text(text).font(font).foregroundColor(outline).offset(x:  lineWidth, y:  0)
-            Text(text).font(font).foregroundColor(outline).offset(x: -lineWidth, y:  0)
-            Text(text).font(font).foregroundColor(outline).offset(x:  0,          y:  lineWidth)
-            Text(text).font(font).foregroundColor(outline).offset(x:  0,          y: -lineWidth)
-            Text(text).font(font).foregroundColor(outline).offset(x:  lineWidth, y:  lineWidth)
-            Text(text).font(font).foregroundColor(outline).offset(x: -lineWidth, y:  lineWidth)
-            Text(text).font(font).foregroundColor(outline).offset(x:  lineWidth, y: -lineWidth)
-            Text(text).font(font).foregroundColor(outline).offset(x: -lineWidth, y: -lineWidth)
-            
-            // Fill text on top
-            Text(text).font(font).foregroundColor(foreground)
-        }
+        Text(text)
+            .font(font)
+            .foregroundColor(foreground)
+            // Crisp 1px faux-stroke using four zero-radius shadows
+            .shadow(color: outline, radius: 0, x:  lineWidth, y: 0)
+            .shadow(color: outline, radius: 0, x: -lineWidth, y: 0)
+            .shadow(color: outline, radius: 0, x: 0, y:  lineWidth)
+            .shadow(color: outline, radius: 0, x: 0, y: -lineWidth)
     }
 }
 
