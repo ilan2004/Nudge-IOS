@@ -26,47 +26,57 @@ struct FooterFocusBarView: View {
 private var idleLayout: some View {
         VStack(spacing: 6) {
             // Controls row: Blocked Apps (left), Timer (center), Arrows (right)
-            HStack(spacing: 8) {
+            HStack(spacing: 4) {
                 blockedAppsButton
 
-                Spacer()
+                Spacer(minLength: 4)
 
                 timerSquare(ms: viewModel.customMinutes * 60_000)
                     .frame(width: 148, height: 72)
                 
-                Spacer()
+                Spacer(minLength: 4)
 
-                VStack(spacing: 8) {
+                VStack(spacing: 4) {
                     Button {
                         viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
                     } label: {
                         Text("▲")
-                            .font(.system(size: 18, weight: .black))
-                            .frame(width: 32, height: 32)
+                            .font(.system(size: 22, weight: .black))
+                            .frame(width: 40, height: 40)
                             .background(
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
                                     .fill(Color.white.opacity(0.95))
                             )
                             .overlay(
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
                                     .stroke(Color.nudgeGreen900, lineWidth: 2)
                             )
+                            .shadow(color: Color.nudgeGreen900.opacity(0.35), radius: 0, x: 0, y: 6)
+                            .shadow(color: Color.nudgeGreen900.opacity(0.25), radius: 12, x: 0, y: 10)
+                            .shadow(color: Color.nudgeGreen900.opacity(0.18), radius: 10, x: 8, y: 0)
+                            .shadow(color: Color.nudgeGreen900.opacity(0.18), radius: 10, x: -8, y: 0)
+                            .shadow(color: Color.nudgeGreen900.opacity(0.12), radius: 8, x: 0, y: -4)
                     }
 
                     Button {
                         viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
                     } label: {
                         Text("▼")
-                            .font(.system(size: 18, weight: .black))
-                            .frame(width: 32, height: 32)
+                            .font(.system(size: 22, weight: .black))
+                            .frame(width: 40, height: 40)
                             .background(
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
                                     .fill(Color.white.opacity(0.95))
                             )
                             .overlay(
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
                                     .stroke(Color.nudgeGreen900, lineWidth: 2)
                             )
+                            .shadow(color: Color.nudgeGreen900.opacity(0.35), radius: 0, x: 0, y: 6)
+                            .shadow(color: Color.nudgeGreen900.opacity(0.25), radius: 12, x: 0, y: 10)
+                            .shadow(color: Color.nudgeGreen900.opacity(0.18), radius: 10, x: 8, y: 0)
+                            .shadow(color: Color.nudgeGreen900.opacity(0.18), radius: 10, x: -8, y: 0)
+                            .shadow(color: Color.nudgeGreen900.opacity(0.12), radius: 8, x: 0, y: -4)
                     }
                 }
             }
@@ -90,15 +100,15 @@ private var idleLayout: some View {
 private var activeLayout: some View {
         VStack(spacing: 6) {
             // Top row: Blocked Apps (left), Timer (center), Status (right)
-            HStack(spacing: 8) {
+            HStack(spacing: 4) {
                 blockedAppsButton
 
-                Spacer()
+                Spacer(minLength: 4)
 
                 timerSquare(ms: viewModel.remainingMs)
                     .frame(width: 148, height: 72)
                 
-                Spacer()
+                Spacer(minLength: 4)
 
                 // Status chip
                 Text(statusLabel)
