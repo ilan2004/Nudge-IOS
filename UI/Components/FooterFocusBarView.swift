@@ -4,6 +4,7 @@ import SwiftUI
 struct FooterFocusBarView: View {
     @ObservedObject var viewModel: FooterFocusBarViewModel
     @State private var showSettings = false
+    @State private var blinkColon = true
 
     var body: some View {
         VStack(spacing: 12) {
@@ -27,8 +28,8 @@ struct FooterFocusBarView: View {
                 Spacer()
 
                 timerSquare(ms: viewModel.customMinutes * 60_000)
-                    .frame(width: 80, height: 80)
-
+                    .frame(width: 200, height: 120)
+                
                 Spacer()
 
                 VStack(spacing: 8) {
@@ -77,8 +78,8 @@ struct FooterFocusBarView: View {
                 Spacer()
 
                 timerSquare(ms: viewModel.remainingMs)
-                    .frame(width: 80, height: 80)
-
+                    .frame(width: 200, height: 120)
+                
                 Spacer()
 
                 // Status chip
@@ -179,29 +180,61 @@ struct FooterFocusBarView: View {
     
     // MARK: - Timer Square
     private func timerSquare(ms: Int) -> some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(Color.white.opacity(0.7))
+        let total = max(0, ms / 1000)
+        let m = total / 60
+        let s = total % 60
+        let mm = String(format: "%02d", m)
+        let ss = String(format: "%02d", s)
+        
+        return ZStack {
+            // Retro-styled rectangular clock face matching console theme
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color.white.opacity(0.95))
+                // Outer bold stroke
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .stroke(Color.nudgeGreen900.opacity(0.2), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(Color.nudgeGreen900, lineWidth: 8)
                 )
-                .retroConsoleSurface()
+                // Inner subtle stroke for depth
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .inset(by: 6)
+                        .stroke(Color.nudgeGreen900.opacity(0.2), lineWidth: 2)
+                )
+                // Top highlight to hint glossy plastic
+                .overlay(
+                    LinearGradient(colors: [Color.white.opacity(0.35), .clear],
+                                   startPoint: .top, endPoint: .center)
+                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                )
+                // Reuse retro console shadows for cohesion
+                .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
             
-            VStack(spacing: 4) {
-                Image(systemName: "clock.fill")
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(Color.nudgeGreen900)
-                Text(formatMMSS(ms))
-                    .font(.custom("Nippo-Regular", size: 22))
-                    .minimumScaleFactor(0.5)
-                    .lineLimit(1)
-                    .foregroundColor(Color.nudgeGreen900)
-                    .monospacedDigit()
+            // Flip-clock style divider
+            Rectangle()
+                .fill(Color.nudgeGreen900.opacity(0.08))
+                .frame(height: 1)
+            
+            // Time with blinking colon
+            HStack(spacing: 4) {
+                Text(mm)
+                Text(":").opacity(blinkColon ? 1 : 0.2)
+                Text(ss)
             }
-            .padding(8)
+            .font(.custom("Nippo-Regular", size: 32))
+            .kerning(-0.5)
+            .minimumScaleFactor(0.6)
+            .lineLimit(1)
+            .foregroundColor(Color.nudgeGreen900)
+            .monospacedDigit()
+            .padding(.horizontal, 16)
         }
-        .aspectRatio(1, contentMode: .fit)
+        .onAppear {
+            withAnimation(.easeInOut(duration: 0.7).repeatForever(autoreverses: true)) {
+                blinkColon.toggle()
+            }
+        }
     }
     
     // MARK: - Helper Methods
