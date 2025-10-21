@@ -530,7 +530,6 @@ var blockedAppsButton: some View {
                 } else {
                     // Show compact badges for selected items (apps first, then web)
                     let appTokens = Array(restrictions.selection.applicationTokens)
-                    let webTokens = Array(restrictions.selection.webDomainTokens)
                     let showCore = min(4, totalSel)
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 6) {
                         ForEach(0..<showCore, id: \.self) { idx in
@@ -547,6 +546,11 @@ var blockedAppsButton: some View {
                                             .padding(2)
                                     )
                             } else {
+                                Circle()
+                                    .fill(Color.white)
+                                    .overlay(Circle().stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
+                                    .frame(width: 24, height: 24)
+                                    .overlay(
                                         Image(systemName: "globe")
                                             .font(.system(size: 12, weight: .semibold))
                                             .foregroundColor(Color.nudgeGreen900)
