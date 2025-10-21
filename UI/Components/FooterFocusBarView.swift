@@ -7,9 +7,9 @@ import UIKit
 
 struct FooterFocusBarView: View {
     @ObservedObject var viewModel: FooterFocusBarViewModel
-    @State private var showSettings = false
-    @StateObject private var restrictions = RestrictionsController()
-    @State private var blinkColon = true
+    @State var showSettings = false
+    @StateObject var restrictions = RestrictionsController()
+    @State var blinkColon = true
 
     var body: some View {
         VStack(spacing: 12) {
@@ -332,7 +332,7 @@ var activeLayout: some View {
         let mm = String(format: "%02d", m)
         let ss = String(format: "%02d", s)
         
-        ZStack {
+        return ZStack {
             // Retro-styled rectangular clock face matching console theme
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .fill(Color.white.opacity(0.95))
@@ -402,7 +402,7 @@ var activeLayout: some View {
         }
     }
     
-    private func formatHoursMinutes(_ minutes: Int) -> String {
+    func formatHoursMinutes(_ minutes: Int) -> String {
         if minutes >= 60 {
             let hours = minutes / 60
             let mins = minutes % 60
@@ -416,7 +416,7 @@ var activeLayout: some View {
         }
     }
     
-    private func formatMMSS(_ ms: Int) -> String {
+    func formatMMSS(_ ms: Int) -> String {
         guard ms > 0 else { return "00:00" }
         let total = ms / 1000
         let m = total / 60
