@@ -95,6 +95,7 @@ var idleLayout: some View {
                             )
                     }
                 }
+            }
             
             // Bottom row: Start button
             Button {
