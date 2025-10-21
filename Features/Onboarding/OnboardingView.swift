@@ -27,40 +27,39 @@ struct OnboardingView: View {
             
             Group {
                 switch step {
-                case .name:
-                    VStack(alignment: .leading, spacing: 16) {
-                        TypewriterLine(
-text: "what should we call you",
-                            charInterval: 0.05,
-                            color: .nudgeGreen900,
-                            impactStyle: .medium
-                        ) {
-                            withAnimation(.easeIn(duration: 0.3)) { showControls = true }
-                        }
-                        
-                        if showControls {
-                            VStack(alignment: .leading, spacing: 16) {
-TextField("Your name", text: $name)
-                                    .focused($nameFieldFocused)
-                                    .textInputAutocapitalization(.words)
-                                    .disableAutocorrection(true)
-                                    .foregroundStyle(Color.nudgeGreen900)
-                                    .tint(.nudgeGreen900)
-                                    .padding(14)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                            .stroke(Color.nudgeGreen900, lineWidth: 2)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                    .fill(Color.nudgeGreen900.opacity(0.05))
-                                            )
-                                    )
-                                
+case .name:
+                    VStack(spacing: 0) {
+                        Spacer(minLength: 0)
+                        VStack(alignment: .center, spacing: 16) {
+                            // Centered prompt
+                            TypewriterLine(
+                                text: "what should we call you",
+                                charInterval: 0.05,
+                                color: .nudgeGreen900,
+                                impactStyle: .medium
+                            ) {
+                                withAnimation(.easeIn(duration: 0.3)) { showControls = true }
                             }
-                            .transition(.opacity)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            
+                            if showControls {
+                                VStack(alignment: .center, spacing: 16) {
+                                    TextField("Your name", text: $name)
+                                        .focused($nameFieldFocused)
+                                        .textInputAutocapitalization(.words)
+                                        .disableAutocorrection(true)
+                                        .foregroundStyle(Color.nudgeGreen900)
+                                        .tint(.nudgeGreen900)
+                                        .padding(14)
+                                        .retroConsoleSurface()
+                                        .frame(maxWidth: .infinity)
+                                }
+                                .transition(.opacity)
+                            }
                         }
+                        .padding(.horizontal, 20)
+                        Spacer(minLength: 0)
                     }
-.padding(.horizontal, 20)
                     .onChange(of: showControls) { visible in
                         if visible {
                             DispatchQueue.main.async { nameFieldFocused = true }
@@ -81,25 +80,25 @@ text: "\(name), we’re so glad you’re here.",
                         }
                     }
                     .padding(.horizontal, 20)
-                case .choice:
-                    VStack(spacing: 24) {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("How would you like to continue?")
-                                .font(.title2).fontWeight(.semibold)
-                                .foregroundStyle(Color.nudgeGreen900)
-                        }
-                        .padding(.horizontal, 20)
-                        
+case .choice:
+                    VStack(spacing: 0) {
+                        Spacer(minLength: 0)
                         VStack(spacing: 16) {
-                            Button("Take MBTI Test") {
+                            BigBoxButton(
+                                title: "Take MBTI Test",
+                                bgColor: Color("NudgeCyanSurface", bundle: .main, default: Color(red: 0.81, green: 0.98, blue: 1.0)),
+                                borderColor: Color("NudgeCyan600", bundle: .main, default: Color(red: 0.03, green: 0.57, blue: 0.70))
+                            ) {
                                 NotificationCenter.default.post(name: .onboardingTakeTest, object: nil)
                             }
-                            .buttonStyle(NavPillStyle(variant: .primary))
                             
-                            Button("Start Blocking Now") {
+                            BigBoxButton(
+                                title: "Start Blocking Now",
+                                bgColor: Color("NudgeAmberSurface", bundle: .main, default: Color(red: 1.0, green: 0.95, blue: 0.78)),
+                                borderColor: Color("NudgeAmber600", bundle: .main, default: Color(red: 0.85, green: 0.46, blue: 0.02))
+                            ) {
                                 NotificationCenter.default.post(name: .onboardingDismiss, object: nil)
                             }
-                            .buttonStyle(NavPillStyle(variant: .primary))
                         }
                         .padding(.horizontal, 20)
                         Spacer(minLength: 0)
@@ -109,13 +108,15 @@ text: "\(name), we’re so glad you’re here.",
 Spacer()
         }
         .safeAreaInset(edge: .bottom) {
-            if bottomCTAVisible {
-                Button("Next") { bottomCTAAction() }
-                    .buttonStyle(NavPillStyle(variant: .primary))
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .disabled(!bottomCTAEnabled)
+if bottomCTAVisible {
+                Button(action: bottomCTAAction) {
+                    HStack { Spacer(); Text("Next").font(.headline); Spacer() }
+                }
+                .buttonStyle(NavPillStyle(variant: .primary))
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .disabled(!bottomCTAEnabled)
             }
         }
     }
@@ -229,4 +230,38 @@ Rectangle()
 
 #Preview {
     OnboardingView()
+}
+
+// MARK: - Big Choice Box Button
+private struct BigBoxButton: View {
+    let title: String
+    let bgColor: Color
+    let borderColor: Color
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                    .font(.title3).bold()
+                    .foregroundStyle(Color.nudgeGreen900)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.headline)
+                    .foregroundStyle(Color.nudgeGreen900)
+            }
+            .padding(20)
+            .frame(maxWidth: .infinity, minHeight: 110)
+            .background(
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(bgColor)
+                    .shadow(color: borderColor, radius: 0, x: 0, y: 4)
+                    .shadow(color: borderColor.opacity(0.2), radius: 12, x: 0, y: 8)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .stroke(borderColor, lineWidth: 2)
+            )
+        }
+    }
 }
