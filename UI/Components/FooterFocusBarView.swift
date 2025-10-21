@@ -50,6 +50,10 @@ private var idleLayout: some View {
                                     .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
                                     .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                             )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .stroke(Color.nudgeGreen900, lineWidth: 3)
+                            )
                     }
 
                     Button {
@@ -64,6 +68,10 @@ private var idleLayout: some View {
                                     .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
                                     .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
                                     .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .stroke(Color.nudgeGreen900, lineWidth: 3)
                             )
                     }
                 }
