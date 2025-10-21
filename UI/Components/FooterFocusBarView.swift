@@ -41,42 +41,30 @@ private var idleLayout: some View {
                         viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
                     } label: {
                         Text("▲")
-                            .font(.system(size: 22, weight: .black))
-                            .frame(width: 40, height: 40)
+                            .font(.system(size: 28, weight: .black))
+                            .foregroundColor(Color.nudgeGreen900)
+                            .frame(width: 56, height: 56)
                             .background(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(Color.white.opacity(0.95))
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                                    .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                                    .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                             )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .stroke(Color.nudgeGreen900, lineWidth: 2)
-                            )
-                            .shadow(color: Color.nudgeGreen900.opacity(0.35), radius: 0, x: 0, y: 6)
-                            .shadow(color: Color.nudgeGreen900.opacity(0.25), radius: 12, x: 0, y: 10)
-                            .shadow(color: Color.nudgeGreen900.opacity(0.18), radius: 10, x: 8, y: 0)
-                            .shadow(color: Color.nudgeGreen900.opacity(0.18), radius: 10, x: -8, y: 0)
-                            .shadow(color: Color.nudgeGreen900.opacity(0.12), radius: 8, x: 0, y: -4)
                     }
 
                     Button {
                         viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
                     } label: {
                         Text("▼")
-                            .font(.system(size: 22, weight: .black))
-                            .frame(width: 40, height: 40)
+                            .font(.system(size: 28, weight: .black))
+                            .foregroundColor(Color.nudgeGreen900)
+                            .frame(width: 56, height: 56)
                             .background(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(Color.white.opacity(0.95))
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                                    .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                                    .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                             )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .stroke(Color.nudgeGreen900, lineWidth: 2)
-                            )
-                            .shadow(color: Color.nudgeGreen900.opacity(0.35), radius: 0, x: 0, y: 6)
-                            .shadow(color: Color.nudgeGreen900.opacity(0.25), radius: 12, x: 0, y: 10)
-                            .shadow(color: Color.nudgeGreen900.opacity(0.18), radius: 10, x: 8, y: 0)
-                            .shadow(color: Color.nudgeGreen900.opacity(0.18), radius: 10, x: -8, y: 0)
-                            .shadow(color: Color.nudgeGreen900.opacity(0.12), radius: 8, x: 0, y: -4)
                     }
                 }
             }
