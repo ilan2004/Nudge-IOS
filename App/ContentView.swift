@@ -139,6 +139,7 @@ struct ContentView: View {
     @EnvironmentObject var appSettings: AppSettings
     
     @State private var selectedTab = 0
+    @State private var showOnboarding = true
     
     // Accent colors - hardcoded for visibility
     private var accentGreen: Color { Color(red: 0.01, green: 0.35, blue: 0.30) } // Dark green
@@ -187,6 +188,21 @@ struct ContentView: View {
             VStack {
                 Spacer()
                 RetroTabBar(selectedTab: $selectedTab, tabs: tabs)
+            }
+        }
+        .overlay(alignment: .center) {
+            if showOnboarding {
+                ZStack {
+                    Color(.systemBackground).opacity(0.98).ignoresSafeArea()
+                    OnboardingFlowView(
+                        onSkipToHome: { withAnimation { showOnboarding = false } },
+                        onTakeTest: {
+                            // TODO: Wire to actual MBTI test flow when ready
+                            withAnimation { showOnboarding = false }
+                            selectedTab = 2 // Navigate to My Type for now
+                        }
+                    )
+                }
             }
         }
         .environment(\.dynamicTypeSize, .medium)
