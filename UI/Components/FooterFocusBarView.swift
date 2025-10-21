@@ -40,12 +40,23 @@ var activeLayout: some View {
     func hybridLayout(ms: Int) -> some View {
         VStack(spacing: 10) {
             GeometryReader { geo in
-                let gap: CGFloat = 12
-                let rowH: CGFloat = 130
-                let colW = (geo.size.width - gap * 2) / 3
+                let width = max(0, geo.size.width)
+                // Spacing scales subtly with width
+                let gap: CGFloat = width >= 420 ? 16 : (width >= 360 ? 14 : 12)
+                let colW = (width - gap * 2) / 3
+                // Row height derived from column width with clamping for ergonomics
+                let rowH = min(max(112, colW * 0.9), 148)
+                // Status chip height budget
+                let chipH: CGFloat = 30
+                // Screen height fills remaining space minus small spacing
+                let screenH = min(max(64, rowH - chipH - 8), 104)
+                // Stepper button size follows iOS hit target rules (>=44)
+                let stepperSize = min(max(44, colW * 0.38), 56)
+                // Time font size scales with screen height
+                let timeFontSize = min(max(22, screenH * 0.42), 34)
 
                 HStack(spacing: gap) {
-                    // Left: blocked apps card
+                    // Left: blocked apps card (flexible, no fixed internal size)
                     blockedAppsButton
                         .frame(width: colW, height: rowH)
 
@@ -66,19 +77,20 @@ var activeLayout: some View {
                                             .stroke(Color.nudgeGreen900, lineWidth: 2)
                                     )
                             )
+                            .frame(height: chipH)
 
-                        timerSquare(ms: ms)
+                        timerSquare(ms: ms, fontSize: timeFontSize)
                             .frame(maxWidth: .infinity)
-                            .frame(height: rowH - 36)
+                            .frame(height: screenH)
                             .overlay(
                                 LinearGradient(gradient: Gradient(stops: [
-                                    .init(color: Color.black.opacity(0.06), location: 0.0),
-                                    .init(color: .clear, location: 0.02),
-                                    .init(color: .clear, location: 0.98),
-                                    .init(color: Color.black.opacity(0.06), location: 1.0),
+                                    .init(color: Color.black.opacity(0.05), location: 0.0),
+                                    .init(color: .clear, location: 0.03),
+                                    .init(color: .clear, location: 0.97),
+                                    .init(color: Color.black.opacity(0.05), location: 1.0),
                                 ]), startPoint: .top, endPoint: .bottom)
                                 .blendMode(.multiply)
-                                .opacity(0.35)
+                                .opacity(0.25)
                             )
                     }
                     .frame(width: colW, height: rowH, alignment: .top)
@@ -92,9 +104,9 @@ var activeLayout: some View {
                             viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
                         } label: {
                             Text("▲")
-                                .font(.system(size: 24, weight: .black))
+                                .font(.system(size: min(24, stepperSize * 0.5), weight: .black))
                                 .foregroundColor(Color.nudgeGreen900)
-                                .frame(width: 52, height: 52)
+                                .frame(width: stepperSize, height: stepperSize)
                                 .background(
                                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                                         .fill(Color(red: 253/255, green: 192/255, blue: 104/255))
@@ -106,7 +118,7 @@ var activeLayout: some View {
                                         .stroke(Color.nudgeGreen900, lineWidth: 2)
                                 )
                         }
-                        Spacer()
+                        Spacer(minLength: max(8, rowH - (stepperSize * 2)))
                         Button {
                             #if canImport(UIKit)
                             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -114,9 +126,9 @@ var activeLayout: some View {
                             viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
                         } label: {
                             Text("▼")
-                                .font(.system(size: 24, weight: .black))
+                                .font(.system(size: min(24, stepperSize * 0.5), weight: .black))
                                 .foregroundColor(Color.nudgeGreen900)
-                                .frame(width: 52, height: 52)
+                                .frame(width: stepperSize, height: stepperSize)
                                 .background(
                                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                                         .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
@@ -144,8 +156,8 @@ var activeLayout: some View {
                         HStack { Image(systemName: "play.fill"); Text("Start Session") }
                             .font(.callout.bold())
                             .foregroundColor(Color.nudgeGreen900)
-                            .frame(height: 42)
-                            .frame(maxWidth: 280)
+                            .frame(height: 44)
+                            .frame(maxWidth: 320)
                             .background(
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                                     .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
@@ -442,7 +454,7 @@ var activeLayout: some View {
     }
 
 // MARK: - Blocked Apps Button
-    var blockedAppsButton: some View {
+var blockedAppsButton: some View {
         Button {
             showSettings = true
         } label: {
@@ -470,7 +482,7 @@ var activeLayout: some View {
                             Circle()
                                 .fill(Color.white)
                                 .overlay(Circle().stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
-.frame(width: 22, height: 22)
+                                .frame(width: 22, height: 22)
                                 .overlay(
                                     Image(systemName: isApp ? "app.fill" : "globe")
                                         .font(.system(size: 12, weight: .semibold))
@@ -498,9 +510,10 @@ var activeLayout: some View {
                     .foregroundColor(Color.nudgeGreen900)
                     .padding(.horizontal, 8)
                 #endif
+                Spacer(minLength: 0)
             }
             .foregroundColor(Color.nudgeGreen900)
-.frame(width: 88, height: 120)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .fill(Color(red: 174/255, green: 251/255, blue: 255/255))
@@ -511,11 +524,12 @@ var activeLayout: some View {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .stroke(Color.nudgeGreen900, lineWidth: 2)
             )
+            .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         }
     }
     
 // MARK: - Timer Square
-    func timerSquare(ms: Int) -> some View {
+func timerSquare(ms: Int, fontSize: CGFloat? = nil) -> some View {
         let total = max(0, ms / 1000)
         let m = total / 60
         let s = total % 60
@@ -558,13 +572,13 @@ var activeLayout: some View {
                 Text(":").opacity(blinkColon ? 1 : 0.2)
                 Text(ss)
             }
-.font(.custom("Nippo-Regular", size: 28))
+            .font(.custom("Nippo-Regular", size: fontSize ?? 28))
             .kerning(-0.5)
             .minimumScaleFactor(0.6)
             .lineLimit(1)
             .foregroundColor(Color.nudgeGreen900)
             .monospacedDigit()
-.padding(.horizontal, 12)
+            .padding(.horizontal, 12)
         }
         .onAppear {
             withAnimation(.easeInOut(duration: 0.7).repeatForever(autoreverses: true)) {
