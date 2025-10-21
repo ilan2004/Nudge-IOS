@@ -14,7 +14,8 @@ struct OnboardingView: View {
     @State private var step: Step = .name
     @State private var name: String = ""
     @State private var showControls = false
-    @State private var showNext = false
+@State private var showNext = false
+    @FocusState private var nameFieldFocused: Bool
     
     var body: some View {
         VStack(spacing: 24) {
@@ -29,8 +30,8 @@ struct OnboardingView: View {
                 case .name:
                     VStack(alignment: .leading, spacing: 16) {
                         TypewriterLine(
-                            text: "what should we call you",
-                            charInterval: 0.1,
+text: "what should we call you",
+                            charInterval: 0.05,
                             color: .nudgeGreen900,
                             impactStyle: .medium
                         ) {
@@ -39,7 +40,8 @@ struct OnboardingView: View {
                         
                         if showControls {
                             VStack(alignment: .leading, spacing: 16) {
-                                TextField("Your name", text: $name)
+TextField("Your name", text: $name)
+                                    .focused($nameFieldFocused)
                                     .textInputAutocapitalization(.words)
                                     .disableAutocorrection(true)
                                     .foregroundStyle(Color.nudgeGreen900)
@@ -54,25 +56,21 @@ struct OnboardingView: View {
                                             )
                                     )
                                 
-                                Button("Next") {
-                                    let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
-                                    guard !trimmed.isEmpty else { return }
-                                    name = trimmed
-                                    showControls = false
-                                    withAnimation(.easeInOut) { step = .greeting }
-                                }
-                                .buttonStyle(NavPillStyle(variant: .primary))
-                                .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                             }
                             .transition(.opacity)
                         }
                     }
-                    .padding(.horizontal, 20)
+.padding(.horizontal, 20)
+                    .onChange(of: showControls) { visible in
+                        if visible {
+                            DispatchQueue.main.async { nameFieldFocused = true }
+                        }
+                    }
                 case .greeting:
                     VStack(alignment: .leading, spacing: 16) {
                         TypewriterLine(
-                            text: "\(name), we’re so glad you’re here.",
-                            charInterval: 0.1,
+text: "\(name), we’re so glad you’re here.",
+                            charInterval: 0.05,
                             color: .nudgeGreen900,
                             impactStyle: .medium
                         ) {
@@ -80,9 +78,6 @@ struct OnboardingView: View {
                         }
                         
                         if showNext {
-                            Button("Next") { withAnimation(.easeInOut) { step = .choice } }
-                                .buttonStyle(NavPillStyle(variant: .primary))
-                                .transition(.opacity)
                         }
                     }
                     .padding(.horizontal, 20)
@@ -111,7 +106,17 @@ struct OnboardingView: View {
                     }
                 }
             }
-            Spacer()
+Spacer()
+        }
+        .safeAreaInset(edge: .bottom) {
+            if bottomCTAVisible {
+                Button("Next") { bottomCTAAction() }
+                    .buttonStyle(NavPillStyle(variant: .primary))
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .disabled(!bottomCTAEnabled)
+            }
         }
     }
     
@@ -120,6 +125,37 @@ struct OnboardingView: View {
         case .name: return 0.5
         case .greeting: return 1.0
         case .choice: return 1.0
+        }
+    }
+    
+    private var bottomCTAVisible: Bool {
+        switch step {
+        case .name: return showControls
+        case .greeting: return showNext
+        case .choice: return false
+        }
+    }
+    
+    private var bottomCTAEnabled: Bool {
+        switch step {
+        case .name: return !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        case .greeting: return true
+        case .choice: return false
+        }
+    }
+    
+    private func bottomCTAAction() {
+        switch step {
+        case .name:
+            let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmed.isEmpty else { return }
+            name = trimmed
+            showControls = false
+            withAnimation(.easeInOut) { step = .greeting }
+        case .greeting:
+            withAnimation(.easeInOut) { step = .choice }
+        case .choice:
+            break
         }
     }
 }
@@ -159,9 +195,9 @@ private struct TypewriterLine: View {
                 .font(.title).fontWeight(.semibold)
                 .animation(nil, value: visible)
             if showCaret {
-                Rectangle()
+Rectangle()
                     .fill(color)
-                    .frame(width: 3, height: 24)
+                    .frame(width: 5, height: 24)
                     .opacity(1.0)
                     .animation(Animation.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: showCaret)
             }
