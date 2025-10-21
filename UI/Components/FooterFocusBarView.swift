@@ -34,6 +34,7 @@ private var idleLayout: some View {
 
                 timerSquare(ms: viewModel.customMinutes * 60_000)
                     .frame(width: 160, height: 72)
+                    .padding(.horizontal, 6)
                 
                 VStack(spacing: 8) {
                     Button {
@@ -117,6 +118,7 @@ private var activeLayout: some View {
 
                 timerSquare(ms: viewModel.remainingMs)
                     .frame(width: 160, height: 72)
+                    .padding(.horizontal, 6)
                 
                 // Status chip
                 Text(statusLabel)
