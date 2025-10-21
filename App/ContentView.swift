@@ -194,27 +194,28 @@ struct ContentView: View {
             if showOnboarding {
                 ZStack {
                     Color(.systemBackground).opacity(0.98).ignoresSafeArea()
-OnboardingFlowView(
-                        onSkipToHome: { withAnimation { showOnboarding = false } },
-                        onTakeTest: {
-                            // TODO: Replace with MBTI test flow screen when ready
-                            withAnimation { showOnboarding = false }
-                            selectedTab = 2 // temporary: "My Type" tab
+OnboardingView()
+                        .environmentObject(personalityManager)
+                        .overlay(alignment: Alignment.topTrailing) {
+                            Button("Skip") { withAnimation { showOnboarding = false } }
+                                .buttonStyle(NavPillStyle(variant: .primary))
+                                .padding()
                         }
-                    )
-                    .overlay(alignment: .topTrailing) {
-                        Button("Skip") { withAnimation { showOnboarding = false } }
-                            .buttonStyle(NavPillStyle(variant: .primary))
-                            .padding()
-                    }
                 }
             }
         }
         .environment(\.dynamicTypeSize, .medium)
-        .preferredColorScheme(appSettings.colorScheme)
+.preferredColorScheme(appSettings.colorScheme)
         .onAppear {
             print("Tab layout loaded")
             print("Personality type: \(personalityManager.personalityType?.rawValue ?? "nil")")
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .onboardingDismiss)) { _ in
+            withAnimation { showOnboarding = false }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .onboardingTakeTest)) { _ in
+            withAnimation { showOnboarding = false }
+            selectedTab = 2 // navigate to My Type tab for now
         }
     }
     
