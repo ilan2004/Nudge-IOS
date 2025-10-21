@@ -536,48 +536,17 @@ var blockedAppsButton: some View {
                         ForEach(0..<showCore, id: \.self) { idx in
                             let isApp = idx < appTokens.count
                             if isApp {
-                                let token = appTokens[idx]
-                                let bundleID: String = {
-                                    #if canImport(FamilyControls)
-                                    if let raw = (token.bundleIdentifier as? CustomStringConvertible)?.description { return raw }
-                                    // Fallback: attempt key-path access
-                                    return String(describing: token.bundleIdentifier)
-                                    #else
-                                    return ""
-                                    #endif
-                                }()
                                 RoundedRectangle(cornerRadius: 6, style: .continuous)
                                     .fill(Color.white)
                                     .overlay(RoundedRectangle(cornerRadius: 6, style: .continuous).stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
                                     .frame(width: 24, height: 24)
                                     .overlay(
-                                        Group {
-                                            #if canImport(UIKit)
-                                            if UIImage(named: "instagram") != nil {
-                                                Image("instagram")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .padding(2)
-                                            } else {
-                                                Image(systemName: "app.fill")
-                                                    .font(.system(size: 12, weight: .semibold))
-                                                    .foregroundColor(Color.nudgeGreen900)
-                                            }
-                                            #else
-                                            Image("instagram")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .padding(2)
-                                            #endif
-                                        }
+                                        Image("instagram")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .padding(2)
                                     )
                             } else {
-                                // Use circular badge for web domains
-                                Circle()
-                                    .fill(Color.white)
-                                    .overlay(Circle().stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
-                                    .frame(width: 24, height: 24)
-                                    .overlay(
                                         Image(systemName: "globe")
                                             .font(.system(size: 12, weight: .semibold))
                                             .foregroundColor(Color.nudgeGreen900)
