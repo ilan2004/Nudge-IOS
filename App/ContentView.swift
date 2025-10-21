@@ -205,12 +205,12 @@ struct ContentView: View {
         
         var body: some View {
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 12) {
+                VStack(spacing: 6) {
                     CharacterCard(title: "Alex", size: 280)
                     
                     // Footer focus bar positioned directly under the character card
                     FooterFocusBarView(viewModel: FooterFocusBarViewModel())
-                        .padding(.top, 8)
+                        .padding(.top, 4)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
