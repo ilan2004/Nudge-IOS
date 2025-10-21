@@ -26,8 +26,8 @@ struct FooterFocusBarView: View {
         }
     }
     
-    // MARK: - Idle Layout
-private var idleLayout: some View {
+// MARK: - Idle Layout
+var idleLayout: some View {
         VStack(spacing: 6) {
             // Controls row: Blocked Apps (left), Timer (center), Arrows (right)
             HStack(spacing: 4) {
@@ -124,8 +124,8 @@ private var idleLayout: some View {
         }
     }
     
-    // MARK: - Active Layout
-private var activeLayout: some View {
+// MARK: - Active Layout
+var activeLayout: some View {
         VStack(spacing: 6) {
             // Top row: Blocked Apps (left), Timer (center), Status (right)
             HStack(spacing: 4) {
@@ -250,8 +250,8 @@ private var activeLayout: some View {
         }
     }
     
-    // MARK: - Blocked Apps Button
-    private var blockedAppsButton: some View {
+// MARK: - Blocked Apps Button
+    var blockedAppsButton: some View {
         Button {
             showSettings = true
         } label: {
@@ -323,15 +323,15 @@ private var activeLayout: some View {
         }
     }
     
-    // MARK: - Timer Square
-    private func timerSquare(ms: Int) -> some View {
+// MARK: - Timer Square
+    func timerSquare(ms: Int) -> some View {
         let total = max(0, ms / 1000)
         let m = total / 60
         let s = total % 60
         let mm = String(format: "%02d", m)
         let ss = String(format: "%02d", s)
         
-        return ZStack {
+        ZStack {
             // Retro-styled rectangular clock face matching console theme
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .fill(Color.white.opacity(0.95))
@@ -382,8 +382,8 @@ private var activeLayout: some View {
         }
     }
     
-    // MARK: - Helper Methods
-    private var statusLabel: String {
+// MARK: - Helper Methods
+    var statusLabel: String {
         switch viewModel.mode {
         case .idle: return "Idle"
         case .focus: return "Focusing"
@@ -392,7 +392,7 @@ private var activeLayout: some View {
         }
     }
     
-    private var statusChipColor: Color {
+    var statusChipColor: Color {
         switch viewModel.mode {
         case .idle: return .gray
         case .focus: return Color(red: 0.24, green: 0.84, blue: 0.91)
