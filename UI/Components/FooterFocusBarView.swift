@@ -46,21 +46,26 @@ var activeLayout: some View {
                 // Spacing scales subtly with width
                 let gap: CGFloat = width >= 420 ? 16 : (width >= 360 ? 14 : 12)
                 let colW = (width - gap * 2) / 3
+                // Adjust column widths to reduce left (blocked apps) width slightly and redistribute
+                let leftReduce: CGFloat = min(16, colW * 0.15)
+                let leftW = max(60, colW - leftReduce)
+                let midW = colW + leftReduce / 2
+                let rightW = colW + leftReduce / 2
                 // Row height derived from column width with clamping for ergonomics (reduced)
                 let rowH = min(max(100, colW * 0.8), 128)
                 // Status chip height budget (reduced)
                 let chipH: CGFloat = 26
                 // Screen height fills remaining space minus small spacing (reduced)
                 let screenH = min(max(56, rowH - chipH - 6), 96)
-                // Stepper button size follows iOS hit target rules (>=44)
-                let stepperSize = min(max(44, colW * 0.36), 54)
+                // Stepper button size follows iOS hit target rules (>=44) — slightly larger now
+                let stepperSize = min(max(48, colW * 0.40), 60)
                 // Time font size scales with screen height (slightly reduced maxima)
                 let timeFontSize = min(max(20, screenH * 0.42), 32)
 
                 HStack(spacing: gap) {
                     // Left: blocked apps card (flexible, no fixed internal size)
                     blockedAppsButton
-                        .frame(width: colW, height: rowH)
+                        .frame(width: leftW, height: rowH)
 
                     // Center: status chip + timer "screen"
 VStack(spacing: 6) {
@@ -81,7 +86,7 @@ VStack(spacing: 6) {
 .opacity(0.15)
                             )
                     }
-                    .frame(width: colW, height: rowH, alignment: .top)
+                    .frame(width: midW, height: rowH, alignment: .top)
 
                     // Right: vertical stepper (reduced gap between arrows)
                     VStack(spacing: 6) {
@@ -139,7 +144,8 @@ VStack(spacing: 6) {
                         }
                         Spacer(minLength: 0)
                     }
-                    .frame(width: colW, height: rowH, alignment: .center)
+                    .padding(.top, 6)
+                    .frame(width: rightW, height: rowH, alignment: .center)
                 }
             }
             .frame(height: 112)
@@ -181,13 +187,9 @@ case .focus:
                             viewModel.startBreak(minutes: 5) 
                         } label: { HStack { Image(systemName: "cup.and.saucer.fill"); Text("Break") }.frame(maxWidth: .infinity) }
                             .buttonStyle(NavPillStyle(variant: .cyan))
-Button { 
+                        Button { 
                             #if canImport(UIKit)
                             UINotificationFeedbackGenerator().notificationOccurred(.warning)
-                            #endif
-                            viewModel.stop() 
-                        } label: { HStack { Image(systemName: "stop.fill"); Text("Stop") }.frame(maxWidth: .infinity) }
-ning)
                             #endif
                             viewModel.stop() 
                         } label: { HStack { Image(systemName: "stop.fill"); Text("Stop") }.frame(maxWidth: .infinity) }
@@ -526,34 +528,75 @@ var blockedAppsButton: some View {
                         .foregroundColor(Color.nudgeGreen900)
                         .padding(.horizontal, 8)
                 } else {
-                    // Show only icons for selected items (apps first, then web)
-                    let showCore = min(3, totalSel)
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                    // Show compact badges for selected items (apps first, then web)
+                    let appTokens = Array(restrictions.selection.applicationTokens)
+                    let webTokens = Array(restrictions.selection.webDomainTokens)
+                    let showCore = min(4, totalSel)
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 6) {
                         ForEach(0..<showCore, id: \.self) { idx in
-                            let isApp = idx < appsCount
-                            Circle()
-                                .fill(Color.white)
-                                .overlay(Circle().stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
-                                .frame(width: 22, height: 22)
-                                .overlay(
-                                    Image(systemName: isApp ? "app.fill" : "globe")
-                                        .font(.system(size: 12, weight: .semibold))
-                                        .foregroundColor(Color.nudgeGreen900)
-                                )
+                            let isApp = idx < appTokens.count
+                            if isApp {
+                                let token = appTokens[idx]
+                                let bundleID: String = {
+                                    #if canImport(FamilyControls)
+                                    if let raw = (token.bundleIdentifier as? CustomStringConvertible)?.description { return raw }
+                                    // Fallback: attempt key-path access
+                                    return String(describing: token.bundleIdentifier)
+                                    #else
+                                    return ""
+                                    #endif
+                                }()
+                                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                    .fill(Color.white)
+                                    .overlay(RoundedRectangle(cornerRadius: 6, style: .continuous).stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
+                                    .frame(width: 24, height: 24)
+                                    .overlay(
+                                        Group {
+                                            #if canImport(UIKit)
+                                            if UIImage(named: "instagram") != nil {
+                                                Image("instagram")
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .padding(2)
+                                            } else {
+                                                Image(systemName: "app.fill")
+                                                    .font(.system(size: 12, weight: .semibold))
+                                                    .foregroundColor(Color.nudgeGreen900)
+                                            }
+                                            #else
+                                            Image("instagram")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .padding(2)
+                                            #endif
+                                        }
+                                    )
+                            } else {
+                                // Use circular badge for web domains
+                                Circle()
+                                    .fill(Color.white)
+                                    .overlay(Circle().stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
+                                    .frame(width: 24, height: 24)
+                                    .overlay(
+                                        Image(systemName: "globe")
+                                            .font(.system(size: 12, weight: .semibold))
+                                            .foregroundColor(Color.nudgeGreen900)
+                                    )
+                            }
                         }
                         if totalSel > showCore {
                             Circle()
                                 .fill(Color.white)
                                 .overlay(Circle().stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
-                                .frame(width: 24, height: 24)
+                                .frame(width: 26, height: 26)
                                 .overlay(
                                     Text("+\(totalSel - showCore)")
-                                        .font(.system(size: 10, weight: .bold))
+                                        .font(.system(size: 11, weight: .bold))
                                         .foregroundColor(Color.nudgeGreen900)
                                 )
                         }
                     }
-                    .padding(.horizontal, 4)
+                    .padding(.horizontal, 2)
                 }
                 #else
                 Text("Select apps to block")
