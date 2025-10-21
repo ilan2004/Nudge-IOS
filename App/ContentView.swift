@@ -194,14 +194,13 @@ struct ContentView: View {
             if showOnboarding {
                 ZStack {
                     Color(.systemBackground).opacity(0.98).ignoresSafeArea()
-                    OnboardingFlowView(
-                        onSkipToHome: { withAnimation { showOnboarding = false } },
-                        onTakeTest: {
-                            // TODO: Wire to actual MBTI test flow when ready
-                            withAnimation { showOnboarding = false }
-                            selectedTab = 2 // Navigate to My Type for now
+OnboardingView()
+                        .environmentObject(personalityManager)
+                        .overlay(alignment: .topTrailing) {
+                            Button("Skip") { withAnimation { showOnboarding = false } }
+                                .buttonStyle(NavPillStyle(variant: .primary))
+                                .padding()
                         }
-                    )
                 }
             }
         }
