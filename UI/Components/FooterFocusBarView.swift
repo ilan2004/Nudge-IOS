@@ -428,7 +428,7 @@ private var activeLayout: some View {
 #Preview {
     let vm = FooterFocusBarViewModel()
     
-    return VStack {
+    VStack {
         Spacer()
         FooterFocusBarView(viewModel: vm)
     }
