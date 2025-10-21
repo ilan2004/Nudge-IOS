@@ -108,8 +108,8 @@ var idleLayout: some View {
                 .font(.callout.bold())
                 .foregroundColor(Color.nudgeGreen900)
                 .frame(height: 40)
-                .frame(width: 220)
-                .frame(maxWidth: .infinity, alignment: .center)
+                .frame(width: 200)
+                .frame(alignment: .center)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
