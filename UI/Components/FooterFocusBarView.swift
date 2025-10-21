@@ -4,25 +4,12 @@ import SwiftUI
 import UIKit
 #endif
 
-// Preference keys to measure left/right edges of the top control row
-private struct FocusBarLeftXKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
-}
-
-private struct FocusBarRightXKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
-}
 
 struct FooterFocusBarView: View {
     @ObservedObject var viewModel: FooterFocusBarViewModel
     @State private var showSettings = false
     @StateObject private var restrictions = RestrictionsController()
     @State private var blinkColon = true
-    // Measured edges of the top row (blocked apps to arrows)
-    @State private var contentLeftX: CGFloat = 0
-    @State private var contentRightX: CGFloat = 0
 
     var body: some View {
         VStack(spacing: 12) {
@@ -45,14 +32,6 @@ private var idleLayout: some View {
             // Controls row: Blocked Apps (left), Timer (center), Arrows (right)
             HStack(spacing: 4) {
                 blockedAppsButton
-                    .background(
-                        GeometryReader { geo in
-                            Color.clear.preference(
-                                key: FocusBarLeftXKey.self,
-                                value: geo.frame(in: .named("focusBarRow")).minX
-                            )
-                        }
-                    )
 
                 VStack(spacing: 4) {
                     Text(statusLabel)
@@ -116,18 +95,6 @@ private var idleLayout: some View {
                             )
                     }
                 }
-                .background(
-                    GeometryReader { geo in
-                        Color.clear.preference(
-                            key: FocusBarRightXKey.self,
-                            value: geo.frame(in: .named("focusBarRow")).maxX
-                        )
-                    }
-                )
-            }
-            .coordinateSpace(name: "focusBarRow")
-            .onPreferenceChange(FocusBarLeftXKey.self) { contentLeftX = $0 }
-            .onPreferenceChange(FocusBarRightXKey.self) { contentRightX = $0 }
             
             // Bottom row: Start button
             Button {
@@ -140,6 +107,7 @@ private var idleLayout: some View {
                 .font(.callout.bold())
                 .foregroundColor(Color.nudgeGreen900)
                 .frame(height: 40)
+                .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
@@ -151,9 +119,7 @@ private var idleLayout: some View {
                         .stroke(Color.nudgeGreen900, lineWidth: 2)
                 )
             }
-            .frame(width: max(0, contentRightX - contentLeftX))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.leading, contentLeftX)
+            .frame(maxWidth: .infinity)
         }
     }
     
