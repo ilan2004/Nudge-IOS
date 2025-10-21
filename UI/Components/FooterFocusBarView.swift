@@ -78,7 +78,7 @@ var idleLayout: some View {
                             .frame(width: 56, height: 56)
                             .background(
                                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                    .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                                    .fill(Color(red: 253/255, green: 192/255, blue: 104/255))
                                     .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
                                     .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                             )
@@ -190,7 +190,7 @@ var activeLayout: some View {
                             .frame(width: 56, height: 56)
                             .background(
                                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                    .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                                    .fill(Color(red: 253/255, green: 192/255, blue: 104/255))
                                     .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
                                     .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                             )
@@ -299,7 +299,7 @@ var activeLayout: some View {
                     Text("Select apps to block")
                         .font(.system(size: 11, weight: .semibold))
                         .multilineTextAlignment(.center)
-                        .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
+                        .foregroundColor(Color.nudgeGreen900)
                         .padding(.horizontal, 8)
                 } else {
                     // Show only icons for selected items (apps first, then web)
@@ -309,23 +309,23 @@ var activeLayout: some View {
                             let isApp = idx < appsCount
                             Circle()
                                 .fill(Color.white)
-                                .overlay(Circle().stroke(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)).opacity(0.25), lineWidth: 1))
+                                .overlay(Circle().stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
 .frame(width: 22, height: 22)
                                 .overlay(
                                     Image(systemName: isApp ? "app.fill" : "globe")
                                         .font(.system(size: 12, weight: .semibold))
-                                        .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
+                                        .foregroundColor(Color.nudgeGreen900)
                                 )
                         }
                         if totalSel > showCore {
                             Circle()
                                 .fill(Color.white)
-                                .overlay(Circle().stroke(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)).opacity(0.25), lineWidth: 1))
+                                .overlay(Circle().stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1))
                                 .frame(width: 24, height: 24)
                                 .overlay(
                                     Text("+\(totalSel - showCore)")
                                         .font(.system(size: 10, weight: .bold))
-                                        .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
+                                        .foregroundColor(Color.nudgeGreen900)
                                 )
                         }
                     }
@@ -335,21 +335,21 @@ var activeLayout: some View {
                 Text("Select apps to block")
                     .font(.system(size: 11, weight: .semibold))
                     .multilineTextAlignment(.center)
-                    .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
+                    .foregroundColor(Color.nudgeGreen900)
                     .padding(.horizontal, 8)
                 #endif
             }
-            .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
+            .foregroundColor(Color.nudgeGreen900)
 .frame(width: 88, height: 120)
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color("NudgeRedSurface", bundle: .main, default: Color(red: 1.0, green: 0.92, blue: 0.92)))
-                    .shadow(color: Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)), radius: 0, x: 0, y: 4)
-                    .shadow(color: Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)).opacity(0.2), radius: 12, x: 0, y: 8)
+                    .fill(Color(red: 174/255, green: 251/255, blue: 255/255))
+                    .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                    .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .stroke(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)), lineWidth: 2)
+                    .stroke(Color.nudgeGreen900, lineWidth: 2)
             )
         }
     }
