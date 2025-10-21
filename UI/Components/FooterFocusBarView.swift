@@ -66,7 +66,7 @@ var activeLayout: some View {
                     // Left: blocked apps card (flexible, no fixed internal size)
                     blockedAppsButton
                         .frame(width: leftW, height: rowH)
-                        .offset(x: 8)
+                        .offset(x: 12)
 
                     // Center: status chip + timer "screen"
 VStack(spacing: 6) {
@@ -88,7 +88,7 @@ VStack(spacing: 6) {
                             )
                     }
                     .frame(width: midW, height: rowH, alignment: .top)
-                    .offset(x: 8)
+                    .offset(x: 12)
 
                     // Right: vertical stepper (reduced gap between arrows)
                     VStack(spacing: 6) {
