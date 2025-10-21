@@ -15,7 +15,7 @@ struct OnboardingView: View {
     @State private var name: String = ""
     @State private var showControls = false
 @State private var showNext = false
-    @FocusState private var nameFieldFocused: Bool
+@SwiftUI.FocusState private var nameFieldFocused: Bool
     
     var body: some View {
         VStack(spacing: 24) {
