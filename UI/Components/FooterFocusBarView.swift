@@ -32,13 +32,9 @@ private var idleLayout: some View {
             HStack(spacing: 4) {
                 blockedAppsButton
 
-                Spacer(minLength: 4)
-
                 timerSquare(ms: viewModel.customMinutes * 60_000)
-                    .frame(width: 148, height: 72)
+                    .frame(width: 188, height: 72)
                 
-                Spacer(minLength: 4)
-
                 VStack(spacing: 8) {
                     Button {
 #if canImport(UIKit)
@@ -92,12 +88,23 @@ private var idleLayout: some View {
             } label: {
                 HStack {
                     Image(systemName: "play.fill")
-                    Text("Set Timer")
+                    Text("Start Session")
                 }
+                .font(.callout.bold())
+                .foregroundColor(Color.nudgeGreen900)
                 .frame(maxWidth: .infinity)
-                .frame(height: 36)
+                .frame(height: 40)
+                .background(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87)))
+                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(Color.nudgeGreen900, lineWidth: 2)
+                )
             }
-            .buttonStyle(NavPillStyle(variant: .primary))
         }
     }
     
@@ -108,13 +115,9 @@ private var activeLayout: some View {
             HStack(spacing: 4) {
                 blockedAppsButton
 
-                Spacer(minLength: 4)
-
                 timerSquare(ms: viewModel.remainingMs)
-                    .frame(width: 148, height: 72)
+                    .frame(width: 188, height: 72)
                 
-                Spacer(minLength: 4)
-
                 // Status chip
                 Text(statusLabel)
                     .font(.caption.bold())
