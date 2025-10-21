@@ -34,15 +34,30 @@ var idleLayout: some View {
                 blockedAppsButton
 
                 VStack(spacing: 4) {
-                    Text(statusLabel)
-                        .font(.caption.bold())
+                    Text(statusLabel.uppercased())
+                        .font(.system(size: 12, weight: .black))
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
-                        .background(
-                            Capsule()
-                                .fill(statusChipColor.opacity(0.3))
-                        )
                         .foregroundColor(Color.nudgeGreen900)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(statusChipFill)
+                                .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                                .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .stroke(Color.nudgeGreen900, lineWidth: 2)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .inset(by: 2)
+                                        .stroke(Color.nudgeGreen900.opacity(0.15), lineWidth: 1)
+                                )
+                                .overlay(
+                                    LinearGradient(colors: [Color.white.opacity(0.25), .clear], startPoint: .top, endPoint: .center)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                )
+                        )
                     timerSquare(ms: viewModel.customMinutes * 60_000)
                         .frame(width: 160, height: 72)
                         .padding(.horizontal, 6)
@@ -133,15 +148,30 @@ var activeLayout: some View {
                 blockedAppsButton
 
                 VStack(spacing: 4) {
-                    Text(statusLabel)
-                        .font(.caption.bold())
+                    Text(statusLabel.uppercased())
+                        .font(.system(size: 12, weight: .black))
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
-                        .background(
-                            Capsule()
-                                .fill(statusChipColor.opacity(0.3))
-                        )
                         .foregroundColor(Color.nudgeGreen900)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(statusChipFill)
+                                .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                                .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .stroke(Color.nudgeGreen900, lineWidth: 2)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .inset(by: 2)
+                                        .stroke(Color.nudgeGreen900.opacity(0.15), lineWidth: 1)
+                                )
+                                .overlay(
+                                    LinearGradient(colors: [Color.white.opacity(0.25), .clear], startPoint: .top, endPoint: .center)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                )
+                        )
                     timerSquare(ms: viewModel.remainingMs)
                         .frame(width: 160, height: 72)
                         .padding(.horizontal, 6)
@@ -395,10 +425,24 @@ var activeLayout: some View {
     
     var statusChipColor: Color {
         switch viewModel.mode {
-        case .idle: return .gray
-        case .focus: return Color(red: 0.24, green: 0.84, blue: 0.91)
-        case .paused: return Color(red: 0.96, green: 0.69, blue: 0.13)
-        case .breakTime: return Color(red: 0.24, green: 0.84, blue: 0.91)
+        case .idle: return Color.nudgeGreen900
+        case .focus: return Color.nudgeGreen900
+        case .paused: return Color.nudgeGreen900
+        case .breakTime: return Color.nudgeGreen900
+        }
+    }
+    
+    // Retro chip fill color per state (uses surface tokens where available)
+    var statusChipFill: Color {
+        switch viewModel.mode {
+        case .idle:
+            return Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96))
+        case .focus:
+            return Color("NudgeGreenSurface", bundle: .main, default: Color(red: 0.83, green: 0.96, blue: 0.87))
+        case .paused:
+            return Color("NudgeAmberSurface", bundle: .main, default: Color(red: 1.0, green: 0.95, blue: 0.78))
+        case .breakTime:
+            return Color("NudgeCyanSurface", bundle: .main, default: Color(red: 0.81, green: 0.98, blue: 1.0))
         }
     }
     
