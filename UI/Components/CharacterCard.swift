@@ -51,7 +51,7 @@ struct CharacterCard: View {
                 OutlinedText(
                     text: heading,
                     font: .custom("Tanker-Regular", size: 40),
-                    foreground: .greenPrimary,
+                    foreground: .defaultGreen,
                     outline: .defaultCream,
                     lineWidth: 1
                 )
@@ -460,14 +460,16 @@ struct OutlinedText: View {
     let lineWidth: CGFloat // use small values like 1–1.5 for readability
     
     var body: some View {
-        Text(text)
-            .font(font)
-            .foregroundColor(foreground)
-            // Crisp 1px faux-stroke using four zero-radius shadows
-            .shadow(color: outline, radius: 0, x:  lineWidth, y: 0)
-            .shadow(color: outline, radius: 0, x: -lineWidth, y: 0)
-            .shadow(color: outline, radius: 0, x: 0, y:  lineWidth)
-            .shadow(color: outline, radius: 0, x: 0, y: -lineWidth)
+        ZStack {
+            // Soft diagonal-only outline for better legibility
+            Text(text).font(font).foregroundColor(outline).opacity(0.95).offset(x:  lineWidth, y:  lineWidth)
+            Text(text).font(font).foregroundColor(outline).opacity(0.95).offset(x: -lineWidth, y:  lineWidth)
+            Text(text).font(font).foregroundColor(outline).opacity(0.95).offset(x:  lineWidth, y: -lineWidth)
+            Text(text).font(font).foregroundColor(outline).opacity(0.95).offset(x: -lineWidth, y: -lineWidth)
+            
+            // Fill on top
+            Text(text).font(font).foregroundColor(foreground)
+        }
     }
 }
 
