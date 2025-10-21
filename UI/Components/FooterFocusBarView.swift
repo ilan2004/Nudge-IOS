@@ -1,5 +1,8 @@
 // UI/Components/FooterFocusBarView.swift
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 struct FooterFocusBarView: View {
     @ObservedObject var viewModel: FooterFocusBarViewModel
@@ -36,8 +39,11 @@ private var idleLayout: some View {
                 
                 Spacer(minLength: 4)
 
-                VStack(spacing: 4) {
+                VStack(spacing: 8) {
                     Button {
+#if canImport(UIKit)
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+#endif
                         viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
                     } label: {
                         Text("▲")
@@ -57,6 +63,9 @@ private var idleLayout: some View {
                     }
 
                     Button {
+#if canImport(UIKit)
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+#endif
                         viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
                     } label: {
                         Text("▼")
