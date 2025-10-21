@@ -48,9 +48,13 @@ struct CharacterCard: View {
         VStack(spacing: 16) {
             // Header with name and edit button
             HStack {
-                Text(heading)
-                    .font(.custom("Tanker-Regular", size: 40))
-                    .foregroundColor(personalityManager.currentTheme.text)
+                OutlinedText(
+                    text: heading,
+                    font: .custom("Tanker-Regular", size: 40),
+                    foreground: .greenPrimary,
+                    outline: .defaultCream,
+                    lineWidth: 3
+                )
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
                 
@@ -443,6 +447,32 @@ struct CharacterStatItem: View {
             Text(label)
                 .font(.caption)
                 .foregroundColor(.secondary)
+        }
+    }
+}
+
+// Comic-style outlined text used for the player name
+struct OutlinedText: View {
+    let text: String
+    let font: Font
+    let foreground: Color
+    let outline: Color
+    let lineWidth: CGFloat
+    
+    var body: some View {
+        ZStack {
+            // 8-direction outline around the text
+            Text(text).font(font).foregroundColor(outline).offset(x:  lineWidth, y:  0)
+            Text(text).font(font).foregroundColor(outline).offset(x: -lineWidth, y:  0)
+            Text(text).font(font).foregroundColor(outline).offset(x:  0,          y:  lineWidth)
+            Text(text).font(font).foregroundColor(outline).offset(x:  0,          y: -lineWidth)
+            Text(text).font(font).foregroundColor(outline).offset(x:  lineWidth, y:  lineWidth)
+            Text(text).font(font).foregroundColor(outline).offset(x: -lineWidth, y:  lineWidth)
+            Text(text).font(font).foregroundColor(outline).offset(x:  lineWidth, y: -lineWidth)
+            Text(text).font(font).foregroundColor(outline).offset(x: -lineWidth, y: -lineWidth)
+            
+            // Fill text on top
+            Text(text).font(font).foregroundColor(foreground)
         }
     }
 }
