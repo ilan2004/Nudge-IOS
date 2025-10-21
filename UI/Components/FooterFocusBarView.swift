@@ -15,24 +15,24 @@ struct FooterFocusBarView: View {
                 activeLayout
             }
         }
-        .padding(12)
-.retroConsoleSurface()
+.padding(8)
+        .retroConsoleSurface()
         .sheet(isPresented: $showSettings) {
             FocusSettingsView(restrictions: restrictions)
         }
     }
     
     // MARK: - Idle Layout
-    private var idleLayout: some View {
-        VStack(spacing: 8) {
+private var idleLayout: some View {
+        VStack(spacing: 6) {
             // Controls row: Blocked Apps (left), Timer (center), Arrows (right)
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 blockedAppsButton
 
                 Spacer()
 
                 timerSquare(ms: viewModel.customMinutes * 60_000)
-                    .frame(width: 160, height: 84)
+                    .frame(width: 148, height: 72)
                 
                 Spacer()
 
@@ -40,20 +40,34 @@ struct FooterFocusBarView: View {
                     Button {
                         viewModel.customMinutes = min(240, viewModel.customMinutes + 5)
                     } label: {
-                        Text("↑")
-                            .font(.system(size: 14, weight: .bold))
-                            .frame(width: 36, height: 36)
+                        Text("▲")
+                            .font(.system(size: 18, weight: .black))
+                            .frame(width: 32, height: 32)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(Color.white.opacity(0.95))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .stroke(Color.nudgeGreen900, lineWidth: 2)
+                            )
                     }
-                    .buttonStyle(NavPillStyle(variant: .primary, compact: true))
 
                     Button {
                         viewModel.customMinutes = max(1, viewModel.customMinutes - 5)
                     } label: {
-                        Text("↓")
-                            .font(.system(size: 14, weight: .bold))
-                            .frame(width: 36, height: 36)
+                        Text("▼")
+                            .font(.system(size: 18, weight: .black))
+                            .frame(width: 32, height: 32)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(Color.white.opacity(0.95))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .stroke(Color.nudgeGreen900, lineWidth: 2)
+                            )
                     }
-                    .buttonStyle(NavPillStyle(variant: .amber, compact: true))
                 }
             }
             
@@ -66,23 +80,23 @@ struct FooterFocusBarView: View {
                     Text("Set Timer")
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 40)
+                .frame(height: 36)
             }
             .buttonStyle(NavPillStyle(variant: .primary))
         }
     }
     
     // MARK: - Active Layout
-    private var activeLayout: some View {
-        VStack(spacing: 8) {
+private var activeLayout: some View {
+        VStack(spacing: 6) {
             // Top row: Blocked Apps (left), Timer (center), Status (right)
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 blockedAppsButton
 
                 Spacer()
 
                 timerSquare(ms: viewModel.remainingMs)
-                    .frame(width: 160, height: 84)
+                    .frame(width: 148, height: 72)
                 
                 Spacer()
 
@@ -99,7 +113,7 @@ struct FooterFocusBarView: View {
             }
             
             // Bottom row: Action buttons
-            HStack(spacing: 8) {
+            HStack(spacing: 6) {
                 switch viewModel.mode {
                 case .focus:
                     Button {
@@ -160,7 +174,7 @@ struct FooterFocusBarView: View {
         Button {
             showSettings = true
         } label: {
-            VStack(spacing: 8) {
+            VStack(spacing: 6) {
                 Text("Blocked")
                     .font(.system(size: 12, weight: .semibold))
 
@@ -184,7 +198,7 @@ struct FooterFocusBarView: View {
                             Circle()
                                 .fill(Color.white)
                                 .overlay(Circle().stroke(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)).opacity(0.25), lineWidth: 1))
-                                .frame(width: 24, height: 24)
+.frame(width: 22, height: 22)
                                 .overlay(
                                     Image(systemName: isApp ? "app.fill" : "globe")
                                         .font(.system(size: 12, weight: .semibold))
@@ -214,7 +228,7 @@ struct FooterFocusBarView: View {
                 #endif
             }
             .foregroundColor(Color("NudgeRed700", bundle: .main, default: Color(red: 0.75, green: 0.20, blue: 0.20)))
-            .frame(width: 96, height: 140)
+.frame(width: 88, height: 120)
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .fill(Color("NudgeRedSurface", bundle: .main, default: Color(red: 1.0, green: 0.92, blue: 0.92)))
@@ -272,13 +286,13 @@ struct FooterFocusBarView: View {
                 Text(":").opacity(blinkColon ? 1 : 0.2)
                 Text(ss)
             }
-            .font(.custom("Nippo-Regular", size: 32))
+.font(.custom("Nippo-Regular", size: 28))
             .kerning(-0.5)
             .minimumScaleFactor(0.6)
             .lineLimit(1)
             .foregroundColor(Color.nudgeGreen900)
             .monospacedDigit()
-            .padding(.horizontal, 16)
+.padding(.horizontal, 12)
         }
         .onAppear {
             withAnimation(.easeInOut(duration: 0.7).repeatForever(autoreverses: true)) {
