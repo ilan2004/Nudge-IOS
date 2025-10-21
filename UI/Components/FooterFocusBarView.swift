@@ -4,6 +4,7 @@ import SwiftUI
 struct FooterFocusBarView: View {
     @ObservedObject var viewModel: FooterFocusBarViewModel
     @State private var showSettings = false
+    @StateObject private var restrictions = RestrictionsController()
     @State private var blinkColon = true
 
     var body: some View {
@@ -15,7 +16,10 @@ struct FooterFocusBarView: View {
             }
         }
         .padding(12)
-        .retroConsoleSurface()
+.retroConsoleSurface()
+        .sheet(isPresented: $showSettings) {
+            FocusSettingsView(restrictions: restrictions)
+        }
     }
     
     // MARK: - Idle Layout
@@ -156,17 +160,48 @@ struct FooterFocusBarView: View {
         Button {
             showSettings = true
         } label: {
-            VStack(spacing: 2) {
+            VStack(spacing: 6) {
                 Text("Blocked")
-                Text("Apps")
+                    .font(.system(size: 12, weight: .semibold))
+                
+                #if canImport(FamilyControls) && canImport(ManagedSettings)
+                HStack(spacing: 6) {
+                    Capsule()
+                        .fill(Color.white.opacity(0.9))
+                        .overlay(
+                            Capsule().stroke(Color.nudgeGreen900.opacity(0.3), lineWidth: 1)
+                        )
+                        .frame(height: 20)
+                        .overlay(
+                            Text("Apps \(restrictions.selection.applicationTokens.count)")
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundColor(Color.nudgeGreen900)
+                                .padding(.horizontal, 8)
+                        )
+                    Capsule()
+                        .fill(Color.white.opacity(0.9))
+                        .overlay(
+                            Capsule().stroke(Color.nudgeGreen900.opacity(0.3), lineWidth: 1)
+                        )
+                        .frame(height: 20)
+                        .overlay(
+                            Text("Web \(restrictions.selection.webDomainTokens.count)")
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundColor(Color.nudgeGreen900)
+                                .padding(.horizontal, 8)
+                        )
+                }
+                #else
+                Text("Apps 0 • Web 0")
+                    .font(.system(size: 10, weight: .semibold))
+                #endif
             }
-            .font(.system(size: 12, weight: .semibold))
             .multilineTextAlignment(.center)
             .foregroundColor(Color.nudgeGreen900)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(8)
         }
-        .frame(width: 88, height: 80)
+        .frame(width: 120, height: 80)
         .background(
             RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(Color.white.opacity(0.7))

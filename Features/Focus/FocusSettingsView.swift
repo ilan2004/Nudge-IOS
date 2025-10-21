@@ -4,8 +4,8 @@ import FamilyControls
 #endif
 
 struct FocusSettingsView: View {
-    @Environment(\.dismiss) private var dismiss
-    @StateObject private var restrictions = RestrictionsController()
+    @Environment(.dismiss) private var dismiss
+    @ObservedObject var restrictions: RestrictionsController
 
     @State private var showPicker = false
 
@@ -166,5 +166,5 @@ struct FocusSettingsView: View {
 }
 
 #Preview {
-    FocusSettingsView()
+    FocusSettingsView(restrictions: RestrictionsController())
 }
