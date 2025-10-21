@@ -28,7 +28,7 @@ struct FooterFocusBarView: View {
                 Spacer()
 
                 timerSquare(ms: viewModel.customMinutes * 60_000)
-                    .frame(width: 200, height: 120)
+                    .frame(width: 180, height: 96)
                 
                 Spacer()
 
@@ -78,7 +78,7 @@ struct FooterFocusBarView: View {
                 Spacer()
 
                 timerSquare(ms: viewModel.remainingMs)
-                    .frame(width: 200, height: 120)
+                    .frame(width: 180, height: 96)
                 
                 Spacer()
 
