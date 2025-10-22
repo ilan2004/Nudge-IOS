@@ -12,9 +12,12 @@ public struct ProfileView: View {
     @State private var showLeaderboard = false
     @State private var animateShimmer = false
     
+    // Constrain overall content width to avoid overly wide cards
+    private let maxContentWidth: CGFloat = 440
+    
     public var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
+            VStack(spacing: 16) {
                 // Identity header
                 identityHeader
                     .heroCardSurface()
@@ -67,8 +70,10 @@ public struct ProfileView: View {
                 
                 Spacer(minLength: 12)
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 16)
+            .frame(maxWidth: maxContentWidth, alignment: .center)
+            .padding(.horizontal, 12)
+            .padding(.top, 14)
+            .frame(maxWidth: .infinity)
         }
         .onAppear { animateShimmer = true }
         .sheet(isPresented: $showHistory) {
@@ -98,16 +103,16 @@ public struct ProfileView: View {
             VStack(spacing: 16) {
                 if let type = personalityManager.personalityType {
                     HStack(alignment: .center, spacing: 16) {
-                        // Smaller character card on the left
-                        CharacterCard(title: nil, size: 140, compact: true)
-                            .environmentObject(personalityManager)
-                            .environmentObject(focusManager)
-                            .frame(width: 160, alignment: .leading)
+                    // Smaller character card on the left
+                    CharacterCard(title: nil, size: 110, compact: true)
+                        .environmentObject(personalityManager)
+                        .environmentObject(focusManager)
+                        .frame(width: 130, alignment: .leading)
                         
                         // Name on the right with personality details below
                         VStack(alignment: .leading, spacing: 8) {
                             Text(displayName)
-                                .font(.custom("Tanker-Regular", size: 28))
+                                .font(.custom("Tanker-Regular", size: 24))
                                 .foregroundColor(theme.text)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.8)
@@ -122,8 +127,8 @@ public struct ProfileView: View {
                     }
                 } else {
                     HStack(alignment: .center, spacing: 16) {
-                        CharacterPlaceholder(size: 120)
-                            .frame(width: 140, alignment: .leading)
+                        CharacterPlaceholder(size: 110)
+                            .frame(width: 130, alignment: .leading)
                         
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Complete your profile")
@@ -191,9 +196,9 @@ struct FocusEconomyCard: View {
         return ZStack {
             // Vault door garnish
             Circle()
-                .strokeBorder(LinearGradient(colors: [Color.gray.opacity(0.4), Color.white.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 6)
-                .frame(width: 120, height: 120)
-                .offset(x: 90, y: -10)
+                .strokeBorder(LinearGradient(colors: [Color.gray.opacity(0.4), Color.white.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 5)
+                .frame(width: 90, height: 90)
+                .offset(x: 70, y: -8)
                 .blur(radius: 0.2)
                 .opacity(0.35)
                 .accessibilityHidden(true)
@@ -256,7 +261,7 @@ struct FocusEconomyCard: View {
             }
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 Text("\(value)")
-                    .font(.system(size: 28, weight: .bold))
+                        .font(.system(size: 24, weight: .bold))
                     .foregroundColor(theme.text)
                     .shadow(color: accent.opacity(0.25), radius: 4)
                 // subtle glow dot
@@ -294,7 +299,7 @@ struct StatsGrid: View {
         let theme = personalityManager.currentTheme
         return VStack(alignment: .leading, spacing: 12) {
             Text("Your Stats")
-                .font(.custom("Tanker-Regular", size: 20))
+                .font(.custom("Tanker-Regular", size: 18))
                 .foregroundColor(theme.text)
             
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
@@ -319,7 +324,7 @@ struct StatsGrid: View {
                 Spacer()
             }
             Text(value)
-                .font(.headline.weight(.semibold))
+                .font(.subheadline.weight(.semibold))
                 .foregroundColor(theme.text)
             // Mini progress bar
             GeometryReader { geo in
@@ -415,7 +420,7 @@ struct AchievementStrip: View {
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(theme.text)
                         }
-                        .frame(width: 120, height: 100)
+                        .frame(width: 96, height: 88)
                         .background(RoundedRectangle(cornerRadius: 12).fill(theme.surface.opacity(0.9)))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
@@ -458,7 +463,7 @@ struct LeaderboardTile: View {
                 ZStack {
                     Circle()
                         .fill(LinearGradient(colors: [medal.opacity(0.9), medal.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .frame(width: 54, height: 54)
+                        .frame(width: 46, height: 46)
                         .shadow(color: medal.opacity(0.4), radius: 10)
                     Text("#\(rank)")
                         .font(.system(size: 20, weight: .heavy))
