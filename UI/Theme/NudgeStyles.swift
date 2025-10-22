@@ -1,5 +1,8 @@
 // UI/Theme/NudgeStyles.swift
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 // MARK: - Pill Variant
 public enum PillVariant { 
@@ -147,50 +150,158 @@ private struct OrnateCorner: View {
     }
 }
 
+// MARK: - HeroCard Helpers
+private struct PaperTextureOverlay: View {
+    var body: some View {
+        Group {
+#if canImport(UIKit)
+            if let uiImage = UIImage(named: "PaperTexture", in: .main, compatibleWith: nil) ?? UIImage(named: "PaperNoise", in: .main, compatibleWith: nil) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .opacity(0.08)
+                    .blendMode(.multiply)
+            } else {
+                GrainFallback()
+            }
+#else
+            GrainFallback()
+#endif
+        }
+    }
+    private struct GrainFallback: View {
+        var body: some View {
+            GeometryReader { geo in
+                let step: CGFloat = 6
+                Path { path in
+                    var y: CGFloat = 0
+                    while y < geo.size.height {
+                        var x: CGFloat = 0
+                        while x < geo.size.width {
+                            path.addEllipse(in: CGRect(x: x, y: y, width: 1, height: 1))
+                            x += step
+                        }
+                        y += step
+                    }
+                }
+                .fill(Color.black.opacity(0.03))
+                .blendMode(.multiply)
+            }
+        }
+    }
+}
+
+private struct CornerBrackets: View {
+    let color: Color
+    let length: CGFloat
+    let lineWidth: CGFloat
+    let inset: CGFloat
+    let cornerRadius: CGFloat
+    var body: some View {
+        GeometryReader { geo in
+            let w = geo.size.width
+            let h = geo.size.height
+            ZStack {
+                // Top-left L
+                Path { p in
+                    p.move(to: CGPoint(x: inset, y: inset + length))
+                    p.addLine(to: CGPoint(x: inset, y: inset))
+                    p.addLine(to: CGPoint(x: inset + length, y: inset))
+                }.stroke(color, lineWidth: lineWidth)
+                // Top-right L
+                Path { p in
+                    p.move(to: CGPoint(x: w - inset - length, y: inset))
+                    p.addLine(to: CGPoint(x: w - inset, y: inset))
+                    p.addLine(to: CGPoint(x: w - inset, y: inset + length))
+                }.stroke(color, lineWidth: lineWidth)
+                // Bottom-left L
+                Path { p in
+                    p.move(to: CGPoint(x: inset, y: h - inset - length))
+                    p.addLine(to: CGPoint(x: inset, y: h - inset))
+                    p.addLine(to: CGPoint(x: inset + length, y: h - inset))
+                }.stroke(color, lineWidth: lineWidth)
+                // Bottom-right L
+                Path { p in
+                    p.move(to: CGPoint(x: w - inset - length, y: h - inset))
+                    p.addLine(to: CGPoint(x: w - inset, y: h - inset))
+                    p.addLine(to: CGPoint(x: w - inset, y: h - inset - length))
+                }.stroke(color, lineWidth: lineWidth)
+            }
+        }
+    }
+}
+
 // MARK: - HeroCardSurface
 public struct HeroCardSurface: ViewModifier {
-    @EnvironmentObject private var personalityManager: PersonalityManager
     public func body(content: Content) -> some View {
-        let theme = personalityManager.currentTheme
+        let parchment = Color(red: 0.98, green: 0.96, blue: 0.92)
+        let darkBrown = Color(red: 0.25, green: 0.20, blue: 0.15)
+        let lightBrown = Color(red: 0.45, green: 0.38, blue: 0.30)
+        let stampBg = Color(red: 0.85, green: 0.75, blue: 0.60)
+        let textColor = Color(red: 0.20, green: 0.15, blue: 0.12)
         return content
+            .foregroundStyle(textColor)
             .padding(14)
             .background(
                 ZStack {
-                    // Solid, opaque background (no transparency)
-                    RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
-                        // Standard two-layer green shadow system (applied to shape only)
-                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
-                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
-                        .overlay(
-                            // Double ornate border
-                            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                .stroke(theme.secondary.opacity(0.8), lineWidth: 2)
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .inset(by: 6)
-                                .stroke(style: StrokeStyle(lineWidth: 1, dash: [6, 3]))
-                                .foregroundStyle(theme.primary.opacity(0.9))
-                        )
-                    // Personality-colored accent strips
-                    VStack(spacing: 0) {
-                        LinearGradient(colors: [theme.primary.opacity(0.35), theme.accent.opacity(0.15)], startPoint: .leading, endPoint: .trailing)
-                            .frame(height: 6)
-                            .overlay(Rectangle().fill(.white.opacity(0.25)).frame(height: 1), alignment: .bottom)
+                    // Base parchment background with subtle grain and vignette
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(parchment)
+                        .overlay(PaperTextureOverlay().clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous)))
+                        .shadow(color: darkBrown, radius: 0, x: 0, y: 4)
+                        .shadow(color: darkBrown.opacity(0.2), radius: 12, x: 0, y: 8)
+                    // Thick rustic border
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .stroke(darkBrown, lineWidth: 3)
+                    // Inner dotted border
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .inset(by: 10)
+                        .stroke(style: StrokeStyle(lineWidth: 1.5, dash: [3, 3]))
+                        .foregroundStyle(lightBrown)
+                    // Optional corner reinforcements
+                    CornerBrackets(color: darkBrown, length: 10, lineWidth: 2, inset: 6, cornerRadius: 14)
+                        .allowsHitTesting(false)
+                    // Horizontal dotted separator below portrait area
+                    VStack { 
+                        Spacer().frame(height: 88)
+                        Rectangle()
+                            .fill(Color.clear)
+                            .frame(height: 1)
+                            .overlay(
+                                Rectangle()
+                                    .stroke(style: StrokeStyle(lineWidth: 1, dash: [3,3]))
+                                    .foregroundStyle(lightBrown)
+                            )
                         Spacer()
-                        LinearGradient(colors: [theme.accent.opacity(0.15), theme.primary.opacity(0.35)], startPoint: .leading, endPoint: .trailing)
-                            .frame(height: 4)
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-                    // Ornate corners
-                    ZStack {
-                        OrnateCorner(corner: .topLeft, color: theme.secondary, size: 14).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        OrnateCorner(corner: .topRight, color: theme.secondary, size: 14).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                        OrnateCorner(corner: .bottomLeft, color: theme.secondary, size: 14).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                        OrnateCorner(corner: .bottomRight, color: theme.secondary, size: 14).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     .allowsHitTesting(false)
+                    // Guild seal / level stamp placeholder (top-right)
+                    Circle()
+                        .fill(stampBg.opacity(0.25))
+                        .frame(width: 36, height: 36)
+                        .overlay(Circle().stroke(darkBrown.opacity(0.6), lineWidth: 2))
+                        .overlay(
+                            Text("✦")
+                                .font(.system(size: 12, weight: .bold, design: .serif))
+                                .foregroundStyle(darkBrown.opacity(0.6))
+                        )
+                        .shadow(color: darkBrown.opacity(0.2), radius: 1, x: 0, y: 1)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                        .padding(8)
+                        .allowsHitTesting(false)
+                    // Watermark text
+                    Text("GUILD REGISTRY")
+                        .font(.system(size: 18, weight: .semibold, design: .serif))
+                        .foregroundStyle(lightBrown.opacity(0.08))
+                        .rotationEffect(.degrees(-10))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                        .allowsHitTesting(false)
+                    // Subtle vignette to age edges
+                    RadialGradient(colors: [.clear, darkBrown.opacity(0.06)], center: .center, startRadius: 180, endRadius: 600)
+                        .blendMode(.multiply)
+                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .allowsHitTesting(false)
                 }
             )
     }

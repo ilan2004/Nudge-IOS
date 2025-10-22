@@ -10,7 +10,6 @@ public struct ProfileView: View {
     @State private var showHistory = false
     @State private var showManageBlocking = false
     @State private var showLeaderboard = false
-    @State private var animateShimmer = false
     
     // Constrain overall content width to avoid overly wide cards
     private let maxContentWidth: CGFloat = 440
@@ -21,6 +20,29 @@ public struct ProfileView: View {
                 // Identity header
                 identityHeader
                     .heroCardSurface()
+                    .overlay(alignment: .topTrailing) {
+                        // Level seal/stamp
+                        let darkBrown = Color(red: 0.25, green: 0.20, blue: 0.15)
+                        let stampBg = Color(red: 0.85, green: 0.75, blue: 0.60)
+                        let textBrown = Color(red: 0.20, green: 0.15, blue: 0.12)
+                        ZStack {
+                            Circle()
+                                .fill(stampBg)
+                                .frame(width: 50, height: 50)
+                            Circle()
+                                .stroke(darkBrown, lineWidth: 2)
+                                .frame(width: 50, height: 50)
+                            VStack(spacing: 2) {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(Color(red: 0.60, green: 0.45, blue: 0.25))
+                                    .font(.caption)
+                                Text("Lv \(currentLevel)")
+                                    .font(.custom("Tanker-Regular", size: 11))
+                                    .foregroundColor(textBrown)
+                            }
+                        }
+                        .padding(12)
+                    }
                 
                 // Focus economy (Points + Coins)
                 FocusEconomyCard(points: economy.totalFocusPoints, coins: economy.totalFocusCoins) {
@@ -75,7 +97,6 @@ public struct ProfileView: View {
             .padding(.top, 14)
             .frame(maxWidth: .infinity)
         }
-        .onAppear { animateShimmer = true }
         .sheet(isPresented: $showHistory) {
             FocusEconomyHistoryView()
                 .environmentObject(economy)
@@ -91,85 +112,61 @@ public struct ProfileView: View {
     
     // MARK: - Identity header
     private var identityHeader: some View {
-        let theme = personalityManager.currentTheme
-        let hours = focusManager.totalFocusTime / 3600.0
-        let level = max(1, Int(hours / 10.0) + 1)
-        return ZStack(alignment: .topLeading) {
-            VStack(spacing: 16) {
-                if let type = personalityManager.personalityType {
-                    HStack(alignment: .center, spacing: 16) {
-                    // Smaller character card on the left
+        let textBrown = Color(red: 0.20, green: 0.15, blue: 0.12)
+        let lineBrown = Color(red: 0.45, green: 0.38, blue: 0.30)
+        return VStack(spacing: 12) {
+            if let type = personalityManager.personalityType {
+                HStack(alignment: .center, spacing: 16) {
+                    // Character card on the left
                     CharacterCard(title: nil, size: 110, compact: true)
                         .environmentObject(personalityManager)
                         .environmentObject(focusManager)
                         .frame(width: 130, alignment: .leading)
+                    // Name + personality on the right
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(displayName)
+                            .font(.custom("Tanker-Regular", size: 24))
+                            .foregroundColor(textBrown)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                        PersonalityBadge(personalityType: type, gender: personalityManager.gender, guildCardStyle: true)
                         
-                        // Name on the right with personality details below
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(displayName)
-                                .font(.custom("Tanker-Regular", size: 24))
-                                .foregroundColor(theme.text)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.8)
-                            
-                            PersonalityBadge(personalityType: type, gender: personalityManager.gender)
-                            
-                            Text(type.displayName)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        Text(type.displayName)
+                            .foregroundColor(textBrown)
                     }
-                } else {
-                    HStack(alignment: .center, spacing: 16) {
-                        CharacterPlaceholder(size: 110)
-                            .frame(width: 130, alignment: .leading)
-                        
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Complete your profile")
-                                .font(.headline)
-                                .foregroundColor(.nudgeGreen900)
-                            Button("Take MBTI Test") { /* TODO */ }
-                                .buttonStyle(NavPillStyle(variant: .primary))
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            } else {
+                HStack(alignment: .center, spacing: 16) {
+                    CharacterPlaceholder(size: 110)
+                        .frame(width: 130, alignment: .leading)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Complete your profile")
+                            .font(.headline)
+                            .foregroundColor(textBrown)
+                        Button("Take MBTI Test") { /* TODO */ }
+                            .buttonStyle(NavPillStyle(variant: .primary))
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            .padding()
-            
-            // Personality-colored accent bar at top
-            LinearGradient(colors: [theme.primary.opacity(0.5), theme.accent.opacity(0.4)], startPoint: .leading, endPoint: .trailing)
-                .frame(height: 6)
-                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-                .accessibilityHidden(true)
-            
-        }
-        // Character Level indicator
-        .overlay(alignment: .topTrailing) {
-            HStack(spacing: 6) {
-                Image(systemName: "star.fill").foregroundColor(.yellow)
-                    .shadow(color: .yellow.opacity(0.6), radius: 6, x: 0, y: 0)
-                Text("Lv \(level)")
-                    .font(.custom("Tanker-Regular", size: 14))
-                    .foregroundColor(theme.text)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Capsule().fill(theme.primary.opacity(0.25)))
-            }
-            .padding(10)
-        }
-        // Subtle animated shimmer around border
-        .overlay(
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .stroke(
-                    AngularGradient(gradient: Gradient(colors: [theme.primary.opacity(0.6), theme.accent.opacity(0.6), theme.primary.opacity(0.6)]), center: .center)
-                    , lineWidth: 1
+            // Dotted separator
+            Rectangle()
+                .fill(lineBrown)
+                .frame(height: 1.5)
+                .overlay(
+                    Rectangle()
+                        .stroke(style: StrokeStyle(lineWidth: 1.5, dash: [3, 3]))
+                        .foregroundStyle(lineBrown)
                 )
-                .rotationEffect(.degrees(animateShimmer ? 360 : 0))
-                .animation(.linear(duration: 8).repeatForever(autoreverses: false), value: animateShimmer)
-                .opacity(0.5)
-        )
+                .padding(.horizontal, 8)
+        }
+        .padding()
+    }
+    
+    private var currentLevel: Int {
+        let hours = focusManager.totalFocusTime / 3600.0
+        return max(1, Int(hours / 10.0) + 1)
     }
     
     // Display name sourced from UserDefaults for now

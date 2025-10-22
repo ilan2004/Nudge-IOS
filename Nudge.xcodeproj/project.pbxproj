@@ -37,8 +37,9 @@
 		A20000000000000000000017 /* EconomyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000017 /* EconomyService.swift */; };
 		A20000000000000000000018 /* ManageBlockingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000018 /* ManageBlockingView.swift */; };
 		A20000000000000000000019 /* FocusEconomyHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000019 /* FocusEconomyHistoryView.swift */; };
-		C10000000000000000000001 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* APIClient.swift */; };
-		C10000000000000000000002 /* UserIdProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* UserIdProvider.swift */; };
+		A2000000000000000000001A /* ProfileDecorations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001A /* ProfileDecorations.swift */; };
+		D30000000000000000000002 /* GuildCardHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30000000000000000000001 /* GuildCardHelpers.swift */; };
+/* End PBXBuildFile section */
 		C10000000000000000000003 /* EventsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* EventsService.swift */; };
 		C10000000000000000000004 /* HapticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* HapticsService.swift */; };
 		C10000000000000000000005 /* MBTIQuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* MBTIQuizViewModel.swift */; };
@@ -68,9 +69,9 @@
 		A0000000000000000000000B /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		A0000000000000000000000C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		A0000000000000000000000D /* PlaceholderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViews.swift; sourceTree = "<group>"; };
-A0000000000000000000000E /* FooterFocusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterFocusBarView.swift; sourceTree = "<group>"; };
-A0000000000000000000000F /* FooterFocusBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterFocusBarViewModel.swift; sourceTree = "<group>"; };
-A00000000000000000000010 /* RestrictionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionsController.swift; sourceTree = "<group>"; };
+		A0000000000000000000000E /* FooterFocusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterFocusBarView.swift; sourceTree = "<group>"; };
+		A0000000000000000000000F /* FooterFocusBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterFocusBarViewModel.swift; sourceTree = "<group>"; };
+		A00000000000000000000010 /* RestrictionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionsController.swift; sourceTree = "<group>"; };
 		A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focus/FocusSettingsView.swift; sourceTree = "<group>"; };
 		7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tanker-Regular.otf"; sourceTree = "<group>"; };
 		A00000000000000000000012 /* NudgeStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeStyles.swift; sourceTree = "<group>"; };
@@ -93,6 +94,7 @@ A00000000000000000000010 /* RestrictionsController.swift */ = {isa = PBXFileRefe
 		B10000000000000000000009 /* MBTIQuizSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBTIQuizSheet.swift; sourceTree = "<group>"; };
 		B20000000000000000000001 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		B20000000000000000000002 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		D30000000000000000000001 /* GuildCardHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuildCardHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,12 +180,13 @@ A10000000000000000000002 /* Services */ = {
 			path = Components;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000005 /* Theme */ = {
+A10000000000000000000005 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
 				A00000000000000000000006 /* Colors.swift */,
 				A00000000000000000000007 /* PersonalityTheme.swift */,
 				A00000000000000000000012 /* NudgeStyles.swift */,
+				D30000000000000000000001 /* GuildCardHelpers.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -382,7 +385,7 @@ A1000000000000000000000D /* Profile */ = {
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		8D1107290486CEB800E47090 /* Sources */ = {
+8D1107290486CEB800E47090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 files = (
@@ -423,6 +426,7 @@ files = (
 				A20000000000000000000018 /* ManageBlockingView.swift in Sources */,
 				A20000000000000000000019 /* FocusEconomyHistoryView.swift in Sources */,
 				A2000000000000000000001A /* ProfileDecorations.swift in Sources */,
+				D30000000000000000000002 /* GuildCardHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
