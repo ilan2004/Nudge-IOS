@@ -156,13 +156,12 @@ public struct HeroCardSurface: ViewModifier {
             .padding(14)
             .background(
                 ZStack {
-                    // Subtle gradient background using personality colors
+                    // Solid, opaque background (no transparency)
                     RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .fill(
-                            LinearGradient(colors: [theme.surface, theme.background.opacity(0.08)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                        )
-                        .shadow(color: theme.secondary.opacity(0.20), radius: 16, x: 0, y: 10)
-                        .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 1)
+                        .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
+                        // Standard two-layer green shadow system (applied to shape only)
+                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                         .overlay(
                             // Double ornate border
                             RoundedRectangle(cornerRadius: 24, style: .continuous)
@@ -207,14 +206,15 @@ public struct StatsPanelSurface: ViewModifier {
             .background(
                 ZStack {
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(theme.surface)
+                        .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
                         // Inset effect (top highlight + bottom shadow)
                         .overlay(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
                                 .stroke(LinearGradient(colors: [Color.white.opacity(0.7), Color.black.opacity(0.05)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
                         )
-                        .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 2)
-                        .shadow(color: theme.secondary.opacity(0.15), radius: 12, x: 0, y: 8)
+                        // Standard two-layer green shadow
+                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                     // Grid-like decorative lines
                     GeometryReader { geo in
                         let step: CGFloat = max(24, min(40, min(geo.size.width, geo.size.height) / 6))
@@ -241,21 +241,22 @@ public struct CurrencyVaultSurface: ViewModifier {
             .padding(14)
             .background(
                 ZStack {
-                    // Rich, metallic-inspired gradient
+                    // Rich, metallic-inspired gradient (opaque)
                     RoundedRectangle(cornerRadius: 18, style: .continuous)
                         .fill(
                             LinearGradient(colors: [
                                 Color(red: 0.98, green: 0.93, blue: 0.78),
                                 Color(red: 0.92, green: 0.80, blue: 0.52),
-                                theme.surface
+                                Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96))
                             ], startPoint: .topLeading, endPoint: .bottomTrailing)
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 18, style: .continuous)
                                 .stroke(LinearGradient(colors: [theme.secondary.opacity(0.7), theme.primary.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 2)
                         )
-                        .shadow(color: theme.secondary.opacity(0.25), radius: 14, x: 0, y: 10)
-                        .shadow(color: Color.black.opacity(0.08), radius: 4, x: 0, y: 1)
+                        // Standard two-layer green shadow
+                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                     // Coin-themed watermark
                     HStack(spacing: 12) {
                         ForEach(0..<6, id: \.self) { idx in
@@ -283,25 +284,20 @@ public struct AchievementShowcaseSurface: ViewModifier {
             .padding(12)
             .background(
                 ZStack {
-                    // Glass-like panel
+                    // Solid base with glass-like overlays
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(
-                            LinearGradient(colors: [theme.surface.opacity(0.85), Color.white.opacity(0.65)], startPoint: .top, endPoint: .bottom)
-                        )
+                        .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .strokeBorder(.white.opacity(0.35), lineWidth: 1)
-                                .blur(radius: 0)
-                        )
-                        .background(
-                            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .fill(.ultraThinMaterial)
+                            LinearGradient(colors: [Color.white.opacity(0.35), Color.white.opacity(0.15)], startPoint: .top, endPoint: .bottom)
+                                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 20, style: .continuous)
                                 .stroke(LinearGradient(colors: [theme.accent.opacity(0.9), theme.primary.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
                         )
-                        .shadow(color: Color.black.opacity(0.08), radius: 10, x: 0, y: 6)
+                        // Standard two-layer green shadow
+                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                     // Spotlight effect
                     RadialGradient(colors: [Color.white.opacity(0.35), .clear], center: .topLeading, startRadius: 8, endRadius: 180)
                         .blendMode(.screen)
@@ -325,12 +321,14 @@ public struct LeaderboardRankSurface: ViewModifier {
             .background(
                 ZStack {
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(LinearGradient(colors: [theme.surface, theme.background.opacity(0.06)], startPoint: .top, endPoint: .bottom))
+                        .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
                         .overlay(
                             RoundedRectangle(cornerRadius: 14, style: .continuous)
                                 .strokeBorder(accent.opacity(0.9), lineWidth: rank <= 3 ? 2 : 1)
                         )
-                        .shadow(color: accent.opacity(rank <= 3 ? 0.25 : 0.12), radius: rank <= 3 ? 14 : 8, x: 0, y: rank <= 3 ? 10 : 6)
+                        // Standard two-layer green shadow
+                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                     // Rank indicator chevrons
                     HStack(spacing: 4) {
                         ForEach(0..<min(rank, 5), id: \.self) { _ in
@@ -357,13 +355,15 @@ public struct ControlPanelSurface: ViewModifier {
             .background(
                 ZStack {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(LinearGradient(colors: [theme.surface, theme.secondary.opacity(0.05)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
                                 .stroke(style: StrokeStyle(lineWidth: 1.5, dash: [6, 3]))
                                 .foregroundStyle(theme.secondary.opacity(0.8))
                         )
-                        .shadow(color: Color.black.opacity(0.06), radius: 6, x: 0, y: 3)
+                        // Standard two-layer green shadow
+                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                     // Toggle-knurl garnish
                     HStack(spacing: 4) {
                         ForEach(0..<10, id: \.self) { idx in
@@ -392,9 +392,7 @@ public struct BlockingShieldSurface: ViewModifier {
             .background(
                 ZStack {
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
-                        .fill(
-                            LinearGradient(colors: [theme.surface, theme.secondary.opacity(0.06)], startPoint: .top, endPoint: .bottom)
-                        )
+                        .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
                         .overlay(
                             // Bold double border for defensive feel
                             RoundedRectangle(cornerRadius: 22, style: .continuous)
@@ -406,7 +404,9 @@ public struct BlockingShieldSurface: ViewModifier {
                                 .stroke(style: StrokeStyle(lineWidth: 1, dash: [4, 3]))
                                 .foregroundStyle(theme.primary.opacity(0.8))
                         )
-                        .shadow(color: theme.secondary.opacity(0.22), radius: 10, x: 0, y: 8)
+                        // Standard two-layer green shadow
+                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                     // Shield watermark
                     Image(systemName: "shield.lefthalf.filled")
                         .font(.system(size: 64, weight: .regular))
@@ -424,6 +424,91 @@ public struct BlockingShieldSurface: ViewModifier {
     }
 }
 
+// MARK: - UndergroundModeSurface
+public struct UndergroundModeSurface: ViewModifier {
+    public func body(content: Content) -> some View {
+        let baseDark = Color(red: 0.08, green: 0.08, blue: 0.12)
+        let drop = Color(red: 0.15, green: 0.15, blue: 0.25)
+        let borderOuter = Color(red: 0.25, green: 0.25, blue: 0.4)
+        let borderGlow = Color(red: 0.4, green: 0.4, blue: 0.6).opacity(0.5)
+        return content
+            .foregroundStyle(Color.white.opacity(0.92))
+            .padding(12)
+            .background(
+                ZStack {
+                    // Solid dark background with dark shadows
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(baseDark)
+                        .shadow(color: drop, radius: 0, x: 0, y: 4)
+                        .shadow(color: drop.opacity(0.6), radius: 12, x: 0, y: 8)
+                        .overlay(
+                            // Outer border and inner glow
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .stroke(borderOuter, lineWidth: 2)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .inset(by: 4)
+                                .stroke(borderGlow, lineWidth: 1)
+                        )
+                    // Subtle diagonal dark gradient overlay
+                    LinearGradient(colors: [Color(red: 0.1, green: 0.1, blue: 0.15), Color(red: 0.05, green: 0.05, blue: 0.1)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        .allowsHitTesting(false)
+                    // Watermark + stealth icons
+                    ZStack {
+                        Image(systemName: "moon.stars.fill")
+                            .font(.system(size: 54))
+                            .foregroundColor(Color.white.opacity(0.06))
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                            .padding(10)
+                        Image(systemName: "eye.slash")
+                            .font(.system(size: 28))
+                            .foregroundColor(Color.white.opacity(0.08))
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                            .padding(10)
+                    }
+                    .allowsHitTesting(false)
+                    // Corner glow particles
+                    ZStack {
+                        ForEach(0..<8, id: \.self) { i in
+                            Circle()
+                                .fill((i % 2 == 0 ? Color.purple : Color.blue).opacity(0.08))
+                                .frame(width: 6, height: 6)
+                                .offset(x: i < 4 ? CGFloat(8 + i * 6) : CGFloat(-8 - (i-4) * 6), y: i % 3 == 0 ? -8 : 8)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                    .padding(8)
+                    .allowsHitTesting(false)
+                    // Night sky subtle dots
+                    GeometryReader { geo in
+                        let step: CGFloat = 32
+                        Path { path in
+                            var y: CGFloat = 8
+                            while y < geo.size.height { 
+                                var x: CGFloat = 8
+                                while x < geo.size.width {
+                                    path.addEllipse(in: CGRect(x: x, y: y, width: 1, height: 1))
+                                    x += step
+                                }
+                                y += step
+                            }
+                        }
+                        .fill(Color.white.opacity(0.035))
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .allowsHitTesting(false)
+                    // Vignette effect
+                    RadialGradient(colors: [Color.clear, Color.black.opacity(0.25)], center: .center, startRadius: 80, endRadius: 500)
+                        .blendMode(.multiply)
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        .allowsHitTesting(false)
+                }
+            )
+    }
+}
+
 // MARK: - View extension entry points
 public extension View {
     func heroCardSurface() -> some View { self.modifier(HeroCardSurface()) }
@@ -433,4 +518,5 @@ public extension View {
     func leaderboardRankSurface(rank: Int) -> some View { self.modifier(LeaderboardRankSurface(rank: rank)) }
     func controlPanelSurface() -> some View { self.modifier(ControlPanelSurface()) }
     func blockingShieldSurface() -> some View { self.modifier(BlockingShieldSurface()) }
+    func undergroundModeSurface() -> some View { self.modifier(UndergroundModeSurface()) }
 }
