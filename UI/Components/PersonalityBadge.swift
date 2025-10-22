@@ -3,7 +3,13 @@ import SwiftUI
 struct PersonalityBadge: View {
     let personalityType: PersonalityType
     let gender: Gender
-    let guildCardStyle: Bool = false
+    let guildCardStyle: Bool
+
+    init(personalityType: PersonalityType, gender: Gender, guildCardStyle: Bool = false) {
+        self.personalityType = personalityType
+        self.gender = gender
+        self.guildCardStyle = guildCardStyle
+    }
     
     private var personalityInfo: (group: String, name: String) {
         switch personalityType.group {

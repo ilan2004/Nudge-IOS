@@ -39,6 +39,15 @@
 		A20000000000000000000019 /* FocusEconomyHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000019 /* FocusEconomyHistoryView.swift */; };
 		A2000000000000000000001A /* ProfileDecorations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001A /* ProfileDecorations.swift */; };
 		D30000000000000000000002 /* GuildCardHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30000000000000000000001 /* GuildCardHelpers.swift */; };
+		C10000000000000000000001 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* APIClient.swift */; };
+		C10000000000000000000002 /* UserIdProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* UserIdProvider.swift */; };
+		C10000000000000000000003 /* EventsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* EventsService.swift */; };
+		C10000000000000000000004 /* HapticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* HapticsService.swift */; };
+		C10000000000000000000005 /* MBTIQuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* MBTIQuizViewModel.swift */; };
+		C10000000000000000000006 /* MBTIQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000006 /* MBTIQuizView.swift */; };
+		C10000000000000000000007 /* MBTIQuestionsProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000007 /* MBTIQuestionsProviders.swift */; };
+		C10000000000000000000008 /* MBTIResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* MBTIResultView.swift */; };
+		C10000000000000000000009 /* MBTIQuizSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* MBTIQuizSheet.swift */; };
 /* End PBXBuildFile section */
 		C10000000000000000000003 /* EventsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* EventsService.swift */; };
 		C10000000000000000000004 /* HapticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* HapticsService.swift */; };
