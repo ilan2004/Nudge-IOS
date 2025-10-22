@@ -8,6 +8,7 @@ struct MBTIQuizView: View {
 
     @Namespace private var listNS
     @State private var scrollProxy: ScrollViewProxy?
+    @State private var highlightIndex: Int? = nil
     
     init(provider: MBTIQuestionsProvider = MBTIDefaultQuestionsProvider(), onSubmit: (([String:Int]) -> Void)? = nil) {
         _viewModel = StateObject(wrappedValue: MBTIQuizViewModel(provider: provider))
@@ -25,23 +26,39 @@ struct MBTIQuizView: View {
     }
 
     private var header: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 10) {
             HStack {
-                Text("MBTI Quiz")
-                    .font(.headline)
+                Text("PERSONALITY TEST")
+                    .font(.custom("Tanker-Regular", size: 20))
                     .foregroundStyle(Color.nudgeGreen900)
                 Spacer()
-                Text("Page \(viewModel.pageIndex + 1) / \(viewModel.totalPages)")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                Text("Page \\(viewModel.pageIndex + 1) of \\(viewModel.totalPages)")
+                    .font(.footnote)
+                    .foregroundStyle(Color.nudgeGreen900.opacity(0.7))
             }
             .padding(.horizontal, 16)
-            ProgressView(value: viewModel.progressFraction)
-                .tint(Color.nudgeGreen900)
-                .padding(.horizontal, 16)
+
+            // Web-like capsule progress bar
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule().fill(Color.nudgeGreen900.opacity(0.15))
+                    Capsule().fill(Color.nudgeGreen900)
+                        .frame(width: max(0, min(1, viewModel.progressFraction)) * geo.size.width)
+                }
+            }
+            .frame(height: 8)
+            .padding(.horizontal, 16)
+
+            HStack {
+                Text("\(answeredCount)/\(viewModel.questions.count) answered")
+                    .font(.caption)
+                    .foregroundStyle(Color.nudgeGreen900.opacity(0.8))
+                Spacer()
+            }
+            .padding(.horizontal, 16)
         }
         .padding(.vertical, 12)
-        .background(Color(.systemBackground).opacity(0.9))
+        .background(Color(.systemBackground).opacity(0.95))
     }
 
     private var content: some View {
@@ -64,12 +81,13 @@ struct MBTIQuizView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(spacing: 16) {
-ForEach(Array(viewModel.currentRange), id: \.self) { idx in
+                            ForEach(Array(viewModel.currentRange), id: \.self) { idx in
                                 MBTIQuestionRow(
                                     index: idx,
                                     total: viewModel.questions.count,
                                     question: viewModel.questions[idx].question,
                                     selected: viewModel.answers[idx] ?? 0,
+                                    highlight: highlightIndex == idx,
                                     onSelect: { value in
                                         viewModel.setAnswer(for: idx, value: value)
                                         #if canImport(UIKit)
@@ -81,12 +99,12 @@ ForEach(Array(viewModel.currentRange), id: \.self) { idx in
                                         let next = idx + 1
                                         if viewModel.currentRange.contains(next) {
                                             withAnimation(.easeInOut) {
-                                                proxy.scrollTo("q_\(next)", anchor: .center)
+                                                proxy.scrollTo("q_\\(next)", anchor: .center)
                                             }
                                         }
                                     }
                                 )
-                                .id("q_\(idx)")
+                                .id("q_\\(idx)")
                             }
                         }
                         .padding(.horizontal, 16)
@@ -139,7 +157,12 @@ ForEach(Array(viewModel.currentRange), id: \.self) { idx in
             }
             #endif
             withAnimation(.easeInOut) {
-                scrollProxy?.scrollTo("q_\(missing)", anchor: .center)
+                highlightIndex = missing
+                scrollProxy?.scrollTo("q_\\(missing)", anchor: .center)
+            }
+            // Clear highlight after pulse
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                withAnimation(.easeInOut) { highlightIndex = nil }
             }
             return
         }
@@ -181,7 +204,10 @@ private struct MBTIQuestionRow: View {
     let total: Int
     let question: String
     let selected: Int // 0 (none) or 1..5
+    let highlight: Bool
     let onSelect: (Int) -> Void
+
+    @State private var pulse: Bool = false
 
     private let labels: [Int:String] = [
         1: "Strongly Disagree",
@@ -194,7 +220,7 @@ private struct MBTIQuestionRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(question)
-                .font(.headline)
+                .font(.custom("Tanker-Regular", size: 18))
                 .foregroundStyle(Color.nudgeGreen900)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -210,19 +236,9 @@ private struct MBTIQuestionRow: View {
                                 .lineLimit(2)
                                 .minimumScaleFactor(0.7)
                         }
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 10)
                         .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(value == selected ? Color.nudgeGreen900 : Color(.secondarySystemBackground))
-                        )
-                        .foregroundStyle(value == selected ? Color.white : Color.primary)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .stroke(value == selected ? Color.nudgeGreen900 : Color.gray.opacity(0.3), lineWidth: 2)
-                        )
                     }
+                    .buttonStyle(NavPillStyle(variant: (value == selected) ? .primary : .outline, compact: false))
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel(Text("Question \(index+1) of \(total)"))
                     .accessibilityHint(Text(labels[value] ?? ""))
@@ -230,11 +246,21 @@ private struct MBTIQuestionRow: View {
             }
         }
         .padding(14)
-        .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 4)
-        )
+        .retroConsoleSurface()
+        .scaleEffect((highlight || pulse) ? 1.015 : 1.0)
+        .onChange(of: highlight) { _, newVal in
+            if newVal { pulseOnce() }
+        }
+        .onAppear {
+            if highlight { pulseOnce() }
+        }
+    }
+
+    private func pulseOnce() {
+        withAnimation(.easeInOut(duration: 0.15)) { pulse = true }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.22) {
+            withAnimation(.easeInOut(duration: 0.15)) { pulse = false }
+        }
     }
 }
 
