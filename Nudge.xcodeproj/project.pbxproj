@@ -37,7 +37,7 @@
 		A20000000000000000000017 /* EconomyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000017 /* EconomyService.swift */; };
 		A20000000000000000000018 /* ManageBlockingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000018 /* ManageBlockingView.swift */; };
 		A20000000000000000000019 /* FocusEconomyHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000019 /* FocusEconomyHistoryView.swift */; };
-/* End PBXBuildFile section */
+		C10000000000000000000001 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* APIClient.swift */; };
 		C10000000000000000000002 /* UserIdProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* UserIdProvider.swift */; };
 		C10000000000000000000003 /* EventsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* EventsService.swift */; };
 		C10000000000000000000004 /* HapticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* HapticsService.swift */; };
