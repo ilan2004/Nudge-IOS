@@ -31,6 +31,60 @@ workflows:
           if [ -d "UI" ]; then ls -la UI || true; fi
           if [ -d "Resources" ]; then ls -la Resources || true; fi
           if [ ! -d "$XCODE_PROJECT" ]; then echo "Warning: $XCODE_PROJECT not found"; fi
+      - name: Ensure Friends files are in Xcode target (auto-add via xcodeproj)
+        script: |
+          echo "Installing xcodeproj gem to modify project file..."
+          gem install xcodeproj -N
+          ruby - <<'RUBY'
+          require 'xcodeproj'
+          proj_path = 'Nudge.xcodeproj'
+          project = Xcodeproj::Project.open(proj_path)
+
+          # Resolve target by scheme name or fallback to first
+          scheme_name = ENV['XCODE_SCHEME'] || 'Nudge'
+          target = project.targets.find { |t| t.name == scheme_name } || project.targets.first
+          raise "No targets found in project" unless target
+
+          def ensure_group(root, path)
+            parts = path.split('/')
+            grp = root
+            parts.each do |name|
+              grp = grp[name] || grp.new_group(name)
+            end
+            grp
+          end
+
+          friends_files = [
+            'Features/Friends/FriendsView.swift',
+            'Features/Friends/FriendModel.swift',
+            'Features/Friends/FriendCard.swift',
+            'Features/Friends/FriendDetailOverlay.swift'
+          ]
+          extension_files = [
+            'UI/Extensions/View+CornerRadius.swift'
+          ]
+
+          # Ensure groups exist
+          friends_group = ensure_group(project.main_group, 'Features/Friends')
+          ext_group = ensure_group(project.main_group, 'UI/Extensions')
+
+          # Add file references and to Sources build phase if missing
+          (friends_files + extension_files).each do |path|
+            # Decide target group based on path
+            group = path.start_with?('UI/Extensions') ? ext_group : friends_group
+            file_ref = project.files.find { |f| f.path == path } || group.new_file(path)
+            in_sources = target.source_build_phase.files_references.include?(file_ref)
+            unless in_sources
+              target.add_file_references([file_ref])
+              puts "Added to target: #{path}"
+            else
+              puts "Already in target: #{path}"
+            end
+          end
+
+          project.save
+          puts 'Project updated successfully.'
+          RUBY
       - name: Build unsigned archive
         script: |
           mkdir -p "$PWD/build/ios/ipa"
