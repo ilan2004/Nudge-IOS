@@ -86,22 +86,51 @@ public struct ProfileView: View {
     private var identityHeader: some View {
         VStack(spacing: 16) {
             if let type = personalityManager.personalityType {
-                CharacterCard(title: nil, size: 240)
-                    .environmentObject(personalityManager)
-                    .environmentObject(focusManager)
-                
-                PersonalityBadge(personalityType: type, gender: personalityManager.gender)
-                
-                Text(type.rawValue)
-                    .font(.custom("Tanker-Regular", size: 20))
-                    .foregroundColor(personalityManager.currentTheme.text)
+                HStack(alignment: .center, spacing: 16) {
+                    // Smaller character card on the left
+                    CharacterCard(title: nil, size: 140, compact: true)
+                        .environmentObject(personalityManager)
+                        .environmentObject(focusManager)
+                        .frame(width: 160, alignment: .leading)
+                    
+                    // Name on the right with personality details below
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(displayName)
+                            .font(.custom("Tanker-Regular", size: 28))
+                            .foregroundColor(personalityManager.currentTheme.text)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                        
+                        PersonalityBadge(personalityType: type, gender: personalityManager.gender)
+                        
+                        Text(type.displayName)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
             } else {
-                CharacterPlaceholder(size: 200)
-                Button("Take MBTI Test") { /* TODO */ }
-                    .buttonStyle(NavPillStyle(variant: .primary))
+                HStack(alignment: .center, spacing: 16) {
+                    CharacterPlaceholder(size: 120)
+                        .frame(width: 140, alignment: .leading)
+                    
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Complete your profile")
+                            .font(.headline)
+                            .foregroundColor(.nudgeGreen900)
+                        Button("Take MBTI Test") { /* TODO */ }
+                            .buttonStyle(NavPillStyle(variant: .primary))
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
         }
         .padding()
+    }
+    
+    // Display name sourced from UserDefaults for now
+    private var displayName: String {
+        UserDefaults.standard.string(forKey: "ms_display_name") ?? "Alex"
     }
 }
 

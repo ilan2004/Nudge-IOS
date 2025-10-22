@@ -7,6 +7,7 @@ struct CharacterCard: View {
     
     let title: String?
     let size: CGFloat
+    let compact: Bool
     
     @State private var displayName: String = ""
     @State private var showIntro: Bool = true
@@ -23,9 +24,10 @@ struct CharacterCard: View {
     @State private var greeting: String = ""
     @State private var motivation: String = ""
     
-    init(title: String? = nil, size: CGFloat = 0) {
+    init(title: String? = nil, size: CGFloat = 0, compact: Bool = false) {
         self.title = title
         self.size = size > 0 ? size : 384 // Default size
+        self.compact = compact
     }
     
     private var heading: String {
@@ -47,26 +49,28 @@ struct CharacterCard: View {
     var body: some View {
         VStack(spacing: 16) {
             // Header with name and edit button
-            HStack {
-                OutlinedText(
-                    text: heading,
-                    font: .custom("Tanker-Regular", size: 40),
-                    foreground: .defaultGreen,
-                    outline: .defaultCream,
-                    lineWidth: 1
-                )
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
-                
-                Button("Edit") {
-                    // TODO: Show name edit modal
+            if !compact {
+                HStack {
+                    OutlinedText(
+                        text: heading,
+                        font: .custom("Tanker-Regular", size: 40),
+                        foreground: .defaultGreen,
+                        outline: .defaultCream,
+                        lineWidth: 1
+                    )
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
+                    
+                    Button("Edit") {
+                        // TODO: Show name edit modal
+                    }
+                    .font(.caption)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(6)
+                    .foregroundColor(.secondary)
                 }
-                .font(.caption)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(6)
-                .foregroundColor(.secondary)
             }
             
             // Main character display (reserve explicit height so following cards don't overlap)
@@ -104,7 +108,7 @@ struct CharacterCard: View {
             .frame(height: cardSize + 24)
             
             // Personality Badge removed for now; keep dialogue only
-            if personalityManager.personalityType != nil {
+            if personalityManager.personalityType != nil && !compact {
                 VStack(spacing: 12) {
                     // Character Dialogue
                     VStack(spacing: 8) {
