@@ -17,7 +17,7 @@ struct MBTIQuizSheet: View {
         ZStack {
             switch stage {
             case .quiz:
-                MBTIQuizView(provider: MBTIAPIQuestionsProvider()) { payload in
+                MBTIQuizView(provider: MBTIFallbackQuestionsProvider()) { payload in
                     Task { await submit(payload: payload) }
                 }
             case .result:
