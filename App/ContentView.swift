@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import Features.Friends
 
 // MARK: - Shapes
 struct TopRoundedRectangle: Shape {
@@ -155,7 +156,7 @@ struct ContentView: View {
             TabItem(icon: "house.fill", title: "Nudge", accent: accentGreen) { NudgeHomeView() },
             TabItem(icon: "handshake.fill", title: "Stakes", accent: accentOrange) { ContractsView() },
             TabItem(icon: "person.text.rectangle", title: "My Type", accent: accentCyan) { MyTypeView() },
-            TabItem(icon: "person.3.fill", title: "Friends", accent: accentBlue) { LeaderboardView() },
+            TabItem(icon: "person.3.fill", title: "Friends", accent: accentBlue) { FriendsView() },
             TabItem(icon: "person.fill", title: "Profile", accent: accentTeal) { ProfileView() }
         ]
     }
