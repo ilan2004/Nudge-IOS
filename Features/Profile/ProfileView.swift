@@ -8,8 +8,6 @@ public struct ProfileView: View {
     @EnvironmentObject var appSettings: AppSettings
 
     @State private var showHistory = false
-    @State private var showManageBlocking = false
-    @State private var showLeaderboard = false
     
     // Constrain overall content width to avoid overly wide cards
     private let maxContentWidth: CGFloat = 440
@@ -67,19 +65,9 @@ public struct ProfileView: View {
                 ])
                 .achievementShowcaseSurface()
                 
-                // Social snapshot
-                LeaderboardTile(rank: 12, delta: -2, isDimmed: appSettings.undergroundMode, onSeeAll: { showLeaderboard = true })
-                    .leaderboardRankSurface(rank: 12)
-                
                 // Underground Mode toggle
                 UndergroundToggleCard(isOn: $appSettings.undergroundMode)
                     .undergroundModeSurface()
-                
-                // Smart Blocking summary
-                BlockedAppsRow(apps: ["instagram", "youtube", "tiktok"]) {
-                    showManageBlocking = true
-                }
-                .blockingShieldSurface()
                 
                 // Settings list
                 SettingsList(
@@ -100,13 +88,6 @@ public struct ProfileView: View {
         .sheet(isPresented: $showHistory) {
             FocusEconomyHistoryView()
                 .environmentObject(economy)
-        }
-.sheet(isPresented: $showManageBlocking) {
-            ManageBlockingView()
-        }
-        .sheet(isPresented: $showLeaderboard) {
-            LeaderboardView()
-                .environmentObject(personalityManager)
         }
     }
     
