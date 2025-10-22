@@ -45,16 +45,6 @@ workflows:
           target = project.targets.find { |t| t.name == scheme_name } || project.targets.first
           raise "No targets found in project" unless target
 
-          # Ensure nested display groups (do not set explicit paths here)
-          def ensure_group(root, path)
-            parts = path.split('/')
-            grp = root
-            parts.each do |name|
-              grp = grp[name] || grp.new_group(name)
-            end
-            grp
-          end
-
           friends_files = [
             'Features/Friends/FriendsView.swift',
             'Features/Friends/FriendModel.swift',
@@ -65,12 +55,14 @@ workflows:
             'UI/Extensions/View+CornerRadius.swift'
           ]
 
-          # Ensure groups exist
-          friends_group = ensure_group(project.main_group, 'Features/Friends')
-          ext_group = ensure_group(project.main_group, 'UI/Extensions')
-
-          # Clean up any incorrect duplicate path references like Features/Features or UI/UI
-          bad_refs = project.files.select { |f| f.path && (f.path.include?('Features/Features') || f.path.include?('UI/UI')) }
+          # 1) Remove incorrect duplicate path references like Features/Features or UI/UI,
+          #    and any refs pointing to paths that don't exist in the checkout.
+          all_expected = friends_files + extension_files
+          bad_refs = project.files.select do |f|
+            next false unless f.path
+            f.path.include?('Features/Features') || f.path.include?('UI/UI') ||
+              (!File.exist?(f.real_path.to_s) && all_expected.any? { |p| File.basename(p) == File.basename(f.path) })
+          end
           bad_refs.each do |ref|
             # Remove from build phase if present
             target.source_build_phase.files.select { |bf| bf.file_ref == ref }.each(&:remove_from_project)
@@ -78,28 +70,23 @@ workflows:
             puts "Removed bad ref: #{ref.path}"
           end
 
-          # Helper: path relative to group's path (if group has a path set)
-          def relative_path_for_group(full_path, group)
-            gp = group.path
-            return full_path unless gp && !gp.empty?
-            # If full_path starts with group.path + '/', strip it
-            prefix = gp.end_with?('/') ? gp : gp + '/'
-            return full_path.start_with?(prefix) ? full_path[prefix.length..-1] : full_path
+          # 2) Ensure the files exist in the repo; fail early with a clear message if missing.
+          (friends_files + extension_files).each do |p|
+            unless File.exist?(p)
+              abort("Expected source file missing in repo: #{p}")
+            end
           end
 
-          # Add file references (with path relative to group if group has path)
-          (friends_files + extension_files).each do |full_path|
-            group = full_path.start_with?('UI/') ? ext_group : friends_group
-            rel = relative_path_for_group(full_path, group)
-            file_ref = project.files.find { |f| f.path == rel && f.parent == group }
-            file_ref ||= group.new_file(rel)
-
-            in_sources = target.source_build_phase.files_references.include?(file_ref)
-            unless in_sources
+          # 3) Add clean file references directly under the main group (SOURCE_ROOT-relative paths)
+          (friends_files + extension_files).each do |path|
+            file_ref = project.files.find { |f| f.path == path && f.parent == project.main_group }
+            file_ref ||= project.main_group.new_file(path)
+            # Ensure file is in Sources build phase
+            unless target.source_build_phase.files_references.include?(file_ref)
               target.add_file_references([file_ref])
-              puts "Added to target: #{full_path} as #{rel}"
+              puts "Added to target: #{path}"
             else
-              puts "Already in target: #{full_path} as #{rel}"
+              puts "Already in target: #{path}"
             end
           end
 
