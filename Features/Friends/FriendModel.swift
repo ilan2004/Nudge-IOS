@@ -60,7 +60,7 @@ extension Friend {
             id: UUID(),
             name: "Jamie Smith",
             personalityType: .enfp,
-            gender: .nonBinary,
+            gender: .neutral,
             relationshipType: .friend,
             focusPoints: 980,
             streakDays: 8,

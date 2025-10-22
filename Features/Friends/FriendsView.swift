@@ -25,7 +25,7 @@ struct FriendsView: View {
                     Button(action: {}) {
                         Image(systemName: "plus.circle.fill")
                             .font(.title2)
-                            .foregroundColor(personalityManager.personalityColors.primary)
+                            .foregroundColor(personalityManager.currentTheme.primary)
                     }
                     .padding(.trailing)
                 }

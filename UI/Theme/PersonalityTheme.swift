@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Personality Types
-enum PersonalityType: String, CaseIterable {
+enum PersonalityType: String, CaseIterable, Codable {
     case intj = "INTJ", intp = "INTP", entj = "ENTJ", entp = "ENTP"
     case infj = "INFJ", infp = "INFP", enfj = "ENFJ", enfp = "ENFP"  
     case istj = "ISTJ", isfj = "ISFJ", estj = "ESTJ", esfj = "ESFJ"
@@ -47,7 +47,7 @@ enum PersonalityGroup: String {
 }
 
 // MARK: - Gender for personalized theming
-enum Gender: String {
+enum Gender: String, Codable {
     case male = "male"
     case female = "female"
     case neutral = "neutral"
