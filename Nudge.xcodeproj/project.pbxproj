@@ -83,6 +83,8 @@ A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference
 		B10000000000000000000007 /* MBTIQuestionsProviders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBTIQuestionsProviders.swift; sourceTree = "<group>"; };
 		B10000000000000000000008 /* MBTIResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBTIResultView.swift; sourceTree = "<group>"; };
 		B10000000000000000000009 /* MBTIQuizSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBTIQuizSheet.swift; sourceTree = "<group>"; };
+		B20000000000000000000001 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		B20000000000000000000002 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +98,7 @@ A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8D1107200486CEB800E47090 = {
+8D1107200486CEB800E47090 = {
 			isa = PBXGroup;
 			children = (
 				8D1107210486CEB800E47090 /* App */,
@@ -104,6 +106,7 @@ A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference
 				A10000000000000000000003 /* UI */,
 				A10000000000000000000006 /* Features */,
 				A10000000000000000000009 /* Resources */,
+				D20000000000000000000001 /* Configs */,
 				A00000000000000000000001 /* DEBUG_ContentView.swift */,
 				8D11072C0486CEB800E47090 /* Products */,
 			);
@@ -289,6 +292,15 @@ A10000000000000000000008 /* Onboarding */ = {
 				B10000000000000000000009 /* MBTIQuizSheet.swift */,
 			);
 			path = MBTITest;
+			sourceTree = "<group>";
+		};
+		D20000000000000000000001 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				B20000000000000000000001 /* Debug.xcconfig */,
+				B20000000000000000000002 /* Release.xcconfig */,
+			);
+			path = Configs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -514,8 +526,9 @@ files = (
 			};
 			name = Release;
 		};
-		C01FCF4F08A954540054247B /* Debug */ = {
+C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B20000000000000000000001 /* Debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
@@ -547,8 +560,9 @@ files = (
 			};
 			name = Debug;
 		};
-		C01FCF5008A954540054247B /* Release */ = {
+C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B20000000000000000000002 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;

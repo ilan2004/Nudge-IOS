@@ -7,11 +7,12 @@ final class APIClient {
     private let session: URLSession = .shared
 
     private var baseURL: URL {
-        guard let s = Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as? String,
-              let url = URL(string: s) else {
-            fatalError("Missing or invalid API_BASE_URL in Info.plist")
+        if let s = Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as? String,
+           let url = URL(string: s), url.scheme != nil {
+            return url
         }
-        return url
+        // Fallback for dev to avoid crashes when key is missing or not expanded
+        return URL(string: "http://127.0.0.1:8000")!
     }
 
     // GET /questions/
