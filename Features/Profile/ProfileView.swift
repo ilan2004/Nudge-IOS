@@ -10,19 +10,20 @@ public struct ProfileView: View {
     @State private var showHistory = false
     @State private var showManageBlocking = false
     @State private var showLeaderboard = false
+    @State private var animateShimmer = false
     
     public var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 // Identity header
                 identityHeader
-                    .retroConsoleSurface()
+                    .heroCardSurface()
                 
                 // Focus economy (Points + Coins)
                 FocusEconomyCard(points: economy.totalFocusPoints, coins: economy.totalFocusCoins) {
                     showHistory = true
                 }
-                .retroConsoleSurface()
+                .currencyVaultSurface()
                 
                 // Core stats
                 StatsGrid(
@@ -31,7 +32,7 @@ public struct ProfileView: View {
                     weekly: [24, 36, 12, 48, 30, 60, 15],
                     distractionsBlocked: 0
                 )
-                .retroConsoleSurface()
+                .statsPanelSurface()
                 
                 // Achievements strip (placeholder)
                 AchievementStrip(items: [
@@ -39,21 +40,21 @@ public struct ProfileView: View {
                     .init(title: "7-day Streak", unlocked: false),
                     .init(title: "1000 FP", unlocked: false)
                 ])
-                .retroConsoleSurface()
+                .achievementShowcaseSurface()
                 
                 // Social snapshot
                 LeaderboardTile(rank: 12, delta: -2, isDimmed: appSettings.undergroundMode, onSeeAll: { showLeaderboard = true })
-                    .retroConsoleSurface()
+                    .leaderboardRankSurface(rank: 12)
                 
                 // Underground Mode toggle
                 UndergroundToggleCard(isOn: $appSettings.undergroundMode)
-                    .retroConsoleSurface()
+                    .controlPanelSurface()
                 
                 // Smart Blocking summary
                 BlockedAppsRow(apps: ["instagram", "youtube", "tiktok"]) {
                     showManageBlocking = true
                 }
-                .retroConsoleSurface()
+                .blockingShieldSurface()
                 
                 // Settings list
                 SettingsList(
@@ -62,13 +63,14 @@ public struct ProfileView: View {
                     onPrivacy: { /* TODO */ },
                     onAbout: { /* TODO */ }
                 )
-                .retroConsoleSurface()
+                .controlPanelSurface()
                 
                 Spacer(minLength: 12)
             }
             .padding(.horizontal, 16)
             .padding(.top, 16)
         }
+        .onAppear { animateShimmer = true }
         .sheet(isPresented: $showHistory) {
             FocusEconomyHistoryView()
                 .environmentObject(economy)
@@ -84,48 +86,90 @@ public struct ProfileView: View {
     
     // MARK: - Identity header
     private var identityHeader: some View {
-        VStack(spacing: 16) {
-            if let type = personalityManager.personalityType {
-                HStack(alignment: .center, spacing: 16) {
-                    // Smaller character card on the left
-                    CharacterCard(title: nil, size: 140, compact: true)
-                        .environmentObject(personalityManager)
-                        .environmentObject(focusManager)
-                        .frame(width: 160, alignment: .leading)
-                    
-                    // Name on the right with personality details below
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(displayName)
-                            .font(.custom("Tanker-Regular", size: 28))
-                            .foregroundColor(personalityManager.currentTheme.text)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.8)
+        let theme = personalityManager.currentTheme
+        let hours = focusManager.totalFocusTime / 3600.0
+        let level = max(1, Int(hours / 10.0) + 1)
+        return ZStack(alignment: .topLeading) {
+            // Background gradient tied to personality
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(LinearGradient(colors: [theme.surface, theme.background.opacity(0.10)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .accessibilityHidden(true)
+            
+            VStack(spacing: 16) {
+                if let type = personalityManager.personalityType {
+                    HStack(alignment: .center, spacing: 16) {
+                        // Smaller character card on the left
+                        CharacterCard(title: nil, size: 140, compact: true)
+                            .environmentObject(personalityManager)
+                            .environmentObject(focusManager)
+                            .frame(width: 160, alignment: .leading)
                         
-                        PersonalityBadge(personalityType: type, gender: personalityManager.gender)
+                        // Name on the right with personality details below
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(displayName)
+                                .font(.custom("Tanker-Regular", size: 28))
+                                .foregroundColor(theme.text)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                            
+                            PersonalityBadge(personalityType: type, gender: personalityManager.gender)
+                            
+                            Text(type.displayName)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                } else {
+                    HStack(alignment: .center, spacing: 16) {
+                        CharacterPlaceholder(size: 120)
+                            .frame(width: 140, alignment: .leading)
                         
-                        Text(type.displayName)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Complete your profile")
+                                .font(.headline)
+                                .foregroundColor(.nudgeGreen900)
+                            Button("Take MBTI Test") { /* TODO */ }
+                                .buttonStyle(NavPillStyle(variant: .primary))
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            } else {
-                HStack(alignment: .center, spacing: 16) {
-                    CharacterPlaceholder(size: 120)
-                        .frame(width: 140, alignment: .leading)
-                    
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Complete your profile")
-                            .font(.headline)
-                            .foregroundColor(.nudgeGreen900)
-                        Button("Take MBTI Test") { /* TODO */ }
-                            .buttonStyle(NavPillStyle(variant: .primary))
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
+            .padding()
+            
+            // Personality-colored accent bar at top
+            LinearGradient(colors: [theme.primary.opacity(0.5), theme.accent.opacity(0.4)], startPoint: .leading, endPoint: .trailing)
+                .frame(height: 6)
+                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                .accessibilityHidden(true)
+            
         }
-        .padding()
+        // Character Level indicator
+        .overlay(alignment: .topTrailing) {
+            HStack(spacing: 6) {
+                Image(systemName: "star.fill").foregroundColor(.yellow)
+                    .shadow(color: .yellow.opacity(0.6), radius: 6, x: 0, y: 0)
+                Text("Lv \(level)")
+                    .font(.custom("Tanker-Regular", size: 14))
+                    .foregroundColor(theme.text)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Capsule().fill(theme.primary.opacity(0.25)))
+            }
+            .padding(10)
+        }
+        // Subtle animated shimmer around border
+        .overlay(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(
+                    AngularGradient(gradient: Gradient(colors: [theme.primary.opacity(0.6), theme.accent.opacity(0.6), theme.primary.opacity(0.6)]), center: .center)
+                    , lineWidth: 1
+                )
+                .rotationEffect(.degrees(animateShimmer ? 360 : 0))
+                .animation(.linear(duration: 8).repeatForever(autoreverses: false), value: animateShimmer)
+                .opacity(0.5)
+        )
     }
     
     // Display name sourced from UserDefaults for now
@@ -136,96 +180,188 @@ public struct ProfileView: View {
 
 // MARK: - FocusEconomyCard
 struct FocusEconomyCard: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
     let points: Int
     let coins: Int
     let onHistory: () -> Void
+    @State private var glow = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Focus Economy")
-                .font(.custom("Tanker-Regular", size: 22))
-                .foregroundColor(.nudgeGreen900)
+        let theme = personalityManager.currentTheme
+        return ZStack {
+            // Vault door garnish
+            Circle()
+                .strokeBorder(LinearGradient(colors: [Color.gray.opacity(0.4), Color.white.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 6)
+                .frame(width: 120, height: 120)
+                .offset(x: 90, y: -10)
+                .blur(radius: 0.2)
+                .opacity(0.35)
+                .accessibilityHidden(true)
             
-            HStack(spacing: 16) {
-                metric(icon: "star.fill", title: "Focus Points", value: points)
-                metric(icon: "bitcoinsign.circle.fill", title: "Focus Coins", value: coins)
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(spacing: 8) {
+                    Image(systemName: "lock.circle.fill")
+                        .foregroundColor(theme.secondary)
+                        .shadow(color: theme.secondary.opacity(0.4), radius: 6)
+                    Text("Focus Economy")
+                        .font(.custom("Tanker-Regular", size: 22))
+                        .foregroundColor(theme.text)
+                }
+                
+                HStack(spacing: 16) {
+                    metric(icon: "star.fill", title: "Focus Points", value: points, accent: .yellow)
+                    metric(icon: "bitcoinsign.circle.fill", title: "Focus Coins", value: coins, accent: .orange)
+                }
+                
+                HStack {
+                    Button("History", action: onHistory)
+                        .buttonStyle(NavPillStyle(variant: .outline, compact: true))
+                    Spacer()
+                    // Treasure chest decorative element
+                    Image(systemName: "shippingbox.fill")
+                        .foregroundColor(.orange.opacity(0.9))
+                        .shadow(color: .orange.opacity(0.6), radius: 8)
+                        .padding(.trailing, 4)
+                        .accessibilityHidden(true)
+                }
             }
+            .padding()
             
-            HStack {
-                Button("History", action: onHistory)
-                    .buttonStyle(NavPillStyle(variant: .outline, compact: true))
-                Spacer()
+            // Subtle particle sparkles near currency
+            HStack(spacing: 8) {
+                ForEach(0..<6, id: \.self) { i in
+                    Circle()
+                        .fill((i % 2 == 0 ? Color.yellow : Color.orange).opacity(0.3))
+                        .frame(width: CGFloat(3 + (i % 3)), height: CGFloat(3 + (i % 3)))
+                        .scaleEffect(glow ? 1.2 : 0.8)
+                        .animation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true).delay(Double(i) * 0.1), value: glow)
+                }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            .padding(12)
+            .allowsHitTesting(false)
         }
-        .padding()
+        .onAppear { glow = true }
     }
     
-    private func metric(icon: String, title: String, value: Int) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+    private func metric(icon: String, title: String, value: Int, accent: Color) -> some View {
+        let theme = personalityManager.currentTheme
+        return VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
                 Image(systemName: icon)
-                    .foregroundColor(.nudgeGreen900)
+                    .foregroundColor(accent)
+                    .shadow(color: accent.opacity(0.6), radius: 6)
                 Text(title)
-                    .font(.footnote).foregroundColor(.secondary)
+                    .font(.footnote).foregroundColor(theme.textSecondary)
             }
-            Text("\(value)")
-                .font(.system(size: 28, weight: .bold))
-                .foregroundColor(.nudgeGreen900)
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Text("\(value)")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(theme.text)
+                    .shadow(color: accent.opacity(0.25), radius: 4)
+                // subtle glow dot
+                Circle()
+                    .fill(accent.opacity(0.7))
+                    .frame(width: 6, height: 6)
+                    .shadow(color: accent.opacity(0.7), radius: 6)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
-        .background(RoundedRectangle(cornerRadius: 12).fill(Color.white.opacity(0.6)))
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(LinearGradient(colors: [theme.surface.opacity(0.9), Color.white.opacity(0.6)], startPoint: .top, endPoint: .bottom))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(LinearGradient(colors: [accent.opacity(0.6), theme.secondary.opacity(0.4)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
+                )
+        )
     }
 }
 
 // MARK: - StatsGrid
 struct StatsGrid: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
     let totalFocusSeconds: TimeInterval
     let streakDays: Int
     let weekly: [Int] // minutes per day
     let distractionsBlocked: Int
     
-    private var totalHoursText: String {
-        let hours = totalFocusSeconds / 3600.0
-        return String(format: "%.1f h", hours)
-    }
+    private var totalHours: Double { totalFocusSeconds / 3600.0 }
+    private var totalHoursText: String { String(format: "%.1f h", totalHours) }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let theme = personalityManager.currentTheme
+        return VStack(alignment: .leading, spacing: 12) {
             Text("Your Stats")
                 .font(.custom("Tanker-Regular", size: 20))
-                .foregroundColor(.nudgeGreen900)
+                .foregroundColor(theme.text)
             
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                statTile(icon: "clock.fill", title: "Total Focus", value: totalHoursText)
-                miniBarsTile(title: "Weekly Trend", values: weekly)
-                statTile(icon: "flame.fill", title: "Streak", value: "\(streakDays) days")
-                statTile(icon: "hand.raised.fill", title: "Blocked", value: "\(distractionsBlocked)")
+                rpgStatTile(icon: "clock.fill", title: "Total Focus", value: totalHoursText, progress: min(1.0, totalHours/50.0), tint: theme.primary)
+                weeklyBarsTile(title: "Weekly Trend", values: weekly, tint: theme.secondary)
+                rpgStatTile(icon: "flame.fill", title: "Streak", value: "\(streakDays) days", progress: min(1.0, Double(streakDays)/30.0), tint: .orange)
+                rpgStatTile(icon: "hand.raised.fill", title: "Blocked", value: "\(distractionsBlocked)", progress: min(1.0, Double(distractionsBlocked)/50.0), tint: .red)
             }
         }
         .padding()
     }
     
-    private func statTile(icon: String, title: String, value: String) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+    private func rpgStatTile(icon: String, title: String, value: String, progress: Double, tint: Color) -> some View {
+        let theme = personalityManager.currentTheme
+        return VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
-                Image(systemName: icon).foregroundColor(.nudgeGreen900)
-                Text(title).font(.footnote).foregroundColor(.secondary)
+                Image(systemName: icon)
+                    .foregroundColor(tint)
+                Text(title)
+                    .font(.footnote.weight(.semibold))
+                    .foregroundColor(theme.textSecondary)
+                Spacer()
             }
-            Text(value).font(.headline).foregroundColor(.nudgeGreen900)
+            Text(value)
+                .font(.headline.weight(.semibold))
+                .foregroundColor(theme.text)
+            // Mini progress bar
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule().fill(tint.opacity(0.15))
+                    Capsule().fill(tint)
+                        .frame(width: max(0, min(1, progress)) * geo.size.width)
+                }
+            }
+            .frame(height: 8)
+            
+            // Decorative divider
+            Rectangle()
+                .fill(tint.opacity(0.15))
+                .frame(height: 1)
+                .padding(.top, 2)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
-        .background(RoundedRectangle(cornerRadius: 12).fill(Color.white.opacity(0.6)))
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(LinearGradient(colors: [theme.surface, Color.white.opacity(0.7)], startPoint: .top, endPoint: .bottom))
+                // Embossed/inset effect
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .stroke(LinearGradient(colors: [Color.white.opacity(0.7), Color.black.opacity(0.05)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.05), radius: 3, x: 0, y: 1)
+        )
     }
     
-    private func miniBarsTile(title: String, values: [Int]) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(title).font(.footnote).foregroundColor(.secondary)
+    private func weeklyBarsTile(title: String, values: [Int], tint: Color) -> some View {
+        let theme = personalityManager.currentTheme
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Image(systemName: "chart.bar.fill").foregroundColor(tint)
+                Text(title).font(.footnote).foregroundColor(theme.textSecondary)
+            }
             HStack(alignment: .bottom, spacing: 6) {
                 ForEach(values.indices, id: \.self) { i in
                     RoundedRectangle(cornerRadius: 3)
-                        .fill(Color.nudgeGreen900)
+                        .fill(tint)
                         .frame(width: 10, height: CGFloat(max(8, min(60, values[i]))))
                         .opacity(0.85)
                 }
@@ -233,40 +369,66 @@ struct StatsGrid: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
-        .background(RoundedRectangle(cornerRadius: 12).fill(Color.white.opacity(0.6)))
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(LinearGradient(colors: [theme.surface, Color.white.opacity(0.7)], startPoint: .top, endPoint: .bottom))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .stroke(tint.opacity(0.25), lineWidth: 1)
+                )
+        )
     }
 }
 
 // MARK: - AchievementStrip
 struct AchievementStrip: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
     struct Item: Identifiable { let id = UUID(); let title: String; let unlocked: Bool }
     let items: [Item]
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let theme = personalityManager.currentTheme
+        return VStack(alignment: .leading, spacing: 12) {
             Text("Achievements")
                 .font(.custom("Tanker-Regular", size: 20))
-                .foregroundColor(.nudgeGreen900)
+                .foregroundColor(theme.text)
+            
+            // Display shelf metaphor
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.brown.opacity(0.25), Color.brown.opacity(0.15)], startPoint: .top, endPoint: .bottom))
+                .frame(height: 6)
+                .overlay(Rectangle().fill(Color.white.opacity(0.3)).frame(height: 1), alignment: .top)
+                .padding(.bottom, -2)
+                .accessibilityHidden(true)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(items) { item in
+                        let rarityColor: Color = item.unlocked ? .yellow : .gray
                         VStack(spacing: 8) {
-                            Image(systemName: item.unlocked ? "rosette" : "lock.fill")
+                            Image(systemName: item.unlocked ? "trophy.fill" : "lock.fill")
                                 .font(.title2)
-                                .foregroundColor(.nudgeGreen900)
+                                .foregroundColor(item.unlocked ? .yellow : theme.secondary)
+                                .shadow(color: item.unlocked ? Color.yellow.opacity(0.6) : .clear, radius: 8)
                             Text(item.title)
                                 .font(.caption)
                                 .multilineTextAlignment(.center)
+                                .foregroundColor(theme.text)
                         }
                         .frame(width: 120, height: 100)
-                        .background(RoundedRectangle(cornerRadius: 12).fill(Color.white.opacity(0.6)))
+                        .background(RoundedRectangle(cornerRadius: 12).fill(theme.surface.opacity(0.9)))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.nudgeGreen900.opacity(item.unlocked ? 1 : 0.2), lineWidth: 2)
+                                .stroke(rarityColor.opacity(item.unlocked ? 0.9 : 0.4), lineWidth: item.unlocked ? 2 : 1)
                         )
-                        .opacity(item.unlocked ? 1 : 0.6)
-                        .scaleEffect(item.unlocked ? 1.0 : 0.98)
+                        .overlay(
+                            // Spotlight for unlocked
+                            RadialGradient(colors: [Color.white.opacity(item.unlocked ? 0.35 : 0.0), .clear], center: .top, startRadius: 8, endRadius: 80)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        )
+                        .opacity(item.unlocked ? 1 : 0.7)
+                        .scaleEffect(item.unlocked ? 1.0 : 0.97)
+                        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: item.unlocked)
                     }
                 }
                 .padding(.vertical, 4)
@@ -278,30 +440,61 @@ struct AchievementStrip: View {
 
 // MARK: - LeaderboardTile
 struct LeaderboardTile: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
     let rank: Int
     let delta: Int // negative is up
     let isDimmed: Bool
     let onSeeAll: () -> Void
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        let theme = personalityManager.currentTheme
+        let medal = medalColor(for: rank)
+        let improved = delta <= 0
+        return VStack(alignment: .leading, spacing: 10) {
             Text("Leaderboard")
                 .font(.custom("Tanker-Regular", size: 20))
-                .foregroundColor(.nudgeGreen900)
+                .foregroundColor(theme.text)
             HStack(spacing: 12) {
-                Text("#\(rank)")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(.nudgeGreen900)
-                Text(deltaText)
-                    .font(.footnote)
-                    .foregroundColor(delta <= 0 ? .green : .red)
+                ZStack {
+                    Circle()
+                        .fill(LinearGradient(colors: [medal.opacity(0.9), medal.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .frame(width: 54, height: 54)
+                        .shadow(color: medal.opacity(0.4), radius: 10)
+                    Text("#\(rank)")
+                        .font(.system(size: 20, weight: .heavy))
+                        .foregroundColor(.white)
+                }
+                .overlay(
+                    HStack(spacing: 2) {
+                        Image(systemName: improved ? "arrow.up" : "arrow.down")
+                        Text("\(abs(delta))")
+                    }
+                    .font(.caption.bold())
+                    .padding(6)
+                    .background(Capsule().fill((improved ? Color.green : Color.red).opacity(0.15)))
+                    .foregroundColor(improved ? .green : .red)
+                    .offset(y: 32)
+                    , alignment: .bottom
+                )
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(rankLabel(for: rank))
+                        .font(.headline.weight(.semibold))
+                        .foregroundColor(theme.text)
+                    HStack(spacing: 4) {
+                        Image(systemName: "star.fill").foregroundColor(medal).opacity(rank <= 3 ? 1 : 0.6)
+                        Image(systemName: "star.fill").foregroundColor(medal).opacity(rank <= 10 ? 0.8 : 0.4)
+                    }
+                }
                 Spacer()
-                Button("See Full Leaderboard") { onSeeAll() }
+                Button("See All") { onSeeAll() }
                     .buttonStyle(NavPillStyle(variant: .outline, compact: true))
             }
         }
         .padding()
         .opacity(isDimmed ? 0.4 : 1.0)
+        .scaleEffect(improved ? 1.01 : 1.0)
+        .animation(.easeInOut(duration: 0.6), value: improved)
         .overlay(alignment: .bottomLeading) {
             if isDimmed {
                 Text("Underground Mode active — hidden from others")
@@ -312,50 +505,84 @@ struct LeaderboardTile: View {
         }
     }
     
-    private var deltaText: String {
-        if delta == 0 { return "no change" }
-        let arrow = delta <= 0 ? "arrow.up" : "arrow.down"
-        return "\(Image(systemName: arrow)) \(abs(delta)) this week"
+    private func medalColor(for rank: Int) -> Color {
+        switch rank {
+        case 1...3: return .yellow
+        case 4...10: return .gray
+        default: return personalityManager.currentTheme.secondary
+        }
+    }
+    private func rankLabel(for rank: Int) -> String {
+        switch rank {
+        case 1: return "Champion"
+        case 2...3: return "Top 3"
+        case 4...10: return "Top 10"
+        default: return "Contender"
+        }
     }
 }
 
 // MARK: - UndergroundToggleCard
 struct UndergroundToggleCard: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
     @Binding var isOn: Bool
+    @State private var blink = false
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
+        let theme = personalityManager.currentTheme
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 10) {
+                Image(systemName: isOn ? "eye.slash.fill" : "eye.fill")
+                    .foregroundColor(theme.secondary)
                 Text("Underground Mode")
                     .font(.custom("Tanker-Regular", size: 20))
-                    .foregroundColor(.nudgeGreen900)
+                    .foregroundColor(theme.text)
                 Spacer()
+                // status lights
+                HStack(spacing: 6) {
+                    Circle().fill((isOn ? Color.green : Color.gray).opacity(blink ? 0.3 : 0.9)).frame(width: 8, height: 8)
+                    Circle().fill((isOn ? Color.green : Color.gray).opacity(blink ? 0.9 : 0.3)).frame(width: 8, height: 8)
+                }
+                .animation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true), value: blink)
                 Toggle("", isOn: $isOn).labelsHidden()
             }
             Text("Private training mode: your points are hidden from public leaderboards. You still see your stats.")
                 .font(.footnote)
-                .foregroundColor(.secondary)
+                .foregroundColor(theme.textSecondary)
         }
         .padding()
+        .onAppear { blink = true }
     }
 }
 
 // MARK: - BlockedAppsRow
 struct BlockedAppsRow: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
     let apps: [String]
     let onManage: () -> Void
     
     var body: some View {
-        HStack(spacing: 12) {
+        let theme = personalityManager.currentTheme
+        return HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 6) {
-                Text("Blocked Apps")
-                    .font(.custom("Tanker-Regular", size: 20))
-                    .foregroundColor(.nudgeGreen900)
+                HStack(spacing: 8) {
+                    Image(systemName: "shield.fill").foregroundColor(theme.secondary)
+                    Text("Blocked Apps")
+                        .font(.custom("Tanker-Regular", size: 20))
+                        .foregroundColor(theme.text)
+                }
                 HStack(spacing: 8) {
                     ForEach(apps.prefix(3), id: \.self) { name in
-                        Text(name.capitalized)
-                            .font(.caption)
-                            .padding(.horizontal, 8).padding(.vertical, 4)
-                            .background(RoundedRectangle(cornerRadius: 8).fill(Color.white.opacity(0.6)))
+                        HStack(spacing: 6) {
+                            Text(name.capitalized)
+                                .font(.caption)
+                                .foregroundColor(theme.text)
+                            Image(systemName: "xmark.shield.fill")
+                                .font(.caption)
+                                .foregroundColor(.red)
+                        }
+                        .padding(.horizontal, 8).padding(.vertical, 6)
+                        .background(RoundedRectangle(cornerRadius: 8).fill(theme.surface.opacity(0.9)))
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.red.opacity(0.3), lineWidth: 1))
                     }
                 }
             }
@@ -369,17 +596,22 @@ struct BlockedAppsRow: View {
 
 // MARK: - SettingsList
 struct SettingsList: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
     let onRetakeMBTI: () -> Void
     let onNotifications: () -> Void
     let onPrivacy: () -> Void
     let onAbout: () -> Void
     
     var body: some View {
-        VStack(spacing: 8) {
-            SettingsRow(title: "Retake Personality Test", icon: "person.fill", action: onRetakeMBTI)
-            SettingsRow(title: "Notifications", icon: "bell.fill", action: onNotifications)
-            SettingsRow(title: "Data & Privacy", icon: "lock.fill", action: onPrivacy)
-            SettingsRow(title: "About", icon: "info.circle.fill", action: onAbout)
+        let theme = personalityManager.currentTheme
+        return VStack(spacing: 0) {
+            SettingsRow(title: "Retake Personality Test", icon: "person.fill", theme: theme, action: onRetakeMBTI)
+            Divider().opacity(0.15)
+            SettingsRow(title: "Notifications", icon: "bell.fill", theme: theme, action: onNotifications)
+            Divider().opacity(0.15)
+            SettingsRow(title: "Data & Privacy", icon: "lock.fill", theme: theme, action: onPrivacy)
+            Divider().opacity(0.15)
+            SettingsRow(title: "About", icon: "info.circle.fill", theme: theme, action: onAbout)
         }
         .padding(.vertical, 8)
         .padding(.horizontal, 12)
@@ -389,17 +621,21 @@ struct SettingsList: View {
 public struct SettingsRow: View {
     let title: String
     let icon: String
+    let theme: PersonalityColors
     let action: () -> Void
     
     public var body: some View {
         Button(action: action) {
-            HStack {
-                Image(systemName: icon)
-                    .foregroundColor(.nudgeGreen900)
-                    .frame(width: 24)
+            HStack(spacing: 12) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 8).fill(theme.primary.opacity(0.25))
+                    Image(systemName: icon)
+                        .foregroundColor(theme.secondary)
+                }
+                .frame(width: 28, height: 28)
                 
                 Text(title)
-                    .foregroundColor(.nudgeGreen900)
+                    .foregroundColor(theme.text)
                 
                 Spacer()
                 
@@ -407,8 +643,16 @@ public struct SettingsRow: View {
                     .foregroundColor(.gray)
                     .font(.caption)
             }
-            .padding(.vertical, 8)
+            .padding(.vertical, 10)
+            .contentShape(Rectangle())
         }
+        .buttonStyle(PlainButtonStyle())
+        .background(
+            Rectangle().fill(Color.clear)
+                .overlay(
+                    Rectangle().fill(Color.white.opacity(0.001)) // better tap target
+                )
+        )
     }
 }
 
