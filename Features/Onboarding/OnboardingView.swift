@@ -5,6 +5,7 @@ import UIKit
 extension Notification.Name {
     static let onboardingDismiss = Notification.Name("OnboardingDismiss")
     static let onboardingTakeTest = Notification.Name("OnboardingTakeTest")
+    static let onboardingThemeTest = Notification.Name("OnboardingThemeTest")
 }
 
 struct OnboardingView: View {
@@ -90,6 +91,14 @@ case .choice:
                                 borderColor: Color("NudgeCyan600", bundle: .main, default: Color(red: 0.03, green: 0.57, blue: 0.70))
                             ) {
                                 NotificationCenter.default.post(name: .onboardingTakeTest, object: nil)
+                            }
+                            
+                            BigBoxButton(
+                                title: "Test Different UI",
+                                bgColor: Color(red: 0.95, green: 0.90, blue: 1.0),
+                                borderColor: Color(red: 0.52, green: 0.16, blue: 0.89)
+                            ) {
+                                NotificationCenter.default.post(name: .onboardingThemeTest, object: nil)
                             }
                             
                             BigBoxButton(

@@ -141,6 +141,7 @@ struct ContentView: View {
     @State private var selectedTab = 0
     @State private var showOnboarding = true
     @State private var showMBTIQuiz = false
+    @State private var showThemeTester = false
     
     // Accent colors - hardcoded for visibility
     private var accentGreen: Color { Color(red: 0.01, green: 0.35, blue: 0.30) } // Dark green
@@ -213,6 +214,11 @@ struct ContentView: View {
             .environmentObject(personalityManager)
             .environmentObject(appSettings)
         }
+        .fullScreenCover(isPresented: $showThemeTester) {
+            MBTIThemeTestView()
+                .environmentObject(personalityManager)
+                .environmentObject(appSettings)
+        }
         .environment(\.dynamicTypeSize, .medium)
 .preferredColorScheme(appSettings.colorScheme)
         .onAppear {
@@ -225,6 +231,10 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .onboardingTakeTest)) { _ in
             withAnimation { showOnboarding = false }
             showMBTIQuiz = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .onboardingThemeTest)) { _ in
+            withAnimation { showOnboarding = false }
+            showThemeTester = true
         }
     }
     
@@ -273,6 +283,68 @@ struct ContentView: View {
                 }
                 .padding()
                 .padding(.bottom, 180) // Extra padding to avoid footer overlap
+            }
+        }
+    }
+    
+    struct MBTIThemeTestView: View {
+        @EnvironmentObject var personalityManager: PersonalityManager
+        @Environment(\.dismiss) private var dismiss
+        
+        private let columns = [GridItem(.flexible()), GridItem(.flexible())]
+        private var pairs: [(PersonalityType, Gender)] {
+            PersonalityType.allCases.flatMap { type in [(type, .male), (type, .female)] }
+        }
+        
+        var body: some View {
+            VStack(spacing: 16) {
+                HStack {
+                    Text("Test Different UI")
+                        .font(.title2).bold()
+                        .foregroundColor(Color.nudgeGreen900)
+                    Spacer()
+                    Button("Close") { dismiss() }
+                        .buttonStyle(NavPillStyle(variant: .primary))
+                }
+                .padding(.horizontal, 20)
+                
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 12) {
+                        ForEach(Array(pairs.enumerated()), id: \.offset) { _, item in
+                            let type = item.0
+                            let gender = item.1
+                            let colors = PersonalityTheme.colors(for: type, gender: gender)
+                            Button {
+                                personalityManager.setPersonalityType(type)
+                                personalityManager.setGender(gender)
+                            } label: {
+                                VStack(spacing: 6) {
+                                    Text(type.rawValue)
+                                        .font(.headline)
+                                        .foregroundColor(colors.text)
+                                    Text(gender == .male ? "Male" : "Female")
+                                        .font(.subheadline)
+                                        .foregroundColor(colors.textSecondary)
+                                    Text(type.displayName)
+                                        .font(.caption)
+                                        .foregroundColor(colors.textSecondary)
+                                }
+                                .frame(maxWidth: .infinity, minHeight: 100)
+                                .padding(12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .fill(colors.background)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .stroke(colors.primary, lineWidth: 2)
+                                )
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 20)
+                }
             }
         }
     }
