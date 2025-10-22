@@ -140,6 +140,7 @@ struct ContentView: View {
     
     @State private var selectedTab = 0
     @State private var showOnboarding = true
+    @State private var showMBTIQuiz = false
     
     // Accent colors - hardcoded for visibility
     private var accentGreen: Color { Color(red: 0.01, green: 0.35, blue: 0.30) } // Dark green
@@ -194,7 +195,7 @@ struct ContentView: View {
             if showOnboarding {
                 ZStack {
                     Color(.systemBackground).opacity(0.98).ignoresSafeArea()
-OnboardingView()
+                    OnboardingView()
                         .environmentObject(personalityManager)
                         .overlay(alignment: Alignment.topTrailing) {
                             Button("Skip") { withAnimation { showOnboarding = false } }
@@ -203,6 +204,14 @@ OnboardingView()
                         }
                 }
             }
+        }
+        .fullScreenCover(isPresented: $showMBTIQuiz) {
+            MBTIQuizSheet {
+                showMBTIQuiz = false
+                selectedTab = 2
+            }
+            .environmentObject(personalityManager)
+            .environmentObject(appSettings)
         }
         .environment(\.dynamicTypeSize, .medium)
 .preferredColorScheme(appSettings.colorScheme)
@@ -215,7 +224,7 @@ OnboardingView()
         }
         .onReceive(NotificationCenter.default.publisher(for: .onboardingTakeTest)) { _ in
             withAnimation { showOnboarding = false }
-            selectedTab = 2 // navigate to My Type tab for now
+            showMBTIQuiz = true
         }
     }
     

@@ -5,15 +5,18 @@ workflows:
     instance_type: mac_mini_m1
     environment:
       vars:
-        XCODE_PROJECT: "Nudge.xcodeproj"     # Update with actual project name
-        XCODE_SCHEME: "Nudge"                # Update with your scheme name
-        BUNDLE_ID: "com.ilan2004.nudge"      # Replace with your bundle ID
+        XCODE_PROJECT: "Nudge.xcodeproj"
+        XCODE_SCHEME: "Nudge"
+        BUNDLE_ID: "com.ilan2004.nudge"
+        # Backend base URL (override in Codemagic UI per environment)
+        API_BASE_URL: "https://api-dev.nudge.starshape.in"
       xcode: latest
       cocoapods: default
     scripts:
       - name: Prepare for unsigned build
         script: |
           echo "Preparing for unsigned build - code signing disabled"
+          echo "API_BASE_URL will be injected into Info.plist via build setting expansion. Current: $API_BASE_URL"
       - name: Get CocoaPods dependencies (if any)
         script: |
           if [ -f "Podfile" ]; then
@@ -32,6 +35,7 @@ workflows:
         script: |
           mkdir -p "$PWD/build/ios/ipa"
           echo "Building with project: $XCODE_PROJECT, scheme: $XCODE_SCHEME"
+          echo "Using API_BASE_URL=$API_BASE_URL"
           xcodebuild archive \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -44,6 +48,7 @@ workflows:
             PROVISIONING_PROFILE="" \
             ENABLE_PREVIEWS=NO \
             DEVELOPMENT_ASSET_PATHS="" \
+            API_BASE_URL="$API_BASE_URL" \
             -verbose
       - name: Ensure UIAppFonts includes Nippo-Regular (repair if missing)
         script: |

@@ -97,18 +97,11 @@ class PersonalityManager: ObservableObject {
     }
     
     private func updateTheme() {
-        // OVERRIDE: Always use mint background regardless of personality type
-        let mintTheme = PersonalityColors(
-            primary: Color(red: 0.063, green: 0.737, blue: 0.502), // mint
-            secondary: Color(red: 0.055, green: 0.259, blue: 0.184), // green
-            accent: Color(red: 1.0, green: 0.411, blue: 0.706), // pink
-            surface: Color(red: 0.988, green: 0.973, blue: 0.949), // cream
-            background: Color(red: 0.063, green: 0.737, blue: 0.502), // mint background
-            text: Color.white, // white text on mint background
-            textSecondary: Color(red: 0.9, green: 0.9, blue: 0.9) // light gray
-        )
-        
-        currentTheme = mintTheme
+        if let type = personalityType {
+            currentTheme = PersonalityTheme.colors(for: type, gender: gender)
+        } else {
+            currentTheme = PersonalityTheme.defaultColors
+        }
     }
     
     private func setupThemeBinding() {

@@ -34,6 +34,15 @@
 		A20000000000000000000014 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000014 /* LeaderboardView.swift */; };
 		A20000000000000000000015 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000015 /* ProfileView.swift */; };
 		A20000000000000000000016 /* NudgeNavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000016 /* NudgeNavBarView.swift */; };
+		C10000000000000000000001 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* APIClient.swift */; };
+		C10000000000000000000002 /* UserIdProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* UserIdProvider.swift */; };
+		C10000000000000000000003 /* EventsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* EventsService.swift */; };
+		C10000000000000000000004 /* HapticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* HapticsService.swift */; };
+		C10000000000000000000005 /* MBTIQuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* MBTIQuizViewModel.swift */; };
+		C10000000000000000000006 /* MBTIQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000006 /* MBTIQuizView.swift */; };
+		C10000000000000000000007 /* MBTIQuestionsProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000007 /* MBTIQuestionsProviders.swift */; };
+		C10000000000000000000008 /* MBTIResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* MBTIResultView.swift */; };
+		C10000000000000000000009 /* MBTIQuizSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* MBTIQuizSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +74,15 @@ A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference
 		A00000000000000000000014 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		A00000000000000000000015 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		A00000000000000000000016 /* NudgeNavBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeNavBarView.swift; sourceTree = "<group>"; };
+		B10000000000000000000001 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		B10000000000000000000002 /* UserIdProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIdProvider.swift; sourceTree = "<group>"; };
+		B10000000000000000000003 /* EventsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsService.swift; sourceTree = "<group>"; };
+		B10000000000000000000004 /* HapticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsService.swift; sourceTree = "<group>"; };
+		B10000000000000000000005 /* MBTIQuizViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBTIQuizViewModel.swift; sourceTree = "<group>"; };
+		B10000000000000000000006 /* MBTIQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBTIQuizView.swift; sourceTree = "<group>"; };
+		B10000000000000000000007 /* MBTIQuestionsProviders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBTIQuestionsProviders.swift; sourceTree = "<group>"; };
+		B10000000000000000000008 /* MBTIResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBTIResultView.swift; sourceTree = "<group>"; };
+		B10000000000000000000009 /* MBTIQuizSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBTIQuizSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,10 +120,12 @@ A00000000000000000000011 /* FocusSettingsView.swift */ = {isa = PBXFileReference
 			path = App;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000001 /* Core */ = {
+A10000000000000000000001 /* Core */ = {
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000002 /* Services */,
+				D10000000000000000000001 /* Networking */,
+				D10000000000000000000002 /* Feedback */,
 				A00000000000000000000002 /* PersistenceController.swift */,
 			);
 			path = Core;
@@ -117,6 +137,7 @@ A10000000000000000000002 /* Services */ = {
 				A00000000000000000000003 /* AppSettings.swift */,
 				A00000000000000000000004 /* FocusManager.swift */,
 				A00000000000000000000005 /* PersonalityManager.swift */,
+				B10000000000000000000003 /* EventsService.swift */,
 				A0000000000000000000000F /* FooterFocusBarViewModel.swift */,
 				A00000000000000000000010 /* RestrictionsController.swift */,
 			);
@@ -176,10 +197,11 @@ A10000000000000000000006 /* Features */ = {
 			path = Dashboard;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000008 /* Onboarding */ = {
+A10000000000000000000008 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
 				A0000000000000000000000C /* OnboardingView.swift */,
+				D10000000000000000000003 /* MBTITest */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -238,6 +260,35 @@ A10000000000000000000006 /* Features */ = {
 				7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		D10000000000000000000001 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000001 /* APIClient.swift */,
+				B10000000000000000000002 /* UserIdProvider.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		D10000000000000000000002 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000004 /* HapticsService.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		D10000000000000000000003 /* MBTITest */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000005 /* MBTIQuizViewModel.swift */,
+				B10000000000000000000006 /* MBTIQuizView.swift */,
+				B10000000000000000000007 /* MBTIQuestionsProviders.swift */,
+				B10000000000000000000008 /* MBTIResultView.swift */,
+				B10000000000000000000009 /* MBTIQuizSheet.swift */,
+			);
+			path = MBTITest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -310,9 +361,18 @@ A10000000000000000000006 /* Features */ = {
 		8D1107290486CEB800E47090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
-			files = (
+files = (
 				8D1107330486CEB800E47090 /* ContentView.swift in Sources */,
 				8D1107310486CEB800E47090 /* NudgeApp.swift in Sources */,
+				C10000000000000000000001 /* APIClient.swift in Sources */,
+				C10000000000000000000002 /* UserIdProvider.swift in Sources */,
+				C10000000000000000000003 /* EventsService.swift in Sources */,
+				C10000000000000000000004 /* HapticsService.swift in Sources */,
+				C10000000000000000000005 /* MBTIQuizViewModel.swift in Sources */,
+				C10000000000000000000006 /* MBTIQuizView.swift in Sources */,
+				C10000000000000000000007 /* MBTIQuestionsProviders.swift in Sources */,
+				C10000000000000000000008 /* MBTIResultView.swift in Sources */,
+				C10000000000000000000009 /* MBTIQuizSheet.swift in Sources */,
 				A20000000000000000000001 /* DEBUG_ContentView.swift in Sources */,
 				A20000000000000000000002 /* PersistenceController.swift in Sources */,
 				A20000000000000000000003 /* AppSettings.swift in Sources */,
@@ -478,6 +538,7 @@ A10000000000000000000006 /* Features */ = {
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ilan2004.nudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_KEY_API_BASE_URL = "$(API_BASE_URL)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -510,6 +571,7 @@ A10000000000000000000006 /* Features */ = {
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ilan2004.nudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_KEY_API_BASE_URL = "$(API_BASE_URL)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
