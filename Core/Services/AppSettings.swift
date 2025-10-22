@@ -8,6 +8,9 @@ class AppSettings: ObservableObject {
     @Published var hapticFeedbackEnabled: Bool = true
     @Published var defaultFocusTime: Int = 25 // minutes
     @Published var defaultBreakTime: Int = 5 // minutes
+    @Published var undergroundMode: Bool = false { // Privacy/stealth layer
+        didSet { saveSettings() }
+    }
     
     private let userDefaults = UserDefaults.standard
     
@@ -18,6 +21,7 @@ class AppSettings: ObservableObject {
     private let hapticFeedbackEnabledKey = "nudge_haptic_feedback_enabled"
     private let defaultFocusTimeKey = "nudge_default_focus_time"
     private let defaultBreakTimeKey = "nudge_default_break_time"
+    private let undergroundModeKey = "nudge_underground_mode"
     
     init() {
         loadSettings()
@@ -39,6 +43,7 @@ class AppSettings: ObservableObject {
         hapticFeedbackEnabled = userDefaults.object(forKey: hapticFeedbackEnabledKey) as? Bool ?? true
         defaultFocusTime = userDefaults.object(forKey: defaultFocusTimeKey) as? Int ?? 25
         defaultBreakTime = userDefaults.object(forKey: defaultBreakTimeKey) as? Int ?? 5
+        undergroundMode = userDefaults.object(forKey: undergroundModeKey) as? Bool ?? false
     }
     
     func saveSettings() {
@@ -62,5 +67,6 @@ class AppSettings: ObservableObject {
         userDefaults.set(hapticFeedbackEnabled, forKey: hapticFeedbackEnabledKey)
         userDefaults.set(defaultFocusTime, forKey: defaultFocusTimeKey)
         userDefaults.set(defaultBreakTime, forKey: defaultBreakTimeKey)
+        userDefaults.set(undergroundMode, forKey: undergroundModeKey)
     }
 }
