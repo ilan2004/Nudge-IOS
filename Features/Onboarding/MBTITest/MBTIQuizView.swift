@@ -15,6 +15,8 @@ struct MBTIQuizView: View {
         self.onSubmit = onSubmit
     }
 
+    private var answeredCount: Int { viewModel.answers.count }
+
     var body: some View {
         VStack(spacing: 0) {
             header
