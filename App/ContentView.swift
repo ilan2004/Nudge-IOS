@@ -1,6 +1,5 @@
 import SwiftUI
 import UIKit
-import Features.Friends
 
 // MARK: - Shapes
 struct TopRoundedRectangle: Shape {
