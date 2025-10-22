@@ -51,7 +51,7 @@ public struct ProfileView: View {
                 
                 // Underground Mode toggle
                 UndergroundToggleCard(isOn: $appSettings.undergroundMode)
-                    .controlPanelSurface()
+                    .undergroundModeSurface()
                 
                 // Smart Blocking summary
                 BlockedAppsRow(apps: ["instagram", "youtube", "tiktok"]) {
@@ -95,11 +95,6 @@ public struct ProfileView: View {
         let hours = focusManager.totalFocusTime / 3600.0
         let level = max(1, Int(hours / 10.0) + 1)
         return ZStack(alignment: .topLeading) {
-            // Background gradient tied to personality
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(LinearGradient(colors: [theme.surface, theme.background.opacity(0.10)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                .accessibilityHidden(true)
-            
             VStack(spacing: 16) {
                 if let type = personalityManager.personalityType {
                     HStack(alignment: .center, spacing: 16) {
@@ -273,14 +268,6 @@ struct FocusEconomyCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(LinearGradient(colors: [theme.surface.opacity(0.9), Color.white.opacity(0.6)], startPoint: .top, endPoint: .bottom))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(LinearGradient(colors: [accent.opacity(0.6), theme.secondary.opacity(0.4)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
-                )
-        )
     }
 }
 
@@ -344,16 +331,6 @@ struct StatsGrid: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(LinearGradient(colors: [theme.surface, Color.white.opacity(0.7)], startPoint: .top, endPoint: .bottom))
-                // Embossed/inset effect
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(LinearGradient(colors: [Color.white.opacity(0.7), Color.black.opacity(0.05)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
-                )
-                .shadow(color: Color.black.opacity(0.05), radius: 3, x: 0, y: 1)
-        )
     }
     
     private func weeklyBarsTile(title: String, values: [Int], tint: Color) -> some View {
@@ -374,14 +351,6 @@ struct StatsGrid: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(LinearGradient(colors: [theme.surface, Color.white.opacity(0.7)], startPoint: .top, endPoint: .bottom))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(tint.opacity(0.25), lineWidth: 1)
-                )
-        )
     }
 }
 
@@ -421,7 +390,6 @@ struct AchievementStrip: View {
                                 .foregroundColor(theme.text)
                         }
                         .frame(width: 96, height: 88)
-                        .background(RoundedRectangle(cornerRadius: 12).fill(theme.surface.opacity(0.9)))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(rarityColor.opacity(item.unlocked ? 0.9 : 0.4), lineWidth: item.unlocked ? 2 : 1)
@@ -533,26 +501,33 @@ struct UndergroundToggleCard: View {
     @Binding var isOn: Bool
     @State private var blink = false
     var body: some View {
-        let theme = personalityManager.currentTheme
         return VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 10) {
                 Image(systemName: isOn ? "eye.slash.fill" : "eye.fill")
-                    .foregroundColor(theme.secondary)
+                    .foregroundColor(Color.white.opacity(0.9))
                 Text("Underground Mode")
                     .font(.custom("Tanker-Regular", size: 20))
-                    .foregroundColor(theme.text)
+                    .foregroundColor(.white)
                 Spacer()
                 // status lights
                 HStack(spacing: 6) {
-                    Circle().fill((isOn ? Color.green : Color.gray).opacity(blink ? 0.3 : 0.9)).frame(width: 8, height: 8)
-                    Circle().fill((isOn ? Color.green : Color.gray).opacity(blink ? 0.9 : 0.3)).frame(width: 8, height: 8)
+                    Circle()
+                        .fill((isOn ? Color.purple : Color.gray).opacity(blink ? 0.3 : 0.9))
+                        .frame(width: 8, height: 8)
+                        .shadow(color: Color.purple.opacity(isOn ? 0.6 : 0.0), radius: 6)
+                    Circle()
+                        .fill((isOn ? Color.blue : Color.gray).opacity(blink ? 0.9 : 0.3))
+                        .frame(width: 8, height: 8)
+                        .shadow(color: Color.blue.opacity(isOn ? 0.6 : 0.0), radius: 6)
                 }
                 .animation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true), value: blink)
-                Toggle("", isOn: $isOn).labelsHidden()
+                Toggle("", isOn: $isOn)
+                    .labelsHidden()
+                    .tint(.purple)
             }
-            Text("Private training mode: your points are hidden from public leaderboards. You still see your stats.")
+            Text("Stealth Mode: Train in the shadows")
                 .font(.footnote)
-                .foregroundColor(theme.textSecondary)
+                .foregroundColor(Color.white.opacity(0.85))
         }
         .padding()
         .onAppear { blink = true }
@@ -585,8 +560,7 @@ struct BlockedAppsRow: View {
                                 .font(.caption)
                                 .foregroundColor(.red)
                         }
-                        .padding(.horizontal, 8).padding(.vertical, 6)
-                        .background(RoundedRectangle(cornerRadius: 8).fill(theme.surface.opacity(0.9)))
+.padding(.horizontal, 8).padding(.vertical, 6)
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.red.opacity(0.3), lineWidth: 1))
                     }
                 }
