@@ -162,8 +162,8 @@ struct ContentView: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Global mint background for all tabs
-            Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea()
+            // Background per current personality theme
+            personalityManager.currentTheme.background.ignoresSafeArea()
             
             // Main content area
             VStack(spacing: 0) {
@@ -172,8 +172,8 @@ struct ContentView: View {
                 // Current tab content
                 if selectedTab < tabs.count {
                     tabs[selectedTab].view
-                        .foregroundColor(Color.green)
-                        .background(Color(red: 130/255, green: 237/255, blue: 166/255).ignoresSafeArea())
+                        .foregroundColor(personalityManager.currentTheme.text)
+                        .background(personalityManager.currentTheme.background.ignoresSafeArea())
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     Color.clear
@@ -183,6 +183,7 @@ struct ContentView: View {
             // Top navbar overlay
             VStack {
                 SimpleTopNavBar()
+                    .environmentObject(personalityManager)
                 Spacer()
             }
             
@@ -352,12 +353,13 @@ struct ContentView: View {
 
 // Minimal inline top bar to avoid missing dependency during build
 struct SimpleTopNavBar: View {
+    @EnvironmentObject var personalityManager: PersonalityManager
     var body: some View {
         HStack(spacing: 12) {
             Text("NUDGE")
                 .font(.custom("Tanker-Regular", size: 22))
                 .fontWeight(.heavy)
-                .foregroundColor(Color(red: 0.01, green: 0.35, blue: 0.30))
+                .foregroundColor(personalityManager.currentTheme.text)
             Spacer()
         }
         .padding(.horizontal, 16)
