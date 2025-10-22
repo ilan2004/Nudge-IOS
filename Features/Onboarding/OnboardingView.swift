@@ -60,7 +60,7 @@ case .name:
                         .padding(.horizontal, 20)
                         Spacer(minLength: 0)
                     }
-                    .onChange(of: showControls) { visible in
+.onChange(of: showControls) { _, visible in
                         if visible {
                             DispatchQueue.main.async { nameFieldFocused = true }
                         }

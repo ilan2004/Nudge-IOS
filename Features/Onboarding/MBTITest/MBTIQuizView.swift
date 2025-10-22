@@ -64,8 +64,7 @@ struct MBTIQuizView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(spacing: 16) {
-                            ForEach(Array(viewModel.currentRange), id: \.
-self) { idx in
+ForEach(Array(viewModel.currentRange), id: \.self) { idx in
                                 MBTIQuestionRow(
                                     index: idx,
                                     total: viewModel.questions.count,
@@ -155,8 +154,10 @@ self) { idx in
 
     private func onSubmitTapped() {
         if let missing = viewModel.findFirstUnansweredGlobal() {
-            #if canImport(UIKit)
-            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+#if canImport(UIKit)
+            if appSettings.hapticFeedbackEnabled {
+                HapticsService.shared.impact(.rigid)
+            }
             #endif
             // Jump to that page
             withAnimation(.easeInOut) {
