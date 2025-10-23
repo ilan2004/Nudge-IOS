@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 // MARK: - Profile View
 public struct ProfileView: View {
@@ -274,7 +277,7 @@ struct FocusEconomyCard: View {
                 .foregroundColor(theme.text)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 120)
+.frame(height: 100)
         .overlay(alignment: .topTrailing) {
             Image(systemName: "star.fill")
                 .foregroundColor(.yellow)
@@ -290,17 +293,34 @@ struct FocusEconomyCard: View {
             Text("\(coins)")
                 .font(.custom("Tanker-Regular", size: 32))
                 .foregroundColor(theme.text)
+            #if canImport(UIKit)
+            if let uiImg = UIImage(named: "focus coin (1)", in: .main, with: nil) {
+                Image(uiImage: uiImg)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 56, height: 56)
+                    .blur(radius: 3)
+            } else {
+                Image(systemName: "bitcoinsign.circle.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(.orange)
+                    .opacity(0.7)
+            }
+            #else
             Image("focus coin (1)", bundle: .main)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 80, height: 80)
+                .frame(width: 56, height: 56)
                 .blur(radius: 3)
+            #endif
             Text("Focus Coins")
                 .font(.custom("Tanker-Regular", size: 16))
                 .foregroundColor(theme.text)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 120)
+.frame(height: 100)
         .statsPanelSurface()
     }
 }
