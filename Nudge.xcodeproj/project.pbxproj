@@ -55,8 +55,9 @@
 		C10000000000000000000006 /* MBTIQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000006 /* MBTIQuizView.swift */; };
 		C10000000000000000000007 /* MBTIQuestionsProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000007 /* MBTIQuestionsProviders.swift */; };
 		C10000000000000000000008 /* MBTIResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* MBTIResultView.swift */; };
-		C10000000000000000000009 /* MBTIQuizSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* MBTIQuizSheet.swift */; };
+		C10000000000000000000009 /* MBTIQuizSheet in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* MBTIQuizSheet.swift */; };
 		A2000000000000000000001A /* ProfileDecorations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001A /* ProfileDecorations.swift */; };
+		F00000000000000000000002 /* focus coin (1).png in Resources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000001 /* focus coin (1).png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +105,7 @@
 		B20000000000000000000001 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		B20000000000000000000002 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		D30000000000000000000001 /* GuildCardHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuildCardHelpers.swift; sourceTree = "<group>"; };
+		F00000000000000000000001 /* focus coin (1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "focus coin (1).png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,6 +279,7 @@ A1000000000000000000000D /* Profile */ = {
 			isa = PBXGroup;
 			children = (
 				A1000000000000000000000A /* Fonts */,
+				F00000000000000000000003 /* Images */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -287,6 +290,14 @@ A1000000000000000000000D /* Profile */ = {
 				7917D39CE5B94FD88438F7DF /* Tanker-Regular.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		F00000000000000000000003 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000001 /* focus coin (1).png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		D10000000000000000000001 /* Networking */ = {
@@ -388,6 +399,7 @@ A1000000000000000000000D /* Profile */ = {
 				8D1107370486CEB800E47090 /* Preview Assets.xcassets in Resources */,
 				8D1107350486CEB800E47090 /* Assets.xcassets in Resources */,
 				7917D39CE5B94FD88438F7DE /* Tanker-Regular.otf in Resources */,
+				F00000000000000000000002 /* focus coin (1).png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

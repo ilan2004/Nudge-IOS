@@ -233,28 +233,22 @@ struct FocusEconomyCard: View {
                         .foregroundColor(theme.text)
                 }
                 
-                HStack(spacing: 16) {
-                    metric(icon: "star.fill", title: "Focus Points", value: points, accent: .yellow)
-                    metric(icon: "bitcoinsign.circle.fill", title: "Focus Coins", value: coins, accent: .orange)
+                VStack(spacing: 16) {
+                    pointsBox
+                    coinsBox
                 }
                 
                 HStack {
                     Button("History", action: onHistory)
                         .buttonStyle(NavPillStyle(variant: .outline, compact: true))
                     Spacer()
-                    // Treasure chest decorative element
-                    Image(systemName: "shippingbox.fill")
-                        .foregroundColor(.orange.opacity(0.9))
-                        .shadow(color: .orange.opacity(0.6), radius: 8)
-                        .padding(.trailing, 4)
-                        .accessibilityHidden(true)
                 }
             }
             .padding()
             
             // Subtle particle sparkles near currency
             HStack(spacing: 8) {
-                ForEach(0..<6, id: \.self) { i in
+                ForEach(0..<4, id: \.self) { i in
                     Circle()
                         .fill((i % 2 == 0 ? Color.yellow : Color.orange).opacity(0.3))
                         .frame(width: CGFloat(3 + (i % 3)), height: CGFloat(3 + (i % 3)))
@@ -269,30 +263,45 @@ struct FocusEconomyCard: View {
         .onAppear { glow = true }
     }
     
-    private func metric(icon: String, title: String, value: Int, accent: Color) -> some View {
+    private var pointsBox: some View {
         let theme = personalityManager.currentTheme
-        return VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                Image(systemName: icon)
-                    .foregroundColor(accent)
-                    .shadow(color: accent.opacity(0.6), radius: 6)
-                Text(title)
-                    .font(.footnote).foregroundColor(theme.textSecondary)
-            }
-            HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Text("\(value)")
-                        .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(theme.text)
-                    .shadow(color: accent.opacity(0.25), radius: 4)
-                // subtle glow dot
-                Circle()
-                    .fill(accent.opacity(0.7))
-                    .frame(width: 6, height: 6)
-                    .shadow(color: accent.opacity(0.7), radius: 6)
-            }
+        return VStack(alignment: .center, spacing: 8) {
+            Text("\(points)")
+                .font(.custom("Tanker-Regular", size: 32))
+                .foregroundColor(theme.text)
+            Text("Focus Points")
+                .font(.custom("Tanker-Regular", size: 16))
+                .foregroundColor(theme.text)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
+        .frame(maxWidth: .infinity)
+        .frame(height: 160)
+        .overlay(alignment: .topTrailing) {
+            Image(systemName: "star.fill")
+                .foregroundColor(.yellow)
+                .shadow(color: Color.yellow.opacity(0.6), radius: 8)
+                .padding(8)
+        }
+        .statsPanelSurface()
+    }
+    
+    private var coinsBox: some View {
+        let theme = personalityManager.currentTheme
+        return VStack(alignment: .center, spacing: 8) {
+            Text("\(coins)")
+                .font(.custom("Tanker-Regular", size: 32))
+                .foregroundColor(theme.text)
+            Image("focus coin (1)")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 80, height: 80)
+                .blur(radius: 3)
+            Text("Focus Coins")
+                .font(.custom("Tanker-Regular", size: 16))
+                .foregroundColor(theme.text)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 160)
+        .statsPanelSurface()
     }
 }
 
