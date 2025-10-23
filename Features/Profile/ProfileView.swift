@@ -271,7 +271,8 @@ struct FocusEconomyCard: View {
         return VStack(alignment: .center, spacing: 8) {
             Text("\(points)")
                 .font(.custom("Tanker-Regular", size: 32))
-                .foregroundColor(.greenPrimary)
+                .foregroundColor(.nudgeGreen900)
+
             Text("Focus Points")
                 .font(.custom("Tanker-Regular", size: 16))
                 .foregroundColor(.greenPrimary)
@@ -282,8 +283,8 @@ struct FocusEconomyCard: View {
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color.defaultCream)
-                .shadow(color: .greenPrimary, radius: 0, x: 0, y: 4)
-                .shadow(color: Color.greenPrimary.opacity(0.2), radius: 12, x: 0, y: 8)
+                .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
         )
         .overlay(alignment: .topTrailing) {
             Image(systemName: "star.fill")
@@ -317,7 +318,8 @@ struct FocusEconomyCard: View {
             #endif
             Text("\(coins)")
                 .font(.custom("Tanker-Regular", size: 32))
-                .foregroundColor(.greenPrimary)
+                .foregroundColor(.nudgeGreen900)
+
             Text("Focus Coins")
                 .font(.custom("Tanker-Regular", size: 16))
                 .foregroundColor(.greenPrimary)
@@ -328,8 +330,8 @@ struct FocusEconomyCard: View {
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color.defaultCream)
-                .shadow(color: .greenPrimary, radius: 0, x: 0, y: 4)
-                .shadow(color: Color.greenPrimary.opacity(0.2), radius: 12, x: 0, y: 8)
+                .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
         )
     }
 }
