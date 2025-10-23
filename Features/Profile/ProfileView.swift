@@ -233,7 +233,7 @@ struct FocusEconomyCard: View {
                         .foregroundColor(theme.text)
                 }
                 
-                VStack(spacing: 16) {
+                HStack(spacing: 12) {
                     pointsBox
                     coinsBox
                 }
@@ -274,7 +274,7 @@ struct FocusEconomyCard: View {
                 .foregroundColor(theme.text)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 160)
+        .frame(height: 120)
         .overlay(alignment: .topTrailing) {
             Image(systemName: "star.fill")
                 .foregroundColor(.yellow)
@@ -290,7 +290,7 @@ struct FocusEconomyCard: View {
             Text("\(coins)")
                 .font(.custom("Tanker-Regular", size: 32))
                 .foregroundColor(theme.text)
-            Image("focus coin (1)")
+            Image("focus coin (1)", bundle: .main)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 80, height: 80)
@@ -300,7 +300,7 @@ struct FocusEconomyCard: View {
                 .foregroundColor(theme.text)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 160)
+        .frame(height: 120)
         .statsPanelSurface()
     }
 }
