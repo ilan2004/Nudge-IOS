@@ -15,68 +15,113 @@ public struct ProfileView: View {
     public var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                // Identity header
-                identityHeader
-                    .heroCardSurface()
-                    .overlay(alignment: .topTrailing) {
-                        // Level seal/stamp
-                        let darkBrown = Color(red: 0.25, green: 0.20, blue: 0.15)
-                        let stampBg = Color(red: 0.85, green: 0.75, blue: 0.60)
-                        let textBrown = Color(red: 0.20, green: 0.15, blue: 0.12)
-                        ZStack {
-                            Circle()
-                                .fill(stampBg)
-                                .frame(width: 50, height: 50)
-                            Circle()
-                                .stroke(darkBrown, lineWidth: 2)
-                                .frame(width: 50, height: 50)
-                            VStack(spacing: 2) {
-                                Image(systemName: "star.fill")
-                                    .foregroundColor(Color(red: 0.60, green: 0.45, blue: 0.25))
-                                    .font(.caption)
-                                Text("Lv \(currentLevel)")
-                                    .font(.custom("Tanker-Regular", size: 11))
-                                    .foregroundColor(textBrown)
-                            }
-                        }
-                        .padding(12)
+                // Main unified container
+                VStack(spacing: 20) {
+                    // Identity header
+                    identityHeader
+                    
+                    // Separator
+                    let lineBrown = Color(red: 0.45, green: 0.38, blue: 0.30)
+                    Rectangle()
+                        .fill(lineBrown)
+                        .frame(height: 1.5)
+                        .overlay(
+                            Rectangle()
+                                .stroke(style: StrokeStyle(lineWidth: 1.5, dash: [3, 3]))
+                                .foregroundStyle(lineBrown)
+                        )
+                        .padding(.horizontal, 8)
+                    
+                    // Focus economy (Points + Coins)
+                    FocusEconomyCard(points: economy.totalFocusPoints, coins: economy.totalFocusCoins) {
+                        showHistory = true
                     }
-                
-                // Focus economy (Points + Coins)
-                FocusEconomyCard(points: economy.totalFocusPoints, coins: economy.totalFocusCoins) {
-                    showHistory = true
+                    
+                    // Separator
+                    Rectangle()
+                        .fill(lineBrown)
+                        .frame(height: 1.5)
+                        .overlay(
+                            Rectangle()
+                                .stroke(style: StrokeStyle(lineWidth: 1.5, dash: [3, 3]))
+                                .foregroundStyle(lineBrown)
+                        )
+                        .padding(.horizontal, 8)
+                    
+                    // Core stats
+                    StatsGrid(
+                        totalFocusSeconds: focusManager.totalFocusTime,
+                        streakDays: focusManager.currentStreak,
+                        weekly: [24, 36, 12, 48, 30, 60, 15],
+                        distractionsBlocked: 0
+                    )
+                    
+                    // Separator
+                    Rectangle()
+                        .fill(lineBrown)
+                        .frame(height: 1.5)
+                        .overlay(
+                            Rectangle()
+                                .stroke(style: StrokeStyle(lineWidth: 1.5, dash: [3, 3]))
+                                .foregroundStyle(lineBrown)
+                        )
+                        .padding(.horizontal, 8)
+                    
+                    // Achievements strip (placeholder)
+                    AchievementStrip(items: [
+                        .init(title: "Flow Unlocked", unlocked: true),
+                        .init(title: "7-day Streak", unlocked: false),
+                        .init(title: "1000 FP", unlocked: false)
+                    ])
+                    
+                    // Underground Mode toggle (kept as dark nested container)
+                    UndergroundToggleCard(isOn: $appSettings.undergroundMode)
+                        .undergroundModeSurface()
+                    
+                    // Separator
+                    Rectangle()
+                        .fill(lineBrown)
+                        .frame(height: 1.5)
+                        .overlay(
+                            Rectangle()
+                                .stroke(style: StrokeStyle(lineWidth: 1.5, dash: [3, 3]))
+                                .foregroundStyle(lineBrown)
+                        )
+                        .padding(.horizontal, 8)
+                    
+                    // Settings list
+                    SettingsList(
+                        onRetakeMBTI: { personalityManager.resetPersonalityData() },
+                        onNotifications: { /* TODO */ },
+                        onPrivacy: { /* TODO */ },
+                        onAbout: { /* TODO */ }
+                    )
                 }
-                .currencyVaultSurface()
-                
-                // Core stats
-                StatsGrid(
-                    totalFocusSeconds: focusManager.totalFocusTime,
-                    streakDays: focusManager.currentStreak,
-                    weekly: [24, 36, 12, 48, 30, 60, 15],
-                    distractionsBlocked: 0
-                )
-                .statsPanelSurface()
-                
-                // Achievements strip (placeholder)
-                AchievementStrip(items: [
-                    .init(title: "Flow Unlocked", unlocked: true),
-                    .init(title: "7-day Streak", unlocked: false),
-                    .init(title: "1000 FP", unlocked: false)
-                ])
-                .achievementShowcaseSurface()
-                
-                // Underground Mode toggle
-                UndergroundToggleCard(isOn: $appSettings.undergroundMode)
-                    .undergroundModeSurface()
-                
-                // Settings list
-                SettingsList(
-                    onRetakeMBTI: { personalityManager.resetPersonalityData() },
-                    onNotifications: { /* TODO */ },
-                    onPrivacy: { /* TODO */ },
-                    onAbout: { /* TODO */ }
-                )
-                .controlPanelSurface()
+                .padding()
+                .heroCardSurface()
+                .overlay(alignment: .topTrailing) {
+                    // Level seal/stamp (moved from identityHeader)
+                    let darkBrown = Color(red: 0.25, green: 0.20, blue: 0.15)
+                    let stampBg = Color(red: 0.85, green: 0.75, blue: 0.60)
+                    let textBrown = Color(red: 0.20, green: 0.15, blue: 0.12)
+                    ZStack {
+                        Circle()
+                            .fill(stampBg)
+                            .frame(width: 50, height: 50)
+                        Circle()
+                            .stroke(darkBrown, lineWidth: 2)
+                            .frame(width: 50, height: 50)
+                        VStack(spacing: 2) {
+                            Image(systemName: "star.fill")
+                                .foregroundColor(Color(red: 0.60, green: 0.45, blue: 0.25))
+                                .font(.caption)
+                            Text("Lv \(currentLevel)")
+                                .font(.custom("Tanker-Regular", size: 11))
+                                .foregroundColor(textBrown)
+                        }
+                    }
+                    .padding(12)
+                }
                 
                 Spacer(minLength: 12)
             }
@@ -142,7 +187,6 @@ public struct ProfileView: View {
                 )
                 .padding(.horizontal, 8)
         }
-        .padding()
     }
     
     private var currentLevel: Int {
