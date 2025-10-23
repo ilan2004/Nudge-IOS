@@ -99,35 +99,38 @@ public struct ProfileView: View {
                 }
                 .padding()
                 .heroCardSurface()
-                .overlay(alignment: .topTrailing) {
-                    // Level seal/stamp (moved from identityHeader)
-                    let darkBrown = Color(red: 0.25, green: 0.20, blue: 0.15)
-                    let stampBg = Color(red: 0.85, green: 0.75, blue: 0.60)
-                    let textBrown = Color(red: 0.20, green: 0.15, blue: 0.12)
-                    ZStack {
-                        Circle()
-                            .fill(stampBg)
-                            .frame(width: 50, height: 50)
-                        Circle()
-                            .stroke(darkBrown, lineWidth: 2)
-                            .frame(width: 50, height: 50)
-                        VStack(spacing: 2) {
-                            Image(systemName: "star.fill")
-                                .foregroundColor(Color(red: 0.60, green: 0.45, blue: 0.25))
-                                .font(.caption)
-                            Text("Lv \(currentLevel)")
-                                .font(.custom("Tanker-Regular", size: 11))
-                                .foregroundColor(textBrown)
+.overlay(alignment: .topTrailing) {
+                    // Hide level seal when level is 1
+                    if currentLevel > 1 {
+                        let darkBrown = Color(red: 0.25, green: 0.20, blue: 0.15)
+                        let stampBg = Color(red: 0.85, green: 0.75, blue: 0.60)
+                        let textBrown = Color(red: 0.20, green: 0.15, blue: 0.12)
+                        ZStack {
+                            Circle()
+                                .fill(stampBg)
+                                .frame(width: 50, height: 50)
+                            Circle()
+                                .stroke(darkBrown, lineWidth: 2)
+                                .frame(width: 50, height: 50)
+                            VStack(spacing: 2) {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(Color(red: 0.60, green: 0.45, blue: 0.25))
+                                    .font(.caption)
+                                Text("Lv \(currentLevel)")
+                                    .font(.custom("Tanker-Regular", size: 11))
+                                    .foregroundColor(textBrown)
+                            }
                         }
+                        .padding(12)
                     }
-                    .padding(12)
                 }
                 
                 Spacer(minLength: 12)
             }
             .frame(maxWidth: maxContentWidth, alignment: .center)
             .padding(.horizontal, 12)
-            .padding(.top, 14)
+.padding(.top, 14)
+            .padding(.bottom, 40)
             .frame(maxWidth: .infinity)
         }
         .sheet(isPresented: $showHistory) {
