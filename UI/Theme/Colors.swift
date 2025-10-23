@@ -29,6 +29,15 @@ extension Color {
     static let lilacPrimary = Color("LilacPrimary") // var(--color-lilac-300)
     static let yellowPrimary = Color("YellowPrimary") // var(--color-yellow-200)
     
+    // Additional flat colors referenced by CSS variables
+    static let analystLight = Color(red: 233/255, green: 213/255, blue: 1.0) // --color-analyst-light: rgb(233, 213, 255)
+    static let analystAccent = Color(red: 167/255, green: 139/255, blue: 250/255) // --color-analyst-accent: rgb(167, 139, 250)
+    static let analystStrong = Color(red: 124/255, green: 58/255, blue: 237/255) // --color-analyst-strong: rgb(124, 58, 237)
+    static let blushWarm = Color(red: 249/255, green: 168/255, blue: 184/255) // --color-blush-warm: rgb(249, 168, 184)
+    static let lime300 = Color(red: 216/255, green: 226/255, blue: 104/255) // --color-lime-300: rgb(216, 226, 104)
+    static let diplomatBase = mintPrimary // --color-diplomat-base: var(--color-mint-500)
+    static let peachWarm = Color(red: 253/255, green: 186/255, blue: 116/255) // --color-peach-warm: rgb(253, 186, 116)
+    
     // Accent variants
     static let blueAccent = Color("BlueAccent")
     static let tealAccent = Color("TealAccent")

@@ -33,12 +33,26 @@ struct FriendsView: View {
                 .padding(.bottom, 16)
                 
                 // Friends List
-                VStack(spacing: 16) {
-                    ForEach(friends) { friend in
-                        FriendCard(friend: friend) {
+VStack(spacing: 16) {
+                    let bgPalette: [Color] = [
+                        .amberPrimary,
+                        .pinkPrimary,
+                        .analystLight,
+                        .analystAccent,
+                        .analystStrong,
+                        .blushWarm,
+                        .yellowPrimary,
+                        .lime300,
+                        .diplomatBase,
+                        .peachWarm
+                    ]
+                    ForEach(friends.indices, id: \.self) { index in
+                        let friend = friends[index]
+                        let color = bgPalette[index % bgPalette.count]
+                        FriendCard(friend: friend, onTap: {
                             selectedFriend = friend
                             showDetailOverlay = true
-                        }
+                        }, backgroundColor: color)
                         .padding(.horizontal)
                     }
                 }

@@ -3,6 +3,7 @@ import SwiftUI
 struct FriendCard: View {
     let friend: Friend
     var onTap: () -> Void
+    var backgroundColor: Color? = nil
     
     var body: some View {
         HStack(spacing: 16) {
@@ -56,9 +57,9 @@ struct FriendCard: View {
             }
         }
         .padding(16)
-        .background(
+.background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color(.systemBackground))
+                .fill(backgroundColor ?? Color(.systemBackground))
                 .shadow(color: friend.personalityColors.text.opacity(0.3), radius: 0, x: 0, y: 4)
                 .shadow(color: friend.personalityColors.text.opacity(0.15), radius: 8, x: 0, y: 8)
         )
