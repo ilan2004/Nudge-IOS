@@ -18,20 +18,20 @@ struct FriendCard: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(friend.name)
                     .font(.custom("Tanker-Regular", size: 18))
-                    .foregroundColor(Color.guildText)
+                    .foregroundColor(friend.personalityColors.text)
                 
                 HStack(spacing: 8) {
                     Text(friend.relationshipType.displayName)
                         .font(.caption)
-                        .foregroundColor(Color.guildTextSecondary)
+                        .foregroundColor(friend.personalityColors.textSecondary)
                     
                     Circle()
                         .frame(width: 4, height: 4)
-                        .foregroundColor(Color.guildTextSecondary)
+                        .foregroundColor(friend.personalityColors.textSecondary)
                     
                     Text(friend.personalityType.displayName)
                         .font(.caption)
-                        .foregroundColor(Color.guildTextSecondary)
+                        .foregroundColor(friend.personalityColors.textSecondary)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(friend.personalityColors.primary.opacity(0.2))
@@ -49,19 +49,19 @@ struct FriendCard: View {
                 Text("\(friend.focusPoints)")
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundColor(Color.guildText)
+                    .foregroundColor(friend.personalityColors.text)
             }
         }
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(backgroundColor ?? Color(.systemBackground))
+                .fill(backgroundColor ?? friend.personalityColors.background)
                 .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
                 .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16)
-                .stroke(friend.personalityColors.primary, lineWidth: 1.5)
+                .stroke(Color.nudgeGreen900, lineWidth: 1.5)
         )
         .onTapGesture(perform: onTap)
     }

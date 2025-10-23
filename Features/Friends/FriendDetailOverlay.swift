@@ -48,11 +48,11 @@ struct FriendDetailOverlay: View {
                             .padding(.horizontal, 10)
                             .padding(.vertical, 6)
                             .background(
-                                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: 10)
                                     .fill(Color.guildParchmentDark.opacity(0.6))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .stroke(Color.guildBrown, lineWidth: 1)
+                                            .stroke(Color.nudgeGreen900, lineWidth: 1)
                                     )
                             )
                         
@@ -71,7 +71,7 @@ struct FriendDetailOverlay: View {
                                 .fill(Color.guildParchmentDark.opacity(0.4))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.guildBrown, lineWidth: 1)
+                                        .stroke(Color.nudgeGreen900, lineWidth: 1)
                                 )
                         )
                     }
@@ -169,7 +169,7 @@ struct FriendDetailOverlay: View {
                 .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                 .overlay(
                     RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .stroke(Color.guildBrown, lineWidth: 2)
+                        .stroke(Color.nudgeGreen900, lineWidth: 2)
                 )
         )
         .cornerRadius(24, corners: [.topLeft, .topRight])
@@ -210,12 +210,12 @@ private struct StatCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color.defaultCream)
-                .overlay(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(Color.guildBrown.opacity(0.25), lineWidth: 1)
-                )
+                        .fill(Color.defaultCream)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1)
+                        )
         )
     }
 }

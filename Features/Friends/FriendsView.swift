@@ -43,32 +43,23 @@ struct FriendsView: View {
                 
                 // Friends List
                 VStack(spacing: 20) {
-                    let bgPalette: [Color] = [
-                        .defaultCream,
-                        Color(red: 0.95, green: 0.92, blue: 0.88),
-                        .guildParchment,
-                        .analystLight.opacity(0.4),
-                        .diplomatBase.opacity(0.3),
-                        .peachWarm.opacity(0.4),
-                        .blushWarm.opacity(0.3),
-                        .lime300.opacity(0.4)
-                    ]
                     ForEach(friends.indices, id: \.self) { index in
                         let friend = friends[index]
-                        let color = bgPalette[index % bgPalette.count]
                         FriendCard(friend: friend, onTap: {
                             selectedFriend = friend
                             showDetailOverlay = true
-                        }, backgroundColor: color)
+                        })
                     }
                 }
                 .padding(12)
                 .background(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .fill(Color.guildParchment)
+                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
                         .overlay(
                             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .stroke(Color.guildBrown.opacity(0.25), lineWidth: 1)
+                                .stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1)
                         )
                 )
                 .padding(.horizontal)
