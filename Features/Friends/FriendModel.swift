@@ -18,6 +18,10 @@ struct Friend: Identifiable, Codable {
         PersonalityTheme.colors(for: personalityType, gender: gender)
     }
     
+    var avatarImageName: String {
+        PersonalityTheme.mediaName(for: personalityType, gender: gender, isVideo: false)
+    }
+    
     var formattedDailyScreenTime: String {
         String(format: "%.1f", dailyScreenTimeHours)
     }

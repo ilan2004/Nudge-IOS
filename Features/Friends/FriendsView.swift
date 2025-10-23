@@ -16,16 +16,25 @@ struct FriendsView: View {
                 HStack {
                     Text("Friends")
                         .font(.custom("Tanker-Regular", size: 28))
-                        .fontWeight(.bold)
+                        .foregroundColor(Color.guildText)
                         .padding(.horizontal)
                     
                     Spacer()
                     
                     // Add Friend Button
                     Button(action: {}) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title2)
-                            .foregroundColor(personalityManager.currentTheme.primary)
+                        Image(systemName: "plus")
+                            .font(.headline)
+                            .foregroundColor(personalityManager.currentTheme.secondary)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(
+                                Capsule()
+                                    .fill(personalityManager.currentTheme.primary.opacity(0.12))
+                                    .overlay(
+                                        Capsule().stroke(personalityManager.currentTheme.primary, lineWidth: 1)
+                                    )
+                            )
                     }
                     .padding(.trailing)
                 }
@@ -33,18 +42,16 @@ struct FriendsView: View {
                 .padding(.bottom, 16)
                 
                 // Friends List
-VStack(spacing: 16) {
+                VStack(spacing: 20) {
                     let bgPalette: [Color] = [
-                        .amberPrimary,
-                        .pinkPrimary,
-                        .analystLight,
-                        .analystAccent,
-                        .analystStrong,
-                        .blushWarm,
-                        .yellowPrimary,
-                        .lime300,
-                        .diplomatBase,
-                        .peachWarm
+                        .defaultCream,
+                        Color(red: 0.95, green: 0.92, blue: 0.88),
+                        .guildParchment,
+                        .analystLight.opacity(0.4),
+                        .diplomatBase.opacity(0.3),
+                        .peachWarm.opacity(0.4),
+                        .blushWarm.opacity(0.3),
+                        .lime300.opacity(0.4)
                     ]
                     ForEach(friends.indices, id: \.self) { index in
                         let friend = friends[index]
@@ -53,9 +60,18 @@ VStack(spacing: 16) {
                             selectedFriend = friend
                             showDetailOverlay = true
                         }, backgroundColor: color)
-                        .padding(.horizontal)
                     }
                 }
+                .padding(12)
+                .background(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(Color.guildParchment)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                .stroke(Color.guildBrown.opacity(0.25), lineWidth: 1)
+                        )
+                )
+                .padding(.horizontal)
                 .padding(.bottom, 24)
             }
         }
