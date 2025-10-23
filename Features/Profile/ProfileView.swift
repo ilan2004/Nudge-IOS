@@ -271,40 +271,41 @@ struct FocusEconomyCard: View {
         return VStack(alignment: .center, spacing: 8) {
             Text("\(points)")
                 .font(.custom("Tanker-Regular", size: 32))
-                .foregroundColor(theme.text)
+                .foregroundColor(.greenPrimary)
             Text("Focus Points")
                 .font(.custom("Tanker-Regular", size: 16))
-                .foregroundColor(theme.text)
+                .foregroundColor(.greenPrimary)
         }
+        .padding(12)
         .frame(maxWidth: .infinity)
-.frame(height: 100)
+        .frame(height: 120)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color.defaultCream)
+                .shadow(color: .greenPrimary, radius: 0, x: 0, y: 4)
+                .shadow(color: Color.greenPrimary.opacity(0.2), radius: 12, x: 0, y: 8)
+        )
         .overlay(alignment: .topTrailing) {
             Image(systemName: "star.fill")
                 .foregroundColor(.yellow)
-                .shadow(color: Color.yellow.opacity(0.6), radius: 8)
                 .padding(8)
         }
-        .statsPanelSurface()
     }
     
     private var coinsBox: some View {
         let theme = personalityManager.currentTheme
         return VStack(alignment: .center, spacing: 8) {
-            Text("\(coins)")
-                .font(.custom("Tanker-Regular", size: 32))
-                .foregroundColor(theme.text)
             #if canImport(UIKit)
             if let uiImg = UIImage(named: "focus coin (1)", in: .main, with: nil) {
                 Image(uiImage: uiImg)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 56, height: 56)
-                    .blur(radius: 3)
+                    .frame(width: 80, height: 80)
             } else {
                 Image(systemName: "bitcoinsign.circle.fill")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 40, height: 40)
+                    .frame(width: 80, height: 80)
                     .foregroundColor(.orange)
                     .opacity(0.7)
             }
@@ -312,16 +313,24 @@ struct FocusEconomyCard: View {
             Image("focus coin (1)", bundle: .main)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 56, height: 56)
-                .blur(radius: 3)
+                .frame(width: 80, height: 80)
             #endif
+            Text("\(coins)")
+                .font(.custom("Tanker-Regular", size: 32))
+                .foregroundColor(.greenPrimary)
             Text("Focus Coins")
                 .font(.custom("Tanker-Regular", size: 16))
-                .foregroundColor(theme.text)
+                .foregroundColor(.greenPrimary)
         }
+        .padding(12)
         .frame(maxWidth: .infinity)
-.frame(height: 100)
-        .statsPanelSurface()
+        .frame(height: 120)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color.defaultCream)
+                .shadow(color: .greenPrimary, radius: 0, x: 0, y: 4)
+                .shadow(color: Color.greenPrimary.opacity(0.2), radius: 12, x: 0, y: 8)
+        )
     }
 }
 
