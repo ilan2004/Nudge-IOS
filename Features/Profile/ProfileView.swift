@@ -273,13 +273,13 @@ struct FocusEconomyCard: View {
                 .font(.custom("Tanker-Regular", size: 32))
                 .foregroundColor(.nudgeGreen900)
 
-            Text("Focus Points")
+Text("Focus Points")
                 .font(.custom("Tanker-Regular", size: 16))
-                .foregroundColor(.greenPrimary)
+                .foregroundColor(.nudgeGreen900)
         }
         .padding(12)
         .frame(maxWidth: .infinity)
-        .frame(height: 120)
+.frame(height: 160)
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color.defaultCream)
@@ -320,13 +320,13 @@ struct FocusEconomyCard: View {
                 .font(.custom("Tanker-Regular", size: 32))
                 .foregroundColor(.nudgeGreen900)
 
-            Text("Focus Coins")
+Text("Focus Coins")
                 .font(.custom("Tanker-Regular", size: 16))
-                .foregroundColor(.greenPrimary)
+                .foregroundColor(.nudgeGreen900)
         }
         .padding(12)
         .frame(maxWidth: .infinity)
-        .frame(height: 120)
+.frame(height: 160)
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color.defaultCream)
