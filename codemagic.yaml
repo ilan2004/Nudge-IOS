@@ -385,14 +385,15 @@ workflows:
         script: |
           # Write the multiline private key to a file for CLI consumption
           echo "$APP_STORE_CONNECT_PRIVATE_KEY" > appstore_key.p8
-          # Publish the IPA to TestFlight using Codemagic CLI tools
+          # Publish the IPA to TestFlight using Codemagic CLI tools (kebab-case flags)
           app-store-connect publish \
-            --apiKeyId "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
-            --issuerId "$APP_STORE_CONNECT_ISSUER_ID" \
-            --privateKey @appstore_key.p8 \
+            --api-key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+            --private-key @appstore_key.p8 \
+            --bundle-id "$BUNDLE_ID" \
             --path "$PWD/build/ios" \
-            --submitToTestflight true \
-            --betaGroups "Internal Testers"
+            --submit-to-testflight true \
+            --beta-groups "Internal Testers"
     artifacts:
       - build/ios/*.ipa
       - build/*.xcarchive
