@@ -193,8 +193,6 @@ workflows:
         BUNDLE_ID: "com.ilan.nudgeapp"
         DEVELOPMENT_TEAM: "Z83Y9VJTKH" # Your Apple Team ID
         API_BASE_URL: "https://api-dev.nudge.starshape.in"
-      groups:
-        - nudge # Contains: APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY
       xcode: latest
       cocoapods: default
     scripts:
@@ -257,15 +255,9 @@ workflows:
       - build/*.xcarchive
     publishing:
       app_store_connect:
-        api_key:
-          key_id: "$APP_STORE_CONNECT_KEY_IDENTIFIER"
-          issuer_id: "$APP_STORE_CONNECT_ISSUER_ID"
-          key: "$APP_STORE_CONNECT_PRIVATE_KEY"
         submit_to_testflight: true
         beta_groups:
           - Internal Testers
-        # optional metadata
-        # app_id: 1234567890
       email:
         recipients:
           - your-email@example.com
