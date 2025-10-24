@@ -363,6 +363,11 @@ workflows:
           JSON
       - name: Build archive (Release)
         script: |
+          # Bump build number to avoid duplicate uploads
+          BUILD_NUM="${BUILD_NUMBER:-}"
+          if [ -z "$BUILD_NUM" ]; then BUILD_NUM="${CM_BUILD_ID:-}"; fi
+          if [ -z "$BUILD_NUM" ]; then BUILD_NUM="$(date +%Y%m%d%H%M)"; fi
+          echo "Using build number: $BUILD_NUM"
           xcodebuild archive \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -373,6 +378,7 @@ workflows:
             DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
             API_BASE_URL="$API_BASE_URL" \
             ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon \
+            CURRENT_PROJECT_VERSION="$BUILD_NUM" \
             -allowProvisioningUpdates \
             -quiet || exit 1
       - name: Export signed IPA (app-store)
