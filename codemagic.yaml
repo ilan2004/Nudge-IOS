@@ -267,9 +267,10 @@ workflows:
       - name: Set up signing (automatic via App Store Connect)
         script: |
           keychain initialize
-          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" --private-key "$APP_STORE_CONNECT_PRIVATE_KEY" || true
           keychain add-certificates
           xcode-project use-profiles
+          echo "Installed provisioning profiles:"; ls -la ~/Library/MobileDevice/Provisioning\ Profiles || true
       - name: Build archive (Release)
         script: |
           xcodebuild archive \
@@ -284,30 +285,40 @@ workflows:
             -quiet || exit 1
       - name: Export signed IPA (app-store)
         script: |
-          cat > ExportOptions.plist <<EOF
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key>
-            <string>app-store</string>
-            <key>signingStyle</key>
-            <string>automatic</string>
-            <key>teamID</key>
-            <string>${DEVELOPMENT_TEAM}</string>
-            <key>uploadBitcode</key>
-            <false/>
-            <key>compileBitcode</key>
-            <false/>
-          </dict>
-          </plist>
-          EOF
-          xcodebuild -exportArchive \
-            -archivePath "$PWD/build/$XCODE_SCHEME.xcarchive" \
-            -exportOptionsPlist ExportOptions.plist \
-            -exportPath "$PWD/build/ios" \
-            -allowProvisioningUpdates \
-            -quiet || exit 1
+          # Prefer codemagic CLI helper which handles export profiles cleanly
+          xcode-project build-ipa \
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --archive-path "$PWD/build/$XCODE_SCHEME.xcarchive" \
+            --export-method app-store-connect \
+            --output "$PWD/build/ios" \
+            --allow-provisioning-updates || {
+              echo "build-ipa failed; falling back to xcodebuild -exportArchive" >&2
+              cat > ExportOptions.plist <<EOF
+              <?xml version="1.0" encoding="UTF-8"?>
+              <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+              <plist version="1.0">
+              <dict>
+                <key>method</key>
+                <string>app-store-connect</string>
+                <key>signingStyle</key>
+                <string>automatic</string>
+                <key>teamID</key>
+                <string>${DEVELOPMENT_TEAM}</string>
+                <key>uploadBitcode</key>
+                <false/>
+                <key>compileBitcode</key>
+                <false/>
+              </dict>
+              </plist>
+              EOF
+              xcodebuild -exportArchive \
+                -archivePath "$PWD/build/$XCODE_SCHEME.xcarchive" \
+                -exportOptionsPlist ExportOptions.plist \
+                -exportPath "$PWD/build/ios" \
+                -allowProvisioningUpdates \
+                -quiet || exit 1
+            }
           ls -la "$PWD/build/ios"/*.ipa || true
       - name: Upload to TestFlight via CLI
         script: |
