@@ -183,18 +183,6 @@ struct FriendDetailOverlay: View {
                     .padding(12)
             }
         }
-        // Top-edge primary green shadow (like navbar/tab bar)
-        .overlay(alignment: .top) {
-            ZStack {
-                LinearGradient(colors: [Color.nudgeGreen900.opacity(0.45), .clear], startPoint: .top, endPoint: .bottom)
-                    .frame(height: 14)
-                LinearGradient(colors: [Color.nudgeGreen900.opacity(0.2), .clear], startPoint: .top, endPoint: .bottom)
-                    .frame(height: 36)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-            .allowsHitTesting(false)
-            .zIndex(1)
-        }
     }
 }
 

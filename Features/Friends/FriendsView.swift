@@ -72,7 +72,6 @@ struct FriendsView: View {
                 FriendDetailOverlay(friend: friend)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
-                    .presentationBackground(.clear)
             }
         }
     }
