@@ -8,9 +8,6 @@ workflows:
         XCODE_PROJECT: "Nudge.xcodeproj"
         XCODE_SCHEME: "Nudge"
         BUNDLE_ID: "com.ilan.nudgeapp.Z83Y9VJTKH"
-        # Optional: force a specific App Store profile name if you uploaded it to Codemagic
-        # Set in UI as an env var if desired, e.g. "nudge dist 1"
-        DISTRIBUTION_PROFILE_NAME: ""
         # Backend base URL (override in Codemagic UI per environment)
         API_BASE_URL: "https://api-dev.nudge.starshape.in"
       xcode: latest
