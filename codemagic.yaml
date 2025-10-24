@@ -194,7 +194,7 @@ workflows:
         DEVELOPMENT_TEAM: "Z83Y9VJTKH" # Your Apple Team ID
         API_BASE_URL: "https://api-dev.nudge.starshape.in"
       groups:
-        - app_store_connect # Define in Codemagic: APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY
+        - nudge # Contains: APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY
       xcode: latest
       cocoapods: default
     scripts:
