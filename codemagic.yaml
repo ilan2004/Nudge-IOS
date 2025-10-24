@@ -252,21 +252,18 @@ workflows:
             -allowProvisioningUpdates \
             -quiet || exit 1
           ls -la "$PWD/build/ios"/*.ipa || true
+      - name: Upload to TestFlight via CLI
+        script: |
+          # Write the multiline private key to a file for CLI consumption
+          echo "$APP_STORE_CONNECT_PRIVATE_KEY" > appstore_key.p8
+          # Publish the IPA to TestFlight using Codemagic CLI tools
+          app-store-connect publish \
+            --apiKeyId "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --issuerId "$APP_STORE_CONNECT_ISSUER_ID" \
+            --privateKey @appstore_key.p8 \
+            --path "$PWD/build/ios" \
+            --submitToTestflight true \
+            --betaGroups "Internal Testers"
     artifacts:
       - build/ios/*.ipa
       - build/*.xcarchive
-    publishing:
-      app_store_connect:
-        api_key:
-          key_id: "$APP_STORE_CONNECT_KEY_IDENTIFIER"
-          issuer_id: "$APP_STORE_CONNECT_ISSUER_ID"
-          key: "$APP_STORE_CONNECT_PRIVATE_KEY"
-        submit_to_testflight: true
-        beta_groups:
-          - Internal Testers
-      email:
-        recipients:
-          - your-email@example.com
-        notify:
-          success: true
-          failure: true
