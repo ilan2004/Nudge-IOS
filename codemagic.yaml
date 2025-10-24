@@ -393,7 +393,6 @@ workflows:
             --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
             --private-key "$PRIV_KEY_CONTENT" \
-            --bundle-id "$BUNDLE_ID" \
             --path "$IPA_PATH" \
             --testflight \
             --beta-group "Internal Testers" \
