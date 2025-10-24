@@ -590,7 +590,7 @@ C01FCF4F08A954540054247B /* Debug */ = {
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ilan2004.nudge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilan.nudgeapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				INFOPLIST_KEY_API_BASE_URL = "$(API_BASE_URL)";
 				PROVISIONING_PROFILE = "";
@@ -624,7 +624,7 @@ C01FCF5008A954540054247B /* Release */ = {
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ilan2004.nudge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilan.nudgeapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				INFOPLIST_KEY_API_BASE_URL = "$(API_BASE_URL)";
 				PROVISIONING_PROFILE = "";

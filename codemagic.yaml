@@ -7,7 +7,7 @@ workflows:
       vars:
         XCODE_PROJECT: "Nudge.xcodeproj"
         XCODE_SCHEME: "Nudge"
-        BUNDLE_ID: "com.ilan2004.nudge"
+        BUNDLE_ID: "com.ilan.nudgeapp"
         # Backend base URL (override in Codemagic UI per environment)
         API_BASE_URL: "https://api-dev.nudge.starshape.in"
       xcode: latest
@@ -118,7 +118,7 @@ workflows:
           if [ ! -d "$APP_PATH" ]; then echo "Archive missing app at $APP_PATH" >&2; exit 1; fi
           echo "Listing bundled fonts:"; find "$APP_PATH" -iname "*.otf" -o -iname "*.ttf" -print || true
           # Create UIAppFonts if missing
-          if ! /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" >/dev/null 2>&1; then
+          if ! /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" >/dev/null 2>&1
             echo "UIAppFonts key missing; creating..."
             /usr/libexec/PlistBuddy -c 'Add :UIAppFonts array' "$APP_PATH/Info.plist"
           fi
@@ -178,6 +178,97 @@ workflows:
       email:
         recipients:
           - your-email@example.com # Replace with your email
+        notify:
+          success: true
+          failure: true
+
+  ios-testflight:
+    name: iOS TestFlight (Automatic Signing)
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      vars:
+        XCODE_PROJECT: "Nudge.xcodeproj"
+        XCODE_SCHEME: "Nudge"
+        BUNDLE_ID: "com.ilan.nudgeapp"
+        DEVELOPMENT_TEAM: "Z83Y9VJTKH" # Your Apple Team ID
+        API_BASE_URL: "https://api-dev.nudge.starshape.in"
+      groups:
+        - app_store_connect # Define in Codemagic: APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install Codemagic CLI tools
+        script: |
+          pip3 install --user codemagic-cli-tools || pip3 install codemagic-cli-tools
+          which xcode-project || echo "codemagic-cli-tools installed"
+      - name: Install CocoaPods (if any)
+        script: |
+          if [ -f "Podfile" ]; then
+            pod install
+          fi
+      - name: Set up signing (automatic via App Store Connect)
+        script: |
+          keychain initialize
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          keychain add-certificates
+          xcode-project use-profiles
+      - name: Build archive (Release)
+        script: |
+          xcodebuild archive \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            -archivePath "$PWD/build/$XCODE_SCHEME.xcarchive" \
+            DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
+            API_BASE_URL="$API_BASE_URL" \
+            -allowProvisioningUpdates \
+            -quiet || exit 1
+      - name: Export signed IPA (app-store)
+        script: |
+          cat > ExportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+            <key>teamID</key>
+            <string>${DEVELOPMENT_TEAM}</string>
+            <key>uploadBitcode</key>
+            <false/>
+            <key>compileBitcode</key>
+            <false/>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$PWD/build/$XCODE_SCHEME.xcarchive" \
+            -exportOptionsPlist ExportOptions.plist \
+            -exportPath "$PWD/build/ios" \
+            -allowProvisioningUpdates \
+            -quiet || exit 1
+          ls -la "$PWD/build/ios"/*.ipa || true
+    artifacts:
+      - build/ios/*.ipa
+      - build/*.xcarchive
+    publishing:
+      app_store_connect:
+        api_key:
+          key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+          issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+          key: $APP_STORE_CONNECT_PRIVATE_KEY
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers
+        # optional metadata
+        # app_id: 1234567890
+      email:
+        recipients:
+          - your-email@example.com
         notify:
           success: true
           failure: true

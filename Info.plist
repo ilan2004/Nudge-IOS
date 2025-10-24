@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Nudge</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.mindshift.nudge</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleName</key>
 	<string>Nudge</string>
 	<key>CFBundleShortVersionString</key>
