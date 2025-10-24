@@ -280,11 +280,17 @@ workflows:
             security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN" >/dev/null 2>&1 || true
           fi
 
-          # Profiles via App Store Connect API
-          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" --private-key "$APP_STORE_CONNECT_PRIVATE_KEY" --verbose
+          # Profiles via App Store Connect API (may fail if it tries to save certs without private key) — don't fail the build
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" --private-key "$APP_STORE_CONNECT_PRIVATE_KEY" --verbose || true
 
           # Option B: Import certificates uploaded in Codemagic UI (Teams > Code signing identities)
           keychain add-certificates
+
+          # Option C: Install provisioning profile from env if provided
+          if [ -n "${DIST_MOBILEPROVISION_BASE64:-}" ]; then
+            mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+            echo "$DIST_MOBILEPROVISION_BASE64" | base64 --decode > "$HOME/Library/MobileDevice/Provisioning Profiles/nudge_dist_profile.mobileprovision"
+          fi
 
           xcode-project use-profiles
 
@@ -292,7 +298,7 @@ workflows:
           echo "Installed provisioning profiles:"; ls -la ~/Library/MobileDevice/Provisioning\ Profiles || true
           # Fail fast if no App Store profile for this bundle id is present
           if ! ls -1 ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision >/dev/null 2>&1; then
-            echo "No provisioning profiles installed. Check App Store Connect API key/permissions and BUNDLE_ID." >&2
+            echo "No provisioning profiles installed. Provide APP_STORE_CONNECT_* with permissions or set DIST_MOBILEPROVISION_BASE64." >&2
             exit 1
           fi
       - name: Build archive (Release)
