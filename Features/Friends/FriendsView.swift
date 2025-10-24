@@ -67,11 +67,12 @@ struct FriendsView: View {
             }
         }
         .frame(maxWidth: 440)
-        .sheet(isPresented: $showDetailOverlay) {
+.sheet(isPresented: $showDetailOverlay) {
             if let friend = selectedFriend {
                 FriendDetailOverlay(friend: friend)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
+                    .presentationBackground(.clear)
             }
         }
     }
