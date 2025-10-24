@@ -273,8 +273,11 @@ workflows:
           if [ -n "${DIST_P12_BASE64:-}" ]; then
             echo "Importing distribution certificate from env..."
             echo "$DIST_P12_BASE64" | base64 --decode > dist.p12
-            security import dist.p12 -P "${DIST_P12_PASSWORD:-}" -k "$KEYCHAIN_PATH" -T /usr/bin/codesign -T /usr/bin/security || {
+            KEYCHAIN=$(security default-keychain -d user | tr -d '" ')
+            [ -n "$KEYCHAIN" ] || KEYCHAIN="$HOME/Library/codemagic-cli-tools/keychains/default.keychain-db"
+            security import dist.p12 -P "${DIST_P12_PASSWORD:-}" -k "$KEYCHAIN" -T /usr/bin/codesign -T /usr/bin/security || {
               echo "Failed to import dist.p12" >&2; exit 1; }
+            security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN" >/dev/null 2>&1 || true
           fi
 
           # Profiles via App Store Connect API
