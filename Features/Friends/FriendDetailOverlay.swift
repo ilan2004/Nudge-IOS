@@ -183,6 +183,15 @@ struct FriendDetailOverlay: View {
                     .padding(12)
             }
         }
+        // Top-edge primary green shadow (like navbar/tab bar)
+        .overlay(alignment: .top) {
+            Rectangle()
+                .fill(Color.clear)
+                .frame(height: 1)
+                .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: -4)
+                .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: -8)
+                .allowsHitTesting(false)
+        }
     }
 }
 
