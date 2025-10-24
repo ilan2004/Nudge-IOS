@@ -455,7 +455,6 @@ workflows:
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
             --private-key "$PRIV_KEY_CONTENT" \
             --path "$IPA_PATH" \
-            --testflight \
             --platform IOS
     artifacts:
       - build/ios/*.ipa
