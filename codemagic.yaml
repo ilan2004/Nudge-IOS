@@ -450,7 +450,6 @@ workflows:
             --private-key "$PRIV_KEY_CONTENT" \
             --path "$IPA_PATH" \
             --testflight \
-            --beta-group "Internal Testers" \
             --platform IOS
     artifacts:
       - build/ios/*.ipa
