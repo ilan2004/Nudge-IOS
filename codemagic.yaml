@@ -283,13 +283,19 @@ workflows:
           # Profiles via App Store Connect API (may fail if it tries to save certs without private key) — don't fail the build
           app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" --private-key "$APP_STORE_CONNECT_PRIVATE_KEY" --verbose || true
 
-          # Option B: Import certificates uploaded in Codemagic UI (Teams > Code signing identities)
-          keychain add-certificates
+# Option B: Import certificates uploaded in Codemagic UI (Teams > Code signing identities)
+          keychain add-certificates || true
 
           # Option C: Install provisioning profile from env if provided
           if [ -n "${DIST_MOBILEPROVISION_BASE64:-}" ]; then
             mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
             echo "$DIST_MOBILEPROVISION_BASE64" | base64 --decode > "$HOME/Library/MobileDevice/Provisioning Profiles/nudge_dist_profile.mobileprovision"
+          fi
+
+# Verify we have a Distribution identity installed before proceeding
+          if ! security find-identity -v -p codesigning | grep -q "Apple Distribution"; then
+            echo "No Apple Distribution identity found in keychain. Ensure DIST_P12_BASE64/PASSWORD are set correctly or upload .p12 via Teams." >&2
+            exit 1
           fi
 
           xcode-project use-profiles
