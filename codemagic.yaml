@@ -286,26 +286,30 @@ workflows:
       - name: Export signed IPA (app-store)
         script: |
           set -euo pipefail
-          # Prefer Codemagic CLI helper which handles export profiles cleanly
+          # Prefer Codemagic CLI helper (auto-detects archive/export paths & profiles)
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME" \
-            --archive-path "$PWD/build/$XCODE_SCHEME.xcarchive" \
-            --export-method app-store \
-            --output "$PWD/build/ios" \
-            --allow-provisioning-updates || {
+            --scheme "$XCODE_SCHEME" || {
               echo "build-ipa failed; falling back to xcodebuild -exportArchive" >&2
+              # Create ExportOptions with manual signing to avoid Apple ID account requirement
               printf '%s\n' \
                 '<?xml version="1.0" encoding="UTF-8"?>' \
                 '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
                 '<plist version="1.0">' \
                 '<dict>' \
                 '  <key>method</key>' \
-                '  <string>app-store</string>' \
+                '  <string>app-store-connect</string>' \
                 '  <key>signingStyle</key>' \
-                '  <string>automatic</string>' \
+                '  <string>manual</string>' \
                 '  <key>teamID</key>' \
                 "  <string>${DEVELOPMENT_TEAM}</string>" \
+                '  <key>signingCertificate</key>' \
+                '  <string>Apple Distribution</string>' \
+                '  <key>provisioningProfiles</key>' \
+                '  <dict>' \
+                "    <key>${BUNDLE_ID}</key>" \
+                "    <string>${BUNDLE_ID}</string>" \
+                '  </dict>' \
                 '  <key>uploadBitcode</key>' \
                 '  <false/>' \
                 '  <key>compileBitcode</key>' \
@@ -316,7 +320,6 @@ workflows:
                 -archivePath "$PWD/build/$XCODE_SCHEME.xcarchive" \
                 -exportOptionsPlist ExportOptions.plist \
                 -exportPath "$PWD/build/ios" \
-                -allowProvisioningUpdates \
                 -quiet || exit 1
             }
           ls -la "$PWD/build/ios"/*.ipa || true
