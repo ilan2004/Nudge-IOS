@@ -291,7 +291,25 @@ workflows:
             --project "$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" || {
               echo "build-ipa failed; falling back to xcodebuild -exportArchive" >&2
-              # Create ExportOptions with manual signing to avoid Apple ID account requirement
+              # Resolve installed App Store provisioning profile name for this bundle id
+              PROFILE_NAME=""
+              for p in "$HOME"/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision; do
+                [ -e "$p" ] || continue
+                XML=$(security cms -D -i "$p")
+                BID=$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:application-identifier' /dev/stdin <<<"$XML" 2>/dev/null || true)
+                NAME=$(/usr/libexec/PlistBuddy -c 'Print :Name' /dev/stdin <<<"$XML" 2>/dev/null || true)
+                if [[ "$BID" == "${DEVELOPMENT_TEAM}.${BUNDLE_ID}" ]]; then
+                  if ! /usr/libexec/PlistBuddy -c 'Print :ProvisionedDevices' /dev/stdin <<<"$XML" >/dev/null 2>&1; then
+                    PROFILE_NAME="$NAME"; break
+                  fi
+                fi
+              done
+              if [ -z "$PROFILE_NAME" ]; then
+                echo "No App Store profile installed for $BUNDLE_ID; ensure fetch-signing-files created and installed one." >&2
+                ls -la "$HOME/Library/MobileDevice/Provisioning Profiles" || true
+                exit 1
+              fi
+              # Create ExportOptions with manual signing using the resolved profile
               printf '%s\n' \
                 '<?xml version="1.0" encoding="UTF-8"?>' \
                 '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
@@ -308,7 +326,7 @@ workflows:
                 '  <key>provisioningProfiles</key>' \
                 '  <dict>' \
                 "    <key>${BUNDLE_ID}</key>" \
-                "    <string>${BUNDLE_ID}</string>" \
+                "    <string>${PROFILE_NAME}</string>" \
                 '  </dict>' \
                 '  <key>uploadBitcode</key>' \
                 '  <false/>' \
