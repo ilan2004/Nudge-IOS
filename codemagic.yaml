@@ -207,6 +207,63 @@ workflows:
           if [ -f "Podfile" ]; then
             pod install
           fi
+      - name: Ensure Friends files are in Xcode target (auto-add via xcodeproj)
+        script: |
+          echo "Installing xcodeproj gem to modify project file..."
+          gem install xcodeproj -N
+          ruby - <<'RUBY'
+          require 'xcodeproj'
+          proj_path = 'Nudge.xcodeproj'
+          project = Xcodeproj::Project.open(proj_path)
+
+          # Resolve target by scheme name or fallback to first
+          scheme_name = ENV['XCODE_SCHEME'] || 'Nudge'
+          target = project.targets.find { |t| t.name == scheme_name } || project.targets.first
+          raise "No targets found in project" unless target
+
+          friends_files = [
+            'Features/Friends/FriendsView.swift',
+            'Features/Friends/FriendModel.swift',
+            'Features/Friends/FriendCard.swift',
+            'Features/Friends/FriendDetailOverlay.swift'
+          ]
+          extension_files = [
+            'UI/Extensions/View+CornerRadius.swift'
+          ]
+
+          # Remove incorrect or broken refs
+          all_expected = friends_files + extension_files
+          bad_refs = project.files.select do |f|
+            next false unless f.path
+            f.path.include?('Features/Features') || f.path.include?('UI/UI') ||
+              (!File.exist?(f.real_path.to_s) && all_expected.any? { |p| File.basename(p) == File.basename(f.path) })
+          end
+          bad_refs.each do |ref|
+            target.source_build_phase.files.select { |bf| bf.file_ref == ref }.each(&:remove_from_project)
+            ref.remove_from_project
+            puts "Removed bad ref: #{ref.path}"
+          end
+
+          # Ensure files exist
+          (friends_files + extension_files).each do |p|
+            abort("Expected source file missing in repo: #{p}") unless File.exist?(p)
+          end
+
+          # Add clean file refs under main group and to Sources
+          (friends_files + extension_files).each do |path|
+            file_ref = project.files.find { |f| f.path == path && f.parent == project.main_group }
+            file_ref ||= project.main_group.new_file(path)
+            unless target.source_build_phase.files_references.include?(file_ref)
+              target.add_file_references([file_ref])
+              puts "Added to target: #{path}"
+            else
+              puts "Already in target: #{path}"
+            end
+          end
+
+          project.save
+          puts 'Project updated successfully.'
+          RUBY
       - name: Set up signing (automatic via App Store Connect)
         script: |
           keychain initialize
