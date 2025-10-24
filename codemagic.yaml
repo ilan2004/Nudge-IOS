@@ -384,14 +384,15 @@ workflows:
       - name: Upload to TestFlight via CLI
         script: |
           # Write the private key to a file, fixing escaped newlines if present
-          printf '%s' "$APP_STORE_CONNECT_PRIVATE_KEY" | sed 's/\\n/\n/g' > appstore_key.p8
+          printf '%s' "$APP_STORE_CONNECT_PRIVATE_KEY" | sed 's/\\n/\n/g' | tr -d '\r' > appstore_key.p8
           head -n1 appstore_key.p8 | grep -q 'BEGIN PRIVATE KEY' || { echo 'Invalid APP_STORE_CONNECT_PRIVATE_KEY content'; exit 1; }
+          PRIV_KEY_CONTENT=$(cat appstore_key.p8)
           # Publish the IPA to TestFlight using Codemagic CLI tools
           IPA_PATH=$(ls -1 "$PWD/build/ios"/*.ipa | head -n1)
           app-store-connect publish \
             --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
-            --private-key @appstore_key.p8 \
+            --private-key "$PRIV_KEY_CONTENT" \
             --bundle-id "$BUNDLE_ID" \
             --path "$IPA_PATH" \
             --testflight \
