@@ -60,6 +60,7 @@ final class RoomViewModel: ObservableObject {
         showCreateOverlay = false
     }
 
+    @MainActor
     func startRoomSession(roomId: UUID) {
         guard let idx = rooms.firstIndex(where: { $0.id == roomId }) else { return }
         activeRoom = rooms[idx]
@@ -70,6 +71,7 @@ final class RoomViewModel: ObservableObject {
         showActiveSessionOverlay = true
     }
 
+    @MainActor
     func endRoomSession(roomId: UUID) {
         guard let current = activeRoom, current.id == roomId else { return }
         stopStatsTimer()

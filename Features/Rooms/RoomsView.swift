@@ -1,12 +1,10 @@
 import SwiftUI
 
-// Temporary alias so RoomsView can use RoomManager-style API before RoomManager exists
-typealias RoomManager = RoomViewModel
 
 struct RoomsView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     @EnvironmentObject var focusManager: FocusManager
-    @EnvironmentObject var roomManager: RoomManager
+    @EnvironmentObject var roomManager: RoomViewModel
     @StateObject private var restrictions = RestrictionsController()
 
     var body: some View {
@@ -125,7 +123,7 @@ private struct RoomCard: View {
 
 // MARK: - Sheets (placeholders)
 private struct RoomCreateSheet: View {
-    @EnvironmentObject var roomManager: RoomManager
+    @EnvironmentObject var roomManager: RoomViewModel
     var body: some View {
         VStack(spacing: 12) {
             Text("Create Room").font(.title2).bold()
@@ -137,7 +135,7 @@ private struct RoomCreateSheet: View {
 }
 
 private struct ActiveSessionSheet: View {
-    @EnvironmentObject var roomManager: RoomManager
+    @EnvironmentObject var roomManager: RoomViewModel
     var body: some View {
         VStack(spacing: 12) {
             Text("Active Session").font(.title2).bold()
@@ -157,5 +155,5 @@ private struct ActiveSessionSheet: View {
     RoomsView()
         .environmentObject(PersonalityManager())
         .environmentObject(FocusManager())
-        .environmentObject(RoomManager())
+        .environmentObject(RoomViewModel())
 }

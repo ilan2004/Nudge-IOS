@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ActiveSessionOverlay: View {
-    @EnvironmentObject var roomManager: RoomViewModel
+    @EnvironmentObject var roomManager: RoomManager
     @EnvironmentObject var personalityManager: PersonalityManager
     @Environment(\.dismiss) private var dismiss
     
@@ -75,7 +75,7 @@ struct ActiveSessionOverlay: View {
         VStack(spacing: 16) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(roomManager.activeRoom?.name ?? "Focus Room")
+                    Text("Focus Room") // TODO: Get room name from active session
                         .font(.custom("Tanker-Regular", size: 24))
                         .foregroundColor(Color.guildText)
                     
@@ -117,12 +117,13 @@ struct ActiveSessionOverlay: View {
                 .foregroundColor(Color.guildText)
             
             LazyVGrid(columns: columns, spacing: 12) {
-                ForEach(memberStats) { member in
+                ForEach(Array(memberStats.enumerated()), id: \.element.id) { index, member in
                     MemberStatCard(
                         member: member,
-                        totalSessionTime: sessionElapsedTime
+                        stats: member.sessionStats,
+                        rank: index + 1,
+                        isCurrentUser: member.id == currentUserId
                     )
-                    .statsPanelSurface()
                 }
             }
         }
@@ -137,7 +138,7 @@ struct ActiveSessionOverlay: View {
             
             VStack(spacing: 8) {
                 ForEach(Array(sortedMembers.enumerated()), id: \.element.id) { index, member in
-                    LeaderboardRow(
+                    SessionLeaderboardRow(
                         member: member,
                         rank: index + 1,
                         isCurrentUser: member.id == currentUserId
@@ -157,8 +158,8 @@ struct ActiveSessionOverlay: View {
             
             HStack(spacing: 12) {
                 Button("End Session") {
-                    if let roomId = roomManager.activeRoom?.id {
-                        roomManager.endRoomSession(roomId: roomId)
+                    Task {
+                        try await roomManager.endSession()
                     }
                 }
                 .buttonStyle(NavPillStyle(variant: .danger))
@@ -260,94 +261,7 @@ struct ActiveSessionOverlay: View {
     }
 }
 
-// MARK: - Member Stat Card
-private struct MemberStatCard: View {
-    let member: RoomMember
-    let totalSessionTime: TimeInterval
-    
-    var body: some View {
-        VStack(spacing: 12) {
-            // Avatar and name
-            VStack(spacing: 6) {
-                Image(member.friend.avatarImageName)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.guildBrown.opacity(0.3), lineWidth: 2))
-                
-                Text(member.friend.name)
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.guildText)
-                    .lineLimit(1)
-                
-                PersonalityBadge(
-                    personalityType: member.friend.personalityType,
-                    gender: member.friend.gender,
-                    guildCardStyle: true
-                )
-                .scaleEffect(0.8)
-            }
-            
-            // Stats grid
-            VStack(spacing: 6) {
-                HStack {
-                    StatItem(title: "Focus", value: formatTime(member.sessionStats.focusTimeSeconds))
-                    StatItem(title: "Breaks", value: "\(member.sessionStats.breakCount)")
-                }
-                
-                HStack {
-                    StatItem(title: "Screen", value: formatTime(member.sessionStats.screenTimeSeconds))
-                    StatItem(title: "Distractions", value: "\(member.sessionStats.distractionCount)")
-                }
-            }
-            
-            // Progress bar
-            let focusPercentage = totalSessionTime > 0 
-                ? Double(member.sessionStats.focusTimeSeconds) / totalSessionTime 
-                : 0
-            
-            VStack(spacing: 4) {
-                Text("Focus: \(Int(focusPercentage * 100))%")
-                    .font(.caption2)
-                    .foregroundColor(Color.guildTextSecondary)
-                
-                ProgressView(value: focusPercentage)
-                    .progressViewStyle(FocusProgressStyle(percentage: focusPercentage))
-            }
-        }
-        .padding(12)
-    }
-    
-    private func formatTime(_ seconds: Int) -> String {
-        let hours = seconds / 3600
-        let mins = (seconds % 3600) / 60
-        
-        if hours > 0 {
-            return "\(hours)h \(mins)m"
-        } else {
-            return "\(mins)m"
-        }
-    }
-}
 
-// MARK: - Stat Item
-private struct StatItem: View {
-    let title: String
-    let value: String
-    
-    var body: some View {
-        VStack(spacing: 2) {
-            Text(title)
-                .font(.caption2)
-                .foregroundColor(Color.guildTextSecondary)
-            Text(value)
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(Color.guildText)
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
 
 // MARK: - Focus Progress Style
 private struct FocusProgressStyle: ProgressViewStyle {
@@ -382,8 +296,8 @@ private struct FocusProgressStyle: ProgressViewStyle {
     }
 }
 
-// MARK: - Leaderboard Row
-private struct LeaderboardRow: View {
+// MARK: - Session Leaderboard Row
+private struct SessionLeaderboardRow: View {
     let member: RoomMember
     let rank: Int
     let isCurrentUser: Bool
@@ -447,29 +361,9 @@ private struct LeaderboardRow: View {
     }
 }
 
-// MARK: - Extensions
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
-
-struct RoundedCorner: Shape {
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
-    }
-}
 
 #Preview {
     ActiveSessionOverlay()
-        .environmentObject(RoomViewModel())
+        .environmentObject(RoomManager())
         .environmentObject(PersonalityManager())
 }
