@@ -29,7 +29,14 @@ struct MemberStatCard: View {
                     .shadow(color: isCurrentUser ? Color.nudgeGreen900.opacity(0.3) : Color.clear, radius: isCurrentUser ? 8 : 0, x: 0, y: 4)
             )
             .statsPanelSurface()
-            .cardAnimations
+            .scaleEffect(celebrateSuccess ? 1.05 : 1.0)
+            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: celebrateSuccess)
+            .onChange(of: rank) { oldValue, newValue in
+                handleRankChange(oldValue: oldValue, newValue: newValue)
+            }
+            .onChange(of: focusPercentage) { oldValue, newValue in
+                handleFocusPercentageChange(oldValue: oldValue, newValue: newValue)
+            }
     }
     
     // MARK: - Card Content
@@ -155,17 +162,6 @@ struct MemberStatCard: View {
         .frame(height: 8)
     }
     
-    
-    private var cardAnimations: some View {
-        scaleEffect(celebrateSuccess ? 1.05 : 1.0)
-            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: celebrateSuccess)
-            .onChange(of: rank) { oldValue, newValue in
-                handleRankChange(oldValue: oldValue, newValue: newValue)
-            }
-            .onChange(of: focusPercentage) { oldValue, newValue in
-                handleFocusPercentageChange(oldValue: oldValue, newValue: newValue)
-            }
-    }
     
     // MARK: - Animation Handlers
     private func handleRankChange(oldValue: Int, newValue: Int) {

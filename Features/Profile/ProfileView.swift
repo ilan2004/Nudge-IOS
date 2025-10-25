@@ -145,6 +145,7 @@ public struct ProfileView: View {
     // MARK: - Identity header
     private var identityHeader: some View {
         let lineBrown = Color(red: 0.45, green: 0.38, blue: 0.30)
+        let textBrown = Color(red: 0.20, green: 0.15, blue: 0.12)
         return VStack(spacing: 12) {
             if let type = personalityManager.personalityType {
                 HStack(alignment: .center, spacing: 16) {
@@ -214,7 +215,8 @@ struct FocusEconomyCard: View {
     @State private var glow = false
     
     var body: some View {
-        ZStack {
+        let theme = personalityManager.currentTheme
+        return ZStack {
             // Vault door garnish
             Circle()
                 .strokeBorder(LinearGradient(colors: [Color.gray.opacity(0.4), Color.white.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 5)
@@ -362,7 +364,7 @@ struct StatsGrid: View {
     
     private func rpgStatTile(icon: String, title: String, value: String, progress: Double, tint: Color) -> some View {
         let theme = personalityManager.currentTheme
-        VStack(alignment: .leading, spacing: 10) {
+        return VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
                 Image(systemName: icon)
                     .foregroundColor(tint)
@@ -621,7 +623,8 @@ struct BlockedAppsRow: View {
                                 .font(.caption)
                                 .foregroundColor(.red)
                         }
-.padding(.horizontal, 8).padding(.vertical, 6)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 6)
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.red.opacity(0.3), lineWidth: 1))
                     }
                 }
