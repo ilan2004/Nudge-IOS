@@ -153,10 +153,10 @@ struct ContentView: View {
     private var tabs: [TabItem] {
         [
             TabItem(icon: "house.fill", title: "Nudge", accent: accentGreen) { NudgeHomeView() },
-            TabItem(icon: "handshake.fill", title: "Stakes", accent: accentOrange) { ContractsView() },
+//            TabItem(icon: "handshake.fill", title: "Stakes", accent: accentTeal) { ContractsView() },
             TabItem(icon: "person.text.rectangle", title: "My Type", accent: accentCyan) { MyTypeView() },
             TabItem(icon: "person.3.fill", title: "Friends", accent: accentBlue) { FriendsView() },
-            TabItem(icon: "person.fill", title: "Profile", accent: accentTeal) { ProfileView() }
+            TabItem(icon: "person.fill", title: "Profile", accent: accentOrange) { ProfileView() }
         ]
     }
     
@@ -210,7 +210,7 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $showMBTIQuiz) {
             MBTIQuizSheet {
                 showMBTIQuiz = false
-                selectedTab = 2
+                selectedTab = 1
             }
             .environmentObject(personalityManager)
             .environmentObject(appSettings)
