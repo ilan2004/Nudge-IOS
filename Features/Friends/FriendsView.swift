@@ -30,6 +30,9 @@ struct FriendsView: View {
             friends = friends.filter { $0.relationshipType == .closeFriend }
         case .online:
             friends = friends.filter { $0.isOnline }
+        case .byPersonality:
+            // For now, just return all friends (could implement personality grouping later)
+            break
         }
         
         return friends.sorted { $0.rank < $1.rank }
@@ -47,8 +50,8 @@ struct FriendsView: View {
         .frame(maxWidth: 440)
         .refreshable {
             do {
-                async let friendsLoad = friendsManager.loadFriends()
-                async let requestsLoad = friendsManager.loadFriendRequests()
+                async let friendsLoad: Void = friendsManager.loadFriends()
+                async let requestsLoad: Void = friendsManager.loadFriendRequests()
                 try await friendsLoad
                 try await requestsLoad
             } catch {
@@ -57,8 +60,8 @@ struct FriendsView: View {
         }
         .onAppear {
             Task {
-                async let friendsLoad = friendsManager.loadFriends()
-                async let requestsLoad = friendsManager.loadFriendRequests()
+                async let friendsLoad: Void = friendsManager.loadFriends()
+                async let requestsLoad: Void = friendsManager.loadFriendRequests()
                 try? await friendsLoad
                 try? await requestsLoad
             }

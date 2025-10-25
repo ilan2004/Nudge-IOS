@@ -326,7 +326,7 @@ struct RoomDetailView: View {
     
     private func formatNextSession() -> String {
         // Mock next session calculation
-        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) ?? Date()
+        let _ = Calendar.current.date(byAdding: .day, value: 1, to: Date()) ?? Date()
         let formatter = DateFormatter()
         formatter.dateStyle = .none
         formatter.timeStyle = .short

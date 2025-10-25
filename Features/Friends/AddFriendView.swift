@@ -262,7 +262,7 @@ struct AddFriendView: View {
         Task {
             do {
                 try await friendsManager.sendFriendRequest(toUserId: userId)
-                await MainActor.run {
+                _ = await MainActor.run {
                     sentRequestIds.insert(userId)
                 }
             } catch {

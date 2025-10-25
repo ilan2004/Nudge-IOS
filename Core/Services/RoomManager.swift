@@ -144,7 +144,7 @@ class RoomManager: ObservableObject {
     /// End current session
     func endSession() async throws {
         guard let session = activeSession,
-              let startTime = sessionStartTime else {
+              let _ = sessionStartTime else {
             return
         }
         
