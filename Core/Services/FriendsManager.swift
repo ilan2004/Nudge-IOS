@@ -14,6 +14,7 @@ class FriendsManager: ObservableObject {
     // MARK: - Private Properties
     private let apiClient: APIClient
     private let userIdProvider: UserIdProvider.Type
+    private let useMockData: Bool
     
     // MARK: - UserDefaults Keys
     private let friendsKey = "nudge_friends"
@@ -21,9 +22,10 @@ class FriendsManager: ObservableObject {
     private let sentRequestsKey = "nudge_sent_requests"
     
     // MARK: - Initialization
-    init(apiClient: APIClient = .shared, userIdProvider: UserIdProvider.Type = UserIdProvider.self, useMockData: Bool = false) {
+init(apiClient: APIClient = .shared, userIdProvider: UserIdProvider.Type = UserIdProvider.self, useMockData: Bool = false) {
         self.apiClient = apiClient
         self.userIdProvider = userIdProvider
+        self.useMockData = useMockData
         
         // Ensure loading state is false at initialization
         self.isLoading = false
@@ -54,9 +56,17 @@ class FriendsManager: ObservableObject {
     // MARK: - Public Methods
     
     /// Load friends from API and cache locally
-    func loadFriends() async throws {
+func loadFriends() async throws {
         isLoading = true
         errorMessage = nil
+        
+        defer { isLoading = false }
+        
+        // In mock mode, just load mock data and return
+        if useMockData {
+            friends = Friend.mockFriends
+            return
+        }
         
         do {
             let userId = userIdProvider.getOrCreate()
@@ -68,8 +78,6 @@ class FriendsManager: ObservableObject {
             errorMessage = "Failed to load friends: \(error.localizedDescription)"
             throw error
         }
-        
-        isLoading = false
     }
     
     /// Load friend requests from API
