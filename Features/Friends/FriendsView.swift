@@ -85,6 +85,21 @@ struct FriendsView: View {
         }
     }
     
+    // MARK: - Helper Methods
+    
+    private func variantForFilter(_ filter: FriendFilter) -> PillVariant {
+        switch filter {
+        case .all:
+            return .primary
+        case .closeFriends:
+            return .accent
+        case .online:
+            return .cyan
+        case .byPersonality:
+            return .amber
+        }
+    }
+    
     // MARK: - Extracted Views
     
     private var headerView: some View {
@@ -139,7 +154,13 @@ struct FriendsView: View {
         .padding(.vertical, 10)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color(.systemGray6))
+                .fill(Color("NudgeSurface", bundle: .main, default: Color(red: 0.98, green: 0.97, blue: 0.96)))
+                .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
+                .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.nudgeGreen900, lineWidth: 2)
         )
         .padding(.horizontal)
         .padding(.bottom, 16)
@@ -152,7 +173,7 @@ struct FriendsView: View {
                     Button(filter.rawValue) {
                         selectedFilter = filter
                     }
-                    .buttonStyle(NavPillStyle(variant: selectedFilter == filter ? .primary : .outline, compact: true))
+                    .buttonStyle(NavPillStyle(variant: selectedFilter == filter ? variantForFilter(filter) : .outline, compact: true))
                 }
             }
             .padding(.horizontal)

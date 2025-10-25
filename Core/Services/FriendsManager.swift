@@ -21,11 +21,15 @@ class FriendsManager: ObservableObject {
     private let sentRequestsKey = "nudge_sent_requests"
     
     // MARK: - Initialization
-    init(apiClient: APIClient = .shared, userIdProvider: UserIdProvider.Type = UserIdProvider.self) {
+    init(apiClient: APIClient = .shared, userIdProvider: UserIdProvider.Type = UserIdProvider.self, useMockData: Bool = false) {
         self.apiClient = apiClient
         self.userIdProvider = userIdProvider
         
-        loadFriendsFromCache()
+        if useMockData {
+            friends = Friend.mockFriends
+        } else {
+            loadFriendsFromCache()
+        }
     }
     
     // MARK: - Public Methods
@@ -180,6 +184,11 @@ class FriendsManager: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: friendsKey),
            let cachedFriends = try? JSONDecoder().decode([Friend].self, from: data) {
             friends = cachedFriends
+        }
+        
+        // If friends array is still empty after loading from cache, populate with mock data
+        if friends.isEmpty {
+            friends = Friend.mockFriends
         }
         
         if let data = UserDefaults.standard.data(forKey: pendingRequestsKey),
