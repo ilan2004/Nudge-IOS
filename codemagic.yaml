@@ -49,7 +49,13 @@ workflows:
             'Features/Friends/FriendsView.swift',
             'Features/Friends/FriendModel.swift',
             'Features/Friends/FriendCard.swift',
-            'Features/Friends/FriendDetailOverlay.swift'
+            'Features/Friends/FriendDetailOverlay.swift',
+            'Features/Friends/AddFriendView.swift',
+            'Features/Friends/FriendRequestsView.swift',
+            'Features/Friends/SendNudgeView.swift',
+            'Features/Friends/UserSearchResult.swift',
+            'Features/Friends/FriendsSortFilter.swift',
+            'Core/Services/FriendsManager.swift'
           ]
           extension_files = [
             'UI/Extensions/View+CornerRadius.swift'
@@ -236,7 +242,13 @@ workflows:
             'Features/Friends/FriendsView.swift',
             'Features/Friends/FriendModel.swift',
             'Features/Friends/FriendCard.swift',
-            'Features/Friends/FriendDetailOverlay.swift'
+            'Features/Friends/FriendDetailOverlay.swift',
+            'Features/Friends/AddFriendView.swift',
+            'Features/Friends/FriendRequestsView.swift',
+            'Features/Friends/SendNudgeView.swift',
+            'Features/Friends/UserSearchResult.swift',
+            'Features/Friends/FriendsSortFilter.swift',
+            'Core/Services/FriendsManager.swift'
           ]
           extension_files = [
             'UI/Extensions/View+CornerRadius.swift'

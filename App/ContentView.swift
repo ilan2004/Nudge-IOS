@@ -30,11 +30,13 @@ struct TabItem {
     let title: String
     let accent: Color
     let view: AnyView
+    let badgeCount: Int?
     
-    init<V: View>(icon: String, title: String, accent: Color, @ViewBuilder view: () -> V) {
+    init<V: View>(icon: String, title: String, accent: Color, badgeCount: Int? = nil, @ViewBuilder view: () -> V) {
         self.icon = icon
         self.title = title
         self.accent = accent
+        self.badgeCount = badgeCount
         self.view = AnyView(view())
     }
 }
@@ -51,6 +53,7 @@ struct RetroTabBar: View {
                     title: tab.title,
                     accent: tab.accent,
                     isSelected: selectedTab == index,
+                    badgeCount: tab.badgeCount,
                     action: { selectedTab = index }
                 )
             }
@@ -78,6 +81,7 @@ struct RetroTabButton: View {
     let title: String
     let accent: Color
     let isSelected: Bool
+    let badgeCount: Int?
     let action: () -> Void
     
     @State private var isPressed = false
@@ -101,9 +105,21 @@ struct RetroTabButton: View {
             action()
         }) {
             VStack(spacing: 4) {
-                Image(systemName: icon)
-                    .font(.system(size: 18, weight: isSelected ? .bold : .medium))
-                    .foregroundColor(accent)
+                ZStack {
+                    Image(systemName: icon)
+                        .font(.system(size: 18, weight: isSelected ? .bold : .medium))
+                        .foregroundColor(accent)
+                    
+                    // Badge indicator
+                    if let badgeCount = badgeCount, badgeCount > 0 {
+                        Text("\(badgeCount)")
+                            .font(.system(size: 8, weight: .bold))
+                            .foregroundColor(.white)
+                            .frame(width: 16, height: 16)
+                            .background(Circle().fill(Color.red))
+                            .offset(x: 10, y: -8)
+                    }
+                }
                 
                 Text(title)
                     .font(.system(size: 10, weight: isSelected ? .bold : .medium))
@@ -137,6 +153,7 @@ struct ContentView: View {
     @EnvironmentObject var personalityManager: PersonalityManager
     @EnvironmentObject var focusManager: FocusManager
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var friendsManager: FriendsManager
     
     @State private var selectedTab = 0
     @State private var showOnboarding = true
@@ -151,12 +168,13 @@ struct ContentView: View {
     private var accentTeal: Color { Color(red: 0.439, green: 0.859, blue: 0.804) } // Teal
     
     private var tabs: [TabItem] {
-        [
+        let friendsRequestCount = friendsManager.getPendingRequestCount()
+        return [
             TabItem(icon: "house.fill", title: "Nudge", accent: accentGreen) { NudgeHomeView() },
 //            TabItem(icon: "handshake.fill", title: "Stakes", accent: accentTeal) { ContractsView() },
             TabItem(icon: "person.text.rectangle", title: "My Type", accent: accentCyan) { MyTypeView() },
             TabItem(icon: "person.2.wave.2.fill", title: "Room", accent: accentTeal) { RoomsView() },
-            TabItem(icon: "person.3.fill", title: "Friends", accent: accentBlue) { FriendsView() },
+            TabItem(icon: "person.3.fill", title: "Friends", accent: accentBlue, badgeCount: friendsRequestCount > 0 ? friendsRequestCount : nil) { FriendsView() },
             TabItem(icon: "person.fill", title: "Profile", accent: accentOrange) { ProfileView() }
         ]
     }
@@ -388,4 +406,5 @@ struct SimpleTopNavBar: View {
         .environmentObject(PersonalityManager())
         .environmentObject(FocusManager())
         .environmentObject(AppSettings())
+        .environmentObject(FriendsManager())
 }

@@ -12,6 +12,7 @@ struct NudgeApp: App {
     @StateObject private var restrictionsController = RestrictionsController()
     @StateObject private var roomManager = RoomManager()
     @StateObject private var roomsViewModel = RoomViewModel()
+    @StateObject private var friendsManager = FriendsManager()
     
     var body: some Scene {
         WindowGroup {
@@ -24,6 +25,7 @@ struct NudgeApp: App {
                 .environmentObject(restrictionsController)
                 .environmentObject(roomManager)
                 .environmentObject(roomsViewModel)
+                .environmentObject(friendsManager)
                 .onAppear {
                     requestNotificationPermissions()
                     loadUserData()
@@ -42,5 +44,10 @@ struct NudgeApp: App {
     private func loadUserData() {
         personalityManager.loadPersonalityType()
         appSettings.loadSettings()
+        
+        Task {
+            try? await friendsManager.loadFriends()
+            try? await friendsManager.loadFriendRequests()
+        }
     }
 }

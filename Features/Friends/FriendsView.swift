@@ -1,12 +1,43 @@
 import SwiftUI
 
+enum FriendFilter: String, CaseIterable {
+    case all = "All"
+    case closeFriends = "Close Friends"
+    case online = "Online"
+}
+
 struct FriendsView: View {
-    @State private var showDetailOverlay = false
-    @State private var selectedFriend: Friend?
+    @EnvironmentObject private var friendsManager: FriendsManager
     @EnvironmentObject private var personalityManager: PersonalityManager
     
-    private var friends: [Friend] {
-        Friend.mockFriends.sorted { $0.rank < $1.rank }
+    @State private var showDetailOverlay = false
+    @State private var selectedFriend: Friend?
+    @State private var showAddFriendSheet = false
+    @State private var showRequestsSheet = false
+    @State private var searchQuery = ""
+    @State private var selectedFilter: FriendFilter = .all
+    
+    private var filteredFriends: [Friend] {
+        var friends = friendsManager.acceptedFriends
+        
+        // Apply search filter
+        if !searchQuery.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            friends = friends.filter { friend in
+                friend.name.localizedCaseInsensitiveContains(searchQuery)
+            }
+        }
+        
+        // Apply selected filter
+        switch selectedFilter {
+        case .all:
+            break
+        case .closeFriends:
+            friends = friends.filter { $0.relationshipType == .closeFriend }
+        case .online:
+            friends = friends.filter { $0.isOnline }
+        }
+        
+        return friends.sorted { $0.rank < $1.rank }
     }
     
     var body: some View {
@@ -21,59 +52,199 @@ struct FriendsView: View {
                     
                     Spacer()
                     
-                    // Add Friend Button
-                    Button(action: {}) {
-                        Image(systemName: "plus")
-                            .font(.headline)
-                            .foregroundColor(personalityManager.currentTheme.secondary)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 6)
+                    // Friend Requests Button with Badge
+                    if friendsManager.getPendingRequestCount() > 0 {
+                        Button(action: { showRequestsSheet = true }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "person.badge.plus")
+                                    .font(.caption)
+                                Text("\(friendsManager.getPendingRequestCount())")
+                                    .font(.caption.bold())
+                            }
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
                             .background(
                                 Capsule()
-                                    .fill(personalityManager.currentTheme.primary.opacity(0.12))
-                                    .overlay(
-                                        Capsule().stroke(personalityManager.currentTheme.primary, lineWidth: 1)
-                                    )
+                                    .fill(Color.red)
                             )
+                        }
+                        .padding(.trailing, 8)
                     }
+                    
+                    // Add Friend Button
+                    Button(action: { showAddFriendSheet = true }) {
+                        Image(systemName: "plus")
+                            .font(.headline)
+                    }
+                    .buttonStyle(NavPillStyle(variant: .primary))
                     .padding(.trailing)
                 }
                 .padding(.top, 8)
                 .padding(.bottom, 16)
                 
-                // Friends List
-                VStack(spacing: 20) {
-                    ForEach(friends.indices, id: \.self) { index in
-                        let friend = friends[index]
-                        FriendCard(friend: friend, onTap: {
-                            selectedFriend = friend
-                            showDetailOverlay = true
-                        })
-                    }
+                // Search Bar
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.gray)
+                    TextField("Search friends...", text: $searchQuery)
+                        .textFieldStyle(PlainTextFieldStyle())
                 }
-                .padding(12)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
                 .background(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(Color.guildParchment)
-                        .shadow(color: Color.nudgeGreen900, radius: 0, x: 0, y: 4)
-                        .shadow(color: Color.nudgeGreen900.opacity(0.2), radius: 12, x: 0, y: 8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .stroke(Color.nudgeGreen900.opacity(0.25), lineWidth: 1)
-                        )
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(.systemGray6))
                 )
                 .padding(.horizontal)
-                .padding(.bottom, 24)
+                .padding(.bottom, 16)
+                
+                // Filter Chips
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(FriendFilter.allCases, id: \.self) { filter in
+                            Button(filter.rawValue) {
+                                selectedFilter = filter
+                            }
+                            .buttonStyle(NavPillStyle(variant: selectedFilter == filter ? .primary : .outline, compact: true))
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .padding(.bottom, 16)
+                
+                // Content based on state
+                if friendsManager.isLoading {
+                    // Loading State
+                    VStack(spacing: 16) {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                        Text("Loading friends...")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 200)
+                    .retroConsoleSurface()
+                    .padding(.horizontal)
+                    .padding(.bottom, 24)
+                } else if let errorMessage = friendsManager.errorMessage {
+                    // Error State
+                    VStack(spacing: 12) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.system(size: 48))
+                            .foregroundColor(.red)
+                        Text("Error")
+                            .font(.headline)
+                        Text(errorMessage)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                        Button("Try Again") {
+                            Task {
+                                try? await friendsManager.loadFriends()
+                            }
+                        }
+                        .buttonStyle(NavPillStyle(variant: .primary))
+                    }
+                    .padding(16)
+                    .retroConsoleSurface()
+                    .padding(.horizontal)
+                    .padding(.bottom, 24)
+                } else if filteredFriends.isEmpty {
+                    // Empty State
+                    VStack(spacing: 12) {
+                        Image(systemName: "person.2.fill")
+                            .font(.system(size: 48))
+                            .foregroundColor(personalityManager.currentTheme.secondary.opacity(0.8))
+                        
+                        if friendsManager.friends.isEmpty {
+                            Text("No Friends Yet")
+                                .font(.headline)
+                                .foregroundColor(personalityManager.currentTheme.text)
+                            Text("Add friends to start collaborating!")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                            Button("Add Friends") { 
+                                showAddFriendSheet = true 
+                            }
+                            .buttonStyle(NavPillStyle(variant: .primary))
+                        } else {
+                            Text("No friends match your search")
+                                .font(.headline)
+                                .foregroundColor(personalityManager.currentTheme.text)
+                            Button("Clear Search") {
+                                searchQuery = ""
+                                selectedFilter = .all
+                            }
+                            .buttonStyle(NavPillStyle(variant: .outline))
+                        }
+                    }
+                    .padding(16)
+                    .retroConsoleSurface()
+                    .padding(.horizontal)
+                    .padding(.bottom, 24)
+                } else {
+                    // Friends List
+                    VStack(spacing: 20) {
+                        ForEach(filteredFriends.indices, id: \.self) { index in
+                            let friend = filteredFriends[index]
+                            FriendCard(friend: friend, onTap: {
+                                selectedFriend = friend
+                                showDetailOverlay = true
+                            })
+                        }
+                    }
+                    .padding(12)
+                    .retroConsoleSurface()
+                    .padding(.horizontal)
+                    .padding(.bottom, 24)
+                }
             }
         }
         .frame(maxWidth: 440)
-.sheet(isPresented: $showDetailOverlay) {
+        .refreshable {
+            do {
+                async let friendsLoad = friendsManager.loadFriends()
+                async let requestsLoad = friendsManager.loadFriendRequests()
+                try await friendsLoad
+                try await requestsLoad
+            } catch {
+                // Error handling is done in FriendsManager
+            }
+        }
+        .onAppear {
+            Task {
+                async let friendsLoad = friendsManager.loadFriends()
+                async let requestsLoad = friendsManager.loadFriendRequests()
+                try? await friendsLoad
+                try? await requestsLoad
+            }
+        }
+        .sheet(isPresented: $showDetailOverlay) {
             if let friend = selectedFriend {
                 FriendDetailOverlay(friend: friend)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             }
         }
+        .sheet(isPresented: $showAddFriendSheet) {
+            AddFriendView()
+                .environmentObject(friendsManager)
+                .environmentObject(personalityManager)
+        }
+        .sheet(isPresented: $showRequestsSheet) {
+            FriendRequestsView()
+                .environmentObject(friendsManager)
+                .environmentObject(personalityManager)
+        }
+    }
+}
+
+// MARK: - Extensions
+extension PersonalityType {
+    func colors(for gender: Gender) -> PersonalityColors {
+        return PersonalityTheme.colors(for: self, gender: gender)
     }
 }
 
@@ -81,6 +252,7 @@ struct FriendsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             FriendsView()
+                .environmentObject(FriendsManager())
                 .environmentObject(PersonalityManager())
         }
     }

@@ -196,5 +196,144 @@ final class APIClient {
             throw URLError(.badServerResponse)
         }
     }
+    
+    // MARK: - Friends Endpoints
+    
+    // GET /friends/
+    func getFriends(userId: String) async throws -> [Friend] {
+        var url = baseURL.appendingPathComponent("friends/")
+        var comps = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+        comps.queryItems = [URLQueryItem(name: "user_id", value: userId)]
+        url = comps.url!
+        
+        let (data, resp) = try await session.data(from: url)
+        guard let http = resp as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode([Friend].self, from: data)
+    }
+    
+    // GET /friends/requests
+    func getFriendRequests(userId: String) async throws -> [FriendRequest] {
+        var url = baseURL.appendingPathComponent("friends/requests")
+        var comps = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+        comps.queryItems = [URLQueryItem(name: "user_id", value: userId)]
+        url = comps.url!
+        
+        let (data, resp) = try await session.data(from: url)
+        guard let http = resp as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode([FriendRequest].self, from: data)
+    }
+    
+    // POST /friends/request
+    func sendFriendRequest(userId: String, targetUserId: String) async throws -> FriendRequest {
+        var req = URLRequest(url: baseURL.appendingPathComponent("friends/request"))
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "user_id": userId,
+            "target_user_id": targetUserId
+        ]
+        req.httpBody = try JSONSerialization.data(withJSONObject: body)
+        
+        let (data, resp) = try await session.data(for: req)
+        guard let http = resp as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode(FriendRequest.self, from: data)
+    }
+    
+    // POST /friends/accept
+    func acceptFriendRequest(userId: String, requestId: String) async throws -> Friend {
+        var req = URLRequest(url: baseURL.appendingPathComponent("friends/accept"))
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "user_id": userId,
+            "request_id": requestId
+        ]
+        req.httpBody = try JSONSerialization.data(withJSONObject: body)
+        
+        let (data, resp) = try await session.data(for: req)
+        guard let http = resp as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode(Friend.self, from: data)
+    }
+    
+    // POST /friends/decline
+    func declineFriendRequest(userId: String, requestId: String) async throws {
+        var req = URLRequest(url: baseURL.appendingPathComponent("friends/decline"))
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "user_id": userId,
+            "request_id": requestId
+        ]
+        req.httpBody = try JSONSerialization.data(withJSONObject: body)
+        
+        let (_, resp) = try await session.data(for: req)
+        guard let http = resp as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+    }
+    
+    // DELETE /friends/{friendId}
+    func removeFriend(userId: String, friendId: String) async throws {
+        var req = URLRequest(url: baseURL.appendingPathComponent("friends/\(friendId)"))
+        req.httpMethod = "DELETE"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = ["user_id": userId]
+        req.httpBody = try JSONSerialization.data(withJSONObject: body)
+        
+        let (_, resp) = try await session.data(for: req)
+        guard let http = resp as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+    }
+    
+    // GET /friends/search
+    func searchUsers(userId: String, query: String) async throws -> [UserSearchResult] {
+        var url = baseURL.appendingPathComponent("friends/search")
+        var comps = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+        comps.queryItems = [
+            URLQueryItem(name: "user_id", value: userId),
+            URLQueryItem(name: "query", value: query)
+        ]
+        url = comps.url!
+        
+        let (data, resp) = try await session.data(from: url)
+        guard let http = resp as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode([UserSearchResult].self, from: data)
+    }
+    
+    // POST /friends/nudge
+    func sendNudgeToFriend(userId: String, friendId: String, message: String?) async throws {
+        var req = URLRequest(url: baseURL.appendingPathComponent("friends/nudge"))
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        var body: [String: Any] = [
+            "user_id": userId,
+            "friend_id": friendId
+        ]
+        if let message = message {
+            body["message"] = message
+        }
+        req.httpBody = try JSONSerialization.data(withJSONObject: body)
+        
+        let (_, resp) = try await session.data(for: req)
+        guard let http = resp as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+    }
 }
 
