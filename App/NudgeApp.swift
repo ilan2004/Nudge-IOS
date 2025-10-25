@@ -11,6 +11,7 @@ struct NudgeApp: App {
     @StateObject private var economyService = EconomyService()
     @StateObject private var restrictionsController = RestrictionsController()
     @StateObject private var roomManager = RoomManager()
+    @StateObject private var roomsViewModel = RoomViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -22,6 +23,7 @@ struct NudgeApp: App {
                 .environmentObject(economyService)
                 .environmentObject(restrictionsController)
                 .environmentObject(roomManager)
+                .environmentObject(roomsViewModel)
                 .onAppear {
                     requestNotificationPermissions()
                     loadUserData()
