@@ -22,7 +22,7 @@ class FriendsManager: ObservableObject {
     private let sentRequestsKey = "nudge_sent_requests"
     
     // MARK: - Initialization
-init(apiClient: APIClient = .shared, userIdProvider: UserIdProvider.Type = UserIdProvider.self, useMockData: Bool = false) {
+init(apiClient: APIClient = .shared, userIdProvider: UserIdProvider.Type = UserIdProvider.self, useMockData: Bool = true) {
         self.apiClient = apiClient
         self.userIdProvider = userIdProvider
         self.useMockData = useMockData
@@ -81,7 +81,17 @@ func loadFriends() async throws {
     }
     
     /// Load friend requests from API
-    func loadFriendRequests() async throws {
+func loadFriendRequests() async throws {
+        // In mock mode, use mock requests and return
+        if useMockData {
+            let userId = userIdProvider.getOrCreate()
+            let currentUserId = UUID(uuidString: userId) ?? UUID()
+            let requests = Friend.mockFriendRequests
+            pendingRequests = requests.filter { $0.toUserId == currentUserId }
+            sentRequests = requests.filter { $0.fromUserId == currentUserId }
+            return
+        }
+        
         do {
             let userId = userIdProvider.getOrCreate()
             let requests = try await apiClient.getFriendRequests(userId: userId)
