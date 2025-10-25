@@ -25,11 +25,30 @@ class FriendsManager: ObservableObject {
         self.apiClient = apiClient
         self.userIdProvider = userIdProvider
         
+        // Ensure loading state is false at initialization
+        self.isLoading = false
+        self.errorMessage = nil
+        
         if useMockData {
             friends = Friend.mockFriends
         } else {
-            loadFriendsFromCache()
+            do {
+                loadFriendsFromCache()
+            } catch {
+                // If cache loading fails for any reason, fallback to mock data
+                friends = Friend.mockFriends
+                isLoading = false
+                errorMessage = nil
+            }
         }
+    }
+    
+    // Convenience initializer for mock data only (for previews and testing)
+    static func mockManager() -> FriendsManager {
+        let manager = FriendsManager(useMockData: true)
+        manager.isLoading = false
+        manager.errorMessage = nil
+        return manager
     }
     
     // MARK: - Public Methods
@@ -181,22 +200,34 @@ class FriendsManager: ObservableObject {
     // MARK: - Caching Methods
     
     private func loadFriendsFromCache() {
-        if let data = UserDefaults.standard.data(forKey: friendsKey),
-           let cachedFriends = try? JSONDecoder().decode([Friend].self, from: data) {
-            friends = cachedFriends
-        }
-        
-        // If friends array is still empty after loading from cache, populate with mock data
-        if friends.isEmpty {
+        do {
+            if let data = UserDefaults.standard.data(forKey: friendsKey),
+               let cachedFriends = try? JSONDecoder().decode([Friend].self, from: data) {
+                friends = cachedFriends
+            }
+            
+            // If friends array is still empty after loading from cache, populate with mock data
+            if friends.isEmpty {
+                friends = Friend.mockFriends
+            }
+            
+            if let data = UserDefaults.standard.data(forKey: pendingRequestsKey),
+               let cachedRequests = try? JSONDecoder().decode([FriendRequest].self, from: data) {
+                let userId = userIdProvider.getOrCreate()
+                let currentUserId = UUID(uuidString: userId) ?? UUID()
+                pendingRequests = cachedRequests.filter { $0.toUserId == currentUserId }
+                sentRequests = cachedRequests.filter { $0.fromUserId == currentUserId }
+            }
+        } catch {
+            // If anything fails, just use mock data
             friends = Friend.mockFriends
+            pendingRequests = []
+            sentRequests = []
         }
         
-        if let data = UserDefaults.standard.data(forKey: pendingRequestsKey),
-           let cachedRequests = try? JSONDecoder().decode([FriendRequest].self, from: data) {
-            let currentUserId = UUID(uuidString: userIdProvider.getOrCreate()) ?? UUID()
-            pendingRequests = cachedRequests.filter { $0.toUserId == currentUserId }
-            sentRequests = cachedRequests.filter { $0.fromUserId == currentUserId }
-        }
+        // Ensure we're not in a loading state
+        isLoading = false
+        errorMessage = nil
     }
     
     private func saveFriendsToCache() {

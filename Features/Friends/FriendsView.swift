@@ -282,7 +282,7 @@ struct FriendsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             FriendsView()
-                .environmentObject(FriendsManager(useMockData: true))
+                .environmentObject(FriendsManager.mockManager())
                 .environmentObject(PersonalityManager())
         }
     }
