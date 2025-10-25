@@ -381,6 +381,42 @@ workflows:
             CURRENT_PROJECT_VERSION="$BUILD_NUM" \
             -allowProvisioningUpdates \
             -quiet || exit 1
+      - name: Ensure UIAppFonts includes Nippo-Regular (repair if missing)
+        script: |
+          APP_PATH="$PWD/build/$XCODE_SCHEME.xcarchive/Products/Applications/$XCODE_SCHEME.app"
+          if [ ! -d "$APP_PATH" ]; then echo "Archive missing app at $APP_PATH" >&2; exit 1; fi
+          echo "Listing bundled fonts:"; find "$APP_PATH" -iname "*.otf" -o -iname "*.ttf" -print || true
+          # Create UIAppFonts if missing
+          if ! /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" >/dev/null 2>&1; then
+            echo "UIAppFonts key missing; creating..."
+            /usr/libexec/PlistBuddy -c 'Add :UIAppFonts array' "$APP_PATH/Info.plist"
+          fi
+          # Add Nippo-Regular.otf if not present
+          if ! /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" | grep -qi "Nippo-Regular.otf"; then
+            echo "Adding Nippo-Regular.otf to UIAppFonts"
+            /usr/libexec/PlistBuddy -c 'Add :UIAppFonts:0 string Nippo-Regular.otf' "$APP_PATH/Info.plist" || true
+          fi
+          # Ensure Tanker remains listed
+          if ! /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" | grep -qi "Tanker-Regular.otf"; then
+            /usr/libexec/PlistBuddy -c 'Add :UIAppFonts:0 string Tanker-Regular.otf' "$APP_PATH/Info.plist" || true
+          fi
+          echo "Final UIAppFonts:"; /usr/libexec/PlistBuddy -c 'Print :UIAppFonts' "$APP_PATH/Info.plist" || true
+          # Ensure fonts exist in the app bundle (Copy Bundle Resources); repair if missing
+          if ! find "$APP_PATH" -iname "Nippo-Regular.otf" | grep -q "."; then
+            echo "Nippo-Regular.otf not found in archive; copying from source..."
+            SRC_NIPPO="$PWD/Resources/Fonts/Nippo-Regular.otf"
+            if [ -f "$SRC_NIPPO" ]; then
+              cp -f "$SRC_NIPPO" "$APP_PATH/" && echo "Copied Nippo-Regular.otf into app bundle."
+            else
+              echo "Error: Source font not found at $SRC_NIPPO" >&2; exit 1
+            fi
+          fi
+          if ! find "$APP_PATH" -iname "Tanker-Regular.otf" | grep -q "."; then
+            echo "Tanker-Regular.otf not found in archive; copying from source..."
+            SRC_TANKER="$PWD/Resources/Fonts/Tanker-Regular.otf"
+            [ -f "$SRC_TANKER" ] && cp -f "$SRC_TANKER" "$APP_PATH/" && echo "Copied Tanker-Regular.otf into app bundle." || true
+          fi
+          echo "Post-repair bundled fonts:"; find "$APP_PATH" -maxdepth 1 -iname "*.otf" -o -iname "*.ttf" -print || true
       - name: Export signed IPA (app-store)
         script: |
           set -euo pipefail
