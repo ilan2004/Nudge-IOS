@@ -54,10 +54,21 @@ workflows:
           extension_files = [
             'UI/Extensions/View+CornerRadius.swift'
           ]
+          rooms_files = [
+            'Features/Rooms/RoomModels.swift',
+            'Features/Rooms/RoomViewModel.swift',
+            'Features/Rooms/RoomsView.swift',
+            'Features/Rooms/ActiveSessionOverlay.swift',
+            'Features/Rooms/RoomDetailView.swift',
+            'Features/Rooms/Components/MemberStatCard.swift',
+            'Features/Rooms/Components/TimeRangePicker.swift',
+            'Features/Rooms/Components/DaySelector.swift',
+            'Core/Services/RoomManager.swift'
+          ]
 
           # 1) Remove incorrect duplicate path references like Features/Features or UI/UI,
           #    and any refs pointing to paths that don't exist in the checkout.
-          all_expected = friends_files + extension_files
+          all_expected = friends_files + extension_files + rooms_files
           bad_refs = project.files.select do |f|
             next false unless f.path
             f.path.include?('Features/Features') || f.path.include?('UI/UI') ||
@@ -71,14 +82,14 @@ workflows:
           end
 
           # 2) Ensure the files exist in the repo; fail early with a clear message if missing.
-          (friends_files + extension_files).each do |p|
+          (friends_files + extension_files + rooms_files).each do |p|
             unless File.exist?(p)
               abort("Expected source file missing in repo: #{p}")
             end
           end
 
           # 3) Add clean file references directly under the main group (SOURCE_ROOT-relative paths)
-          (friends_files + extension_files).each do |path|
+          (friends_files + extension_files + rooms_files).each do |path|
             file_ref = project.files.find { |f| f.path == path && f.parent == project.main_group }
             file_ref ||= project.main_group.new_file(path)
             # Ensure file is in Sources build phase
@@ -230,9 +241,20 @@ workflows:
           extension_files = [
             'UI/Extensions/View+CornerRadius.swift'
           ]
+          rooms_files = [
+            'Features/Rooms/RoomModels.swift',
+            'Features/Rooms/RoomViewModel.swift',
+            'Features/Rooms/RoomsView.swift',
+            'Features/Rooms/ActiveSessionOverlay.swift',
+            'Features/Rooms/RoomDetailView.swift',
+            'Features/Rooms/Components/MemberStatCard.swift',
+            'Features/Rooms/Components/TimeRangePicker.swift',
+            'Features/Rooms/Components/DaySelector.swift',
+            'Core/Services/RoomManager.swift'
+          ]
 
           # Remove incorrect or broken refs
-          all_expected = friends_files + extension_files
+          all_expected = friends_files + extension_files + rooms_files
           bad_refs = project.files.select do |f|
             next false unless f.path
             f.path.include?('Features/Features') || f.path.include?('UI/UI') ||
@@ -245,12 +267,12 @@ workflows:
           end
 
           # Ensure files exist
-          (friends_files + extension_files).each do |p|
+          (friends_files + extension_files + rooms_files).each do |p|
             abort("Expected source file missing in repo: #{p}") unless File.exist?(p)
           end
 
           # Add clean file refs under main group and to Sources
-          (friends_files + extension_files).each do |path|
+          (friends_files + extension_files + rooms_files).each do |path|
             file_ref = project.files.find { |f| f.path == path && f.parent == project.main_group }
             file_ref ||= project.main_group.new_file(path)
             unless target.source_build_phase.files_references.include?(file_ref)
