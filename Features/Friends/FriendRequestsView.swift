@@ -176,18 +176,11 @@ struct FriendRequestsView: View {
         processingRequestId = request.id
         
         Task {
-            do {
-                // In a real app, this would call an API to cancel the sent request
-                // For now, just remove it locally (would need API endpoint)
-                await MainActor.run {
-                    showSuccessMessage = "Request to \(request.fromUserName) cancelled"
-                    processingRequestId = nil
-                }
-            } catch {
-                await MainActor.run {
-                    showErrorMessage = "Failed to cancel request"
-                    processingRequestId = nil
-                }
+            // In a real app, this would call an API to cancel the sent request
+            // For now, just remove it locally (would need API endpoint)
+            await MainActor.run {
+                showSuccessMessage = "Request to \(request.fromUserName) cancelled"
+                processingRequestId = nil
             }
         }
     }
@@ -329,13 +322,6 @@ struct SentRequestRow: View {
     }
 }
 
-// MARK: - Extensions
-
-extension PersonalityType {
-    func colors(for gender: Gender) -> PersonalityColors {
-        return PersonalityTheme.colors(for: self, gender: gender)
-    }
-}
 
 #Preview {
     FriendRequestsView()

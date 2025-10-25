@@ -93,13 +93,6 @@ struct FriendRequest: Identifiable, Codable {
     let createdAt: Date
 }
 
-struct UserSearchResult: Identifiable, Codable {
-    let id: UUID
-    let name: String
-    let personalityType: PersonalityType
-    let gender: Gender
-    let isFriend: Bool
-}
 
 extension Friend {
     static let mockFriends: [Friend] = [

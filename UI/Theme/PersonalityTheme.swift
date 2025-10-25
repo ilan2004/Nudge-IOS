@@ -196,3 +196,10 @@ struct PersonalityTheme {
         return personalityType.rawValue + genderSuffix
     }
 }
+
+// MARK: - PersonalityType Extension
+extension PersonalityType {
+    func colors(for gender: Gender) -> PersonalityColors {
+        return PersonalityTheme.colors(for: self, gender: gender)
+    }
+}

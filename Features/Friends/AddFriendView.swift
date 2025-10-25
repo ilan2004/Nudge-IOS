@@ -395,12 +395,6 @@ struct ShareSheet: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
-// MARK: - Extensions
-extension PersonalityType {
-    func colors(for gender: Gender) -> PersonalityColors {
-        return PersonalityTheme.colors(for: self, gender: gender)
-    }
-}
 
 #Preview {
     AddFriendView()
