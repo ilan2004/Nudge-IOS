@@ -58,14 +58,6 @@ struct FriendsView: View {
                 // Error handling is done in FriendsManager
             }
         }
-        .onAppear {
-            Task {
-                async let friendsLoad: Void = friendsManager.loadFriends()
-                async let requestsLoad: Void = friendsManager.loadFriendRequests()
-                try? await friendsLoad
-                try? await requestsLoad
-            }
-        }
         .sheet(isPresented: $showDetailOverlay) {
             if let friend = selectedFriend {
                 FriendDetailOverlay(friend: friend)
@@ -177,6 +169,7 @@ struct FriendsView: View {
                 }
             }
             .padding(.horizontal)
+            .padding(.vertical, 8)
         }
         .padding(.bottom, 16)
     }
@@ -289,7 +282,7 @@ struct FriendsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             FriendsView()
-                .environmentObject(FriendsManager())
+                .environmentObject(FriendsManager(useMockData: true))
                 .environmentObject(PersonalityManager())
         }
     }
