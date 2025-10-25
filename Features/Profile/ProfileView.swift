@@ -144,7 +144,6 @@ public struct ProfileView: View {
     
     // MARK: - Identity header
     private var identityHeader: some View {
-        let textBrown = Color(red: 0.20, green: 0.15, blue: 0.12)
         let lineBrown = Color(red: 0.45, green: 0.38, blue: 0.30)
         return VStack(spacing: 12) {
             if let type = personalityManager.personalityType {
@@ -215,8 +214,7 @@ struct FocusEconomyCard: View {
     @State private var glow = false
     
     var body: some View {
-        let theme = personalityManager.currentTheme
-        return ZStack {
+        ZStack {
             // Vault door garnish
             Circle()
                 .strokeBorder(LinearGradient(colors: [Color.gray.opacity(0.4), Color.white.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 5)
@@ -267,8 +265,7 @@ struct FocusEconomyCard: View {
     }
     
     private var pointsBox: some View {
-        let theme = personalityManager.currentTheme
-        return VStack(alignment: .center, spacing: 8) {
+        VStack(alignment: .center, spacing: 8) {
             Text("\(points)")
                 .font(.custom("Tanker-Regular", size: 32))
                 .foregroundColor(.nudgeGreen900)
@@ -294,8 +291,7 @@ Text("Focus Points")
     }
     
     private var coinsBox: some View {
-        let theme = personalityManager.currentTheme
-        return VStack(alignment: .center, spacing: 8) {
+        VStack(alignment: .center, spacing: 8) {
             #if canImport(UIKit)
             if let uiImg = UIImage(named: "focus coin (1)", in: .main, with: nil) {
                 Image(uiImage: uiImg)
@@ -349,7 +345,7 @@ struct StatsGrid: View {
     
     var body: some View {
         let theme = personalityManager.currentTheme
-        return VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 12) {
             Text("Your Stats")
                 .font(.custom("Tanker-Regular", size: 18))
                 .foregroundColor(theme.text)
@@ -366,7 +362,7 @@ struct StatsGrid: View {
     
     private func rpgStatTile(icon: String, title: String, value: String, progress: Double, tint: Color) -> some View {
         let theme = personalityManager.currentTheme
-        return VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
                 Image(systemName: icon)
                     .foregroundColor(tint)

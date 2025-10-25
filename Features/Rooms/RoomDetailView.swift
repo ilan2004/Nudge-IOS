@@ -410,7 +410,7 @@ private struct MemberCard: View {
     
     private func formatLastActive(_ date: Date) -> String {
         let formatter = RelativeDateTimeFormatter()
-        formatter.dateTimeStyle = .abbreviated
+        formatter.dateTimeStyle = .named
         return formatter.localizedString(for: date, relativeTo: Date())
     }
 }

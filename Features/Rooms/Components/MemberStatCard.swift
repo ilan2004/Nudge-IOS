@@ -18,152 +18,186 @@ struct MemberStatCard: View {
     ]
     
     var body: some View {
-        VStack(spacing: 12) {
-            // Top section: Avatar, name, and rank badge
-            HStack(spacing: 12) {
-                // Avatar with personality color border
-                Image(member.friend.avatarImageName)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
+        cardContent
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(isCurrentUser ? Color.guildParchment : Color.defaultCream)
                     .overlay(
-                        Circle()
-                            .stroke(member.friend.personalityColors.primary, lineWidth: 3)
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(isCurrentUser ? Color.nudgeGreen900 : Color.nudgeGreen900.opacity(0.3), lineWidth: isCurrentUser ? 2 : 1)
                     )
-                    .shadow(color: member.friend.personalityColors.primary.opacity(0.3), radius: 4, x: 0, y: 2)
-                
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(member.friend.name)
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(Color.guildText)
-                        .lineLimit(1)
-                    
-                    // Personality type mini badge
-                    Text(member.friend.personalityType.rawValue)
-                        .font(.caption2)
-                        .foregroundColor(Color.guildText)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(member.friend.personalityColors.primary.opacity(0.2))
-                        )
-                }
+                    .shadow(color: isCurrentUser ? Color.nudgeGreen900.opacity(0.3) : Color.clear, radius: isCurrentUser ? 8 : 0, x: 0, y: 4)
+            )
+            .statsPanelSurface()
+            .cardAnimations
+    }
+    
+    // MARK: - Card Content
+    private var cardContent: some View {
+        VStack(spacing: 12) {
+            headerSection
+            statsGrid
+            progressSection
+        }
+        .padding(12)
+    }
+    
+    private var headerSection: some View {
+        HStack(spacing: 12) {
+            avatarView
+            memberInfo
+            Spacer()
+            rankBadge
+        }
+    }
+    
+    private var avatarView: some View {
+        Image(member.friend.avatarImageName)
+            .resizable()
+            .scaledToFill()
+            .frame(width: 40, height: 40)
+            .clipShape(Circle())
+            .overlay(
+                Circle()
+                    .stroke(member.friend.personalityColors.primary, lineWidth: 3)
+            )
+            .shadow(color: member.friend.personalityColors.primary.opacity(0.3), radius: 4, x: 0, y: 2)
+    }
+    
+    private var memberInfo: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(member.friend.name)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(Color.guildText)
+                .lineLimit(1)
+            
+            personalityBadge
+        }
+    }
+    
+    private var personalityBadge: some View {
+        Text(member.friend.personalityType.rawValue)
+            .font(.caption2)
+            .foregroundColor(Color.guildText)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .background(
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(member.friend.personalityColors.primary.opacity(0.2))
+            )
+    }
+    
+    private var statsGrid: some View {
+        LazyVGrid(columns: columns, spacing: 8) {
+            MemberStatItem(
+                title: "Focus",
+                value: formatTime(stats.focusTimeSeconds),
+                icon: "clock.fill",
+                color: .green
+            )
+            
+            MemberStatItem(
+                title: "Breaks",
+                value: "\(stats.breakCount)",
+                icon: "cup.and.saucer.fill",
+                color: .cyan
+            )
+            
+            MemberStatItem(
+                title: "Screen",
+                value: formatTime(stats.screenTimeSeconds),
+                icon: "iphone.gen3",
+                color: .orange
+            )
+            
+            MemberStatItem(
+                title: "Distractions",
+                value: "\(stats.distractionCount)",
+                icon: "exclamationmark.triangle.fill",
+                color: .red
+            )
+        }
+    }
+    
+    private var progressSection: some View {
+        VStack(spacing: 6) {
+            HStack {
+                Text("Focus Progress")
+                    .font(.caption)
+                    .foregroundColor(Color.guildTextSecondary)
                 
                 Spacer()
                 
-                // Rank badge
-                rankBadge
+                Text("\(Int(focusPercentage * 100))%")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(progressColor)
             }
             
-            // Middle section: 2x2 stat grid
-            LazyVGrid(columns: columns, spacing: 8) {
-                StatItem(
-                    title: "Focus",
-                    value: formatTime(stats.focusTimeSeconds),
-                    icon: "clock.fill",
-                    color: .green
-                )
+            progressBar
+        }
+    }
+    
+    private var progressBar: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 8)
+                    .cornerRadius(4)
                 
-                StatItem(
-                    title: "Breaks",
-                    value: "\(stats.breakCount)",
-                    icon: "cup.and.saucer.fill",
-                    color: .cyan
-                )
-                
-                StatItem(
-                    title: "Screen",
-                    value: formatTime(stats.screenTimeSeconds),
-                    icon: "iphone.gen3",
-                    color: .orange
-                )
-                
-                StatItem(
-                    title: "Distractions",
-                    value: "\(stats.distractionCount)",
-                    icon: "exclamationmark.triangle.fill",
-                    color: .red
-                )
-            }
-            
-            // Bottom section: Progress bar
-            VStack(spacing: 6) {
-                HStack {
-                    Text("Focus Progress")
-                        .font(.caption)
-                        .foregroundColor(Color.guildTextSecondary)
-                    
-                    Spacer()
-                    
-                    Text("\(Int(focusPercentage * 100))%")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(progressColor)
-                }
-                
-                // Custom progress bar
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(height: 8)
-                            .cornerRadius(4)
-                        
-                        Rectangle()
-                            .fill(progressGradient)
-                            .frame(width: geometry.size.width * CGFloat(focusPercentage), height: 8)
-                            .cornerRadius(4)
-                            .animation(.easeInOut(duration: 0.5), value: focusPercentage)
-                    }
-                }
-                .frame(height: 8)
+                Rectangle()
+                    .fill(progressGradient)
+                    .frame(width: geometry.size.width * CGFloat(focusPercentage), height: 8)
+                    .cornerRadius(4)
+                    .animation(.easeInOut(duration: 0.5), value: focusPercentage)
             }
         }
-        .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(isCurrentUser ? Color.guildParchment : Color.defaultCream)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(isCurrentUser ? Color.nudgeGreen900 : Color.nudgeGreen900.opacity(0.3), lineWidth: isCurrentUser ? 2 : 1)
-                )
-                .shadow(color: isCurrentUser ? Color.nudgeGreen900.opacity(0.3) : Color.clear, radius: isCurrentUser ? 8 : 0, x: 0, y: 4)
-        )
-        .statsPanelSurface()
-        .scaleEffect(celebrateSuccess ? 1.05 : 1.0)
-        .animation(.spring(response: 0.4, dampingFraction: 0.6), value: celebrateSuccess)
-        .onChange(of: rank) { oldValue, newValue in
-            if newValue < oldValue {
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                    animateRankChange = true
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    animateRankChange = false
-                }
-                
-                #if canImport(UIKit)
-                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                #endif
+        .frame(height: 8)
+    }
+    
+    
+    private var cardAnimations: some View {
+        scaleEffect(celebrateSuccess ? 1.05 : 1.0)
+            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: celebrateSuccess)
+            .onChange(of: rank) { oldValue, newValue in
+                handleRankChange(oldValue: oldValue, newValue: newValue)
             }
-        }
-        .onChange(of: focusPercentage) { oldValue, newValue in
-            // Celebrate milestones
-            let oldMilestone = Int(oldValue * 10)
-            let newMilestone = Int(newValue * 10)
+            .onChange(of: focusPercentage) { oldValue, newValue in
+                handleFocusPercentageChange(oldValue: oldValue, newValue: newValue)
+            }
+    }
+    
+    // MARK: - Animation Handlers
+    private func handleRankChange(oldValue: Int, newValue: Int) {
+        if newValue < oldValue {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                animateRankChange = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                animateRankChange = false
+            }
             
-            if newMilestone > oldMilestone && newMilestone % 2 == 0 { // Every 20%
-                withAnimation(.spring(response: 0.5, dampingFraction: 0.5)) {
-                    celebrateSuccess = true
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    celebrateSuccess = false
-                }
-                
-                #if canImport(UIKit)
-                UINotificationFeedbackGenerator().notificationOccurred(.success)
-                #endif
+            #if canImport(UIKit)
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            #endif
+        }
+    }
+    
+    private func handleFocusPercentageChange(oldValue: Double, newValue: Double) {
+        let oldMilestone = Int(oldValue * 10)
+        let newMilestone = Int(newValue * 10)
+        
+        if newMilestone > oldMilestone && newMilestone % 2 == 0 { // Every 20%
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.5)) {
+                celebrateSuccess = true
             }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                celebrateSuccess = false
+            }
+            
+            #if canImport(UIKit)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            #endif
         }
     }
     
@@ -263,8 +297,8 @@ struct MemberStatCard: View {
     }
 }
 
-// MARK: - Stat Item Component
-private struct StatItem: View {
+// MARK: - Member Stat Item Component
+private struct MemberStatItem: View {
     let title: String
     let value: String
     let icon: String

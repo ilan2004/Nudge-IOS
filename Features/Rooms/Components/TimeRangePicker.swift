@@ -195,7 +195,6 @@ struct TimeRangePicker: View {
         let minDuration: TimeInterval = 15 * 60 // 15 minutes
         let maxDuration: TimeInterval = 8 * 60 * 60 // 8 hours
         
-        let wasValid = isValid
         let wasShowingError = showError
         
         isValid = duration > 0 && duration >= minDuration && duration <= maxDuration
